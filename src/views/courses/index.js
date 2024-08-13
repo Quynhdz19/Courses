@@ -6,7 +6,7 @@ const CoursesList = () => {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate('/courses-detail')
+    navigate('/course-detail')
   }
   return (
     <>
