@@ -20,7 +20,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Courses dang học',
+    name: 'Courses đang học',
     to: 'courses',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
