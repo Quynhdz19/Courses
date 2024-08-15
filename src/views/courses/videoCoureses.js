@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Avatar, Button, Col, Divider, Layout, List, Menu, Progress, Row } from 'antd'
 import ReactHlsPlayer from 'react-hls-player'
-import { CCard, CCardBody, CCardTitle } from "@coreui/react";
-import CourseDetailModuleCollapse from "src/views/courses/detail/CollapseModule";
+import { CCard, CCardBody, CCardTitle } from '@coreui/react'
+import CourseDetailModuleCollapse from 'src/views/courses/detail/CollapseModule'
 
 const data = [
   'Racing car sprays burning fuel into crowd.',
