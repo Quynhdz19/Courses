@@ -10,16 +10,31 @@ import {
   CCardHeader,
   CCardImage,
   CCardText,
-  CCardTitle,
-  CRow,
-} from '@coreui/react'
+  CCardTitle, CImage,
+  CRow
+} from "@coreui/react";
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
+import avatar3 from 'src/assets/images/avatars/3.jpg'
+import avatar4 from 'src/assets/images/avatars/4.jpg'
+import avatar5 from 'src/assets/images/avatars/5.jpg'
+import avatar6 from 'src/assets/images/avatars/6.jpg'
 
-import '/src/css/courses-index.css';
+// import '/src/css/courses-index.css';
 const CoursesList = () => {
   const navigate = useNavigate()
 
+  const imgCaroucel = [
+    {
+    image: { src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1', status: 'succes'}
+    }, {
+      image: { src:'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',status: 'succes'}
+    }, {
+      image: { src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1', status: 'succes'}
+    }, {
+      image: { src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1', status: 'succes'}
+    },
+  ]
   const tableExample = [
     {
       image: { src: avatar1, status: 'success' },
@@ -71,53 +86,58 @@ const CoursesList = () => {
     },
   ]
 
-  const contentStyle = {
-    margin: 0,
-    height: '160px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    background: '#364d79',
-  };
   const handleClick = () => {
     navigate('/course-detail')
   }
   return (
     <div>
       <Carousel arrows infinite={false}>
-        <div>
-          <h3 style={contentStyle}>1</h3>
-        </div>
-        <div>
-          <h3 style={contentStyle}>2</h3>
-        </div>
-        <div>
-          <h3 style={contentStyle}>3</h3>
-        </div>
-        <div>
-          <h3 style={contentStyle}>4</h3>
-        </div>
+        {imgCaroucel.map((item, index) => (
+          <div style={
+            {
+              width: '80%',
+              display: 'flex',
+              maxWidth: '100%',
+              height: "auto",
+            }
+          }>
+          <div v-for="item in tableItems" key={index}>
+            <CImage src={item.image.src} status={item.image.status}/>
+          </div>
+            </div>
+        ))}
+
       </Carousel>
+      <CCardTitle style={{ display: 'flex', justifyContent: 'left', }}>
+        <h2 className="p-lg-3">Danh sach khoa hoc</h2>
+      </CCardTitle>
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
         {tableExample.map((item, index) => (
+          <CCardBody className="d-grid gap-2">
           <CCard v-for="item in tableItems" key={index} className="m-lg-3">
             <CCardImage size="md" src={item.image.src} status={item.image.status} />
             <CCardTitle>
-              <span className='m-lg-2'>{item.title}</span>
+              <span className="m-lg-2">{item.title}</span>
             </CCardTitle>
             <CCardText>
-              <ins className='m-lg-2'>{item.price}</ins>
+              <ins className="m-lg-2 text-primary">{item.price}</ins>
             </CCardText>
-            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-              <CAvatar className="m-lg-1" size="md" src={item.avtar.src} status={item.avtar.status} />
+            <div style={{ display: 'flex', justifyContent: 'flex', flexWrap: 'wrap'}}>
+              <CAvatar
+                className="m-lg-1"
+                size="md"
+                src={item.avtar.src}
+                status={item.avtar.status}
+              />
               <CCardText>
                 <div className="text-center m-lg-2">{item.name}</div>
               </CCardText>
-              <CCardText>
+              <CCardText style={{display: 'flex', justifyContent: 'right',}}>
                 <div className="text-center m-lg-2">{item.lecture}</div>
               </CCardText>
             </div>
           </CCard>
+          </CCardBody>
         ))}
       </div>
     </div>
