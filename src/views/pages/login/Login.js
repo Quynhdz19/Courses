@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -15,8 +15,30 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import AuthService from 'src/services/AuthService'
 
 const Login = () => {
+  const navigate = useNavigate()
+  const [input, setInput] = useState({
+    username: '',
+    password: '',
+  })
+
+  const handedLogin = async () => {
+    const { username, password } = input
+    await AuthService.login(username, password)
+    const navigate = useNavigate()
+    navigate('/dashboard')
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setInput({
+      ...input,
+      [name]: value,
+    })
+  }
+
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -28,12 +50,22 @@ const Login = () => {
                   <CForm>
                     <h1>Login</h1>
                     <p className="text-body-secondary">Sign In to your account</p>
+
+                    {/* Username Input */}
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput
+                        placeholder="Username"
+                        autoComplete="username"
+                        name="username"
+                        value={input.username}
+                        onChange={handleChange}
+                      />
                     </CInputGroup>
+
+                    {/* Password Input */}
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
@@ -42,11 +74,15 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        name="password"
+                        value={input.password}
+                        onChange={handleChange}
                       />
                     </CInputGroup>
+
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton onClick={handedLogin} color="primary" className="px-4">
                           Login
                         </CButton>
                       </CCol>

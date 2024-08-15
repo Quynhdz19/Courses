@@ -30,7 +30,7 @@ const Navs = () => {
               overrides (for working with lists), some link padding for larger hit areas, and basic
               disabled styling.
             </p>
-            <DocsExample href="components/nav#base-nav">
+            <DocsExample href="components/navbase-nav">
               <CNav>
                 <CNavItem>
                   <CNavLink href="#" active>
@@ -146,7 +146,7 @@ const Navs = () => {
               <code>.flex-column</code> utility. Need to stack them on some viewports but not
               others? Use the responsive versions (e.g., <code>.flex-sm-column</code>).
             </p>
-            <DocsExample href="components/nav#vertical">
+            <DocsExample href="components/navvertical">
               <CNav className="flex-column">
                 <CNavItem>
                   <CNavLink href="#" active>
