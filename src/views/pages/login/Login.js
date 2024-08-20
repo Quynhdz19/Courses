@@ -63,10 +63,7 @@ const Login = () => {
     }
 
     try {
-      const resultAction = await dispatch(onSignIn({
-        username: account.username.trim(),
-        password: account.password.trim(),
-      }));
+      const resultAction = await dispatch(onSignIn(account));
       if (onSignIn.fulfilled.match(resultAction)) {
         navigate('/dashboard');
       } else {
