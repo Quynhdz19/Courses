@@ -1,34 +1,32 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const BaseService = axios.create({
-  baseURL: 'https://online-course-jimmy.onrender.com/api/v1/',
-  timeout: 10000,
-})
-
-BaseService.interceptors.request.use(
-  (config) => {
-    // Add any headers or authentication tokens here if needed
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`
+class BaseService {
+    constructor() {
+        this.api = axios.create({
+            baseURL: 'https://online-course-jimmy.onrender.com/api/v1/',
+            timeout: 10000,
+        });
     }
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  },
-)
 
-BaseService.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      console.error('Unauthorized access - redirecting to login')
+    get(endpoint, params) {
+        return this.api.get(endpoint, { params });
     }
-    return Promise.reject(error)
-  },
-)
 
-export default BaseService
+    post(endpoint, data) {
+        return this.api.post(endpoint, data);
+    }
+
+    put(endpoint, data) {
+        return this.api.put(endpoint, data);
+    }
+
+    delete(endpoint) {
+        return this.api.delete(endpoint);
+    }
+
+    handleError(error) {
+        console.error('API Error: ', error);
+    }
+}
+
+export default BaseService;

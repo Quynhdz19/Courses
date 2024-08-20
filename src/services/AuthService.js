@@ -1,27 +1,18 @@
-import BaseService from './BaseService'
-import { useNavigate } from 'react-router-dom'
+import BaseService from './BaseService';
 
-const AuthService = {
-  login: async (username, password) => {
-    try {
-      const response = await BaseService.post('auth/login', {
-        username: username,
-        password: password,
-      })
-      if (response.data.data.code === 'ok') {
-        localStorage.setItem('token', response.data.data.accessToken)
-        return { success: true, data: response.data }
-      } else {
-        return { success: false, message: response.data.message }
-      }
-    } catch (error) {
-      return { success: false, message: 'Login failed. Please try again.' }
+class AuthService extends BaseService {
+    constructor() {
+        super();
     }
-  },
 
-  logout: () => {
-    localStorage.removeItem('token')
-  },
+    async signIn(credentials) {
+        try {
+            const response = await this.post('auth/login', credentials);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data);
+        }
+    }
 }
 
-export default AuthService
+export default new AuthService();
