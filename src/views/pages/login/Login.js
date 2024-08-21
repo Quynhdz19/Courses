@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import {
   CButton,
   CCard,
@@ -13,66 +13,66 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react';
-import CIcon from '@coreui/icons-react';
-import { cilLockLocked, cilUser } from '@coreui/icons';
-import { onSignIn } from '../../../redux/action';
+} from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilLockLocked, cilUser } from '@coreui/icons'
+import { onSignIn } from '../../../redux/action'
 
 const Login = () => {
   const [account, setAccount] = useState({
     username: '',
     password: '',
-  });
-  const [errMsg, setErrMsg] = useState({});
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  })
+  const [errMsg, setErrMsg] = useState({})
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setAccount({
       ...account,
       [name]: value,
-    });
-  };
+    })
+  }
 
   const validateSigninData = () => {
-    const errors = {};
+    const errors = {}
     if (!account.username.trim()) {
-      errors.username = "Username cannot be empty";
-    } else if (account.username.includes(" ")) {
-      errors.username = "Username cannot contain spaces";
+      errors.username = 'Username cannot be empty'
+    } else if (account.username.includes(' ')) {
+      errors.username = 'Username cannot contain spaces'
     }
 
     if (!account.password.trim()) {
-      errors.password = "Password cannot be empty.";
+      errors.password = 'Password cannot be empty.'
     } else if (/\s/.test(account.password)) {
-      errors.password = "Password cannot contain whitespace.";
+      errors.password = 'Password cannot contain whitespace.'
     } else if (account.password.length <= 5) {
-      errors.password = "Password must be longer than 5 characters.";
+      errors.password = 'Password must be longer than 5 characters.'
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const errors = validateSigninData();
+    e.preventDefault()
+    const errors = validateSigninData()
     if (Object.keys(errors).length > 0) {
-      setErrMsg(errors);
-      return;
+      setErrMsg(errors)
+      return
     }
 
     try {
-      const resultAction = await dispatch(onSignIn(account));
+      const resultAction = await dispatch(onSignIn(account))
       if (onSignIn.fulfilled.match(resultAction)) {
-        navigate('/dashboard');
+        navigate('/dashboard')
       } else {
-        setErrMsg({ general: 'An error occurred. Username or password is incorrect!' });
+        setErrMsg({ general: 'An error occurred. Username or password is incorrect!' })
       }
     } catch (err) {
-      setErrMsg({ general: 'An error occurred. Please try again.' });
+      setErrMsg({ general: 'An error occurred. Please try again.' })
     }
-  };
+  }
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -149,7 +149,7 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
-  );
-};
+  )
+}
 
 export default Login

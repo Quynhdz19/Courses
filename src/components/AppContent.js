@@ -2,8 +2,18 @@ import React, { Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
 
-// routes config
-import routes from '../routes'
+
+import CoursesList from 'src/views/courses'
+import Dashboard from 'src/views/dashboard/Dashboard'
+import CourseDetail from 'src/views/pages/course/CourseDetail'
+
+const routes = [
+  { path: '/', exact: true, name: 'Home' },
+  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/courses', name: 'Courses', element: CoursesList },
+  { path: '/course-detail', name: 'CourseDetail', element: CourseDetail },
+  // { path: '/courses-video', name: 'CoursesList', element: VideoCourses },
+]
 
 const AppContent = () => {
   return (
