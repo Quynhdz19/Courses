@@ -3,15 +3,15 @@ import React, { lazy } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import DefaultLayout from 'src/layout/DefaultLayout'
-import VideoDetail from 'src/views/courses/videoCoureses'
 
 const Dashboard = lazy(() => import('src/views/dashboard/Dashboard'))
 const CoursesList = lazy(() => import('src/views/courses'))
 const CoursesDetail = lazy(() => import('src/views/courses/coursesDetail'))
-const Login = lazy(() => import('./views/pages/login/Login'))
-const Register = lazy(() => import('./views/pages/register/Register'))
-const Page404 = lazy(() => import('./views/pages/page404/Page404'))
-const Page500 = lazy(() => import('./views/pages/page500/Page500'))
+const VideoDetail = lazy(() => import('src/views/courses/videoCoureses'))
+const Login = lazy(() => import('src/views/pages/login/Login'))
+const Register = lazy(() => import('src/views/pages/register/Register'))
+const Page404 = lazy(() => import('src/views/pages/page404/Page404'))
+const Page500 = lazy(() => import('src/views/pages/page500/Page500'))
 
 const AuthWrapper = (props) => {
   const auth = useSelector((state) => state.auth)
