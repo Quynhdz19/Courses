@@ -2,6 +2,7 @@ import React, { lazy } from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import DefaultLayout from 'src/layout/DefaultLayout'
+import VideoDetail from 'src/views/courses/videoCoureses'
 
 const Dashboard = lazy(() => import('src/views/dashboard/Dashboard'))
 const CoursesList = lazy(() => import('src/views/courses'))
@@ -33,6 +34,7 @@ const Routers = () => {
         <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
         <Route path="/courses" element={<PrivateRoute element={<CoursesList />} />} />
         <Route path="/courses-detail" element={<PrivateRoute element={<CoursesDetail />} />} />
+        <Route path="/lesson-learn" element={<PrivateRoute element={<VideoDetail />} />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
     </DefaultLayout>

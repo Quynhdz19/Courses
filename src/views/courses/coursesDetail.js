@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 const CoursesDetail = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const handleClick = () => {
     navigate('/courses-detail')
   }
