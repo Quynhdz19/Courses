@@ -1,9 +1,18 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 
-import routes from '../routes'
-
 import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
+import Dashboard from 'src/views/dashboard/Dashboard'
+import CoursesList from 'src/views/courses'
+import CourseDetail from 'src/views/pages/course/CourseDetail'
+
+const routes = [
+  { path: '/', exact: true, name: 'Home' },
+  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/courses', name: 'Courses', element: CoursesList },
+  { path: '/course-detail', name: 'CourseDetail', element: CourseDetail },
+  // { path: '/courses-video', name: 'CoursesList', element: VideoCourses },
+]
 
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
