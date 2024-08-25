@@ -1,11 +1,12 @@
-import React, { Suspense, useEffect } from 'react'
-import { BrowserRouter } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import Routers from './routes'
-
 import { CSpinner, useColorModes } from '@coreui/react'
-import './scss/style.scss'
+import React, { Suspense, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './css/common.css'
+import routes from './routes'
+import './scss/style.scss'
+
+const router = createBrowserRouter(routes)
 
 const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
@@ -26,17 +27,15 @@ const App = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <BrowserRouter>
-      <Suspense
-        fallback={
-          <div className="pt-3 text-center">
-            <CSpinner color="primary" variant="grow" />
-          </div>
-        }
-      >
-        <Routers />
-      </Suspense>
-    </BrowserRouter>
+    <Suspense
+      fallback={
+        <div className="pt-3 text-center">
+          <CSpinner color="primary" variant="grow" />
+        </div>
+      }
+    >
+      <RouterProvider router={router} />
+    </Suspense>
   )
 }
 
