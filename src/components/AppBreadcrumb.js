@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom'
 
 import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
 import Dashboard from 'src/views/dashboard/Dashboard'
-import CoursesList from 'src/views/courses'
-import CourseDetail from 'src/views/pages/course/CourseDetail'
+import CoursesList from 'src/views/pages/courses'
+import CourseDetail from 'src/views/pages/courses/course/CourseDetail'
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },

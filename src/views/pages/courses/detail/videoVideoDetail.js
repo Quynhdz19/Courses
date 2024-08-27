@@ -2,7 +2,9 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Avatar, Button, Col, Divider, Layout, List, Menu, Progress, Row } from 'antd'
 import ReactHlsPlayer from 'react-hls-player'
 import { CCard, CCardBody, CCardTitle } from '@coreui/react'
-import CourseDetailModuleCollapse from 'src/views/courses/detail/CollapseModule'
+import CourseDetailModuleCollapse from 'src/views/pages/courses/detail/CollapseModule'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 const data = [
   'Racing car sprays burning fuel into crowd.',
@@ -20,33 +22,16 @@ const VideoDetail = () => {
       name: 'Module 01: Nhập Môn',
       lessons: [
         {
+          id: 1,
           name: 'Bài 01: Nhập môn',
         },
         {
+          id: 1,
           name: 'Bài 01: Nhập môn',
         },
         {
+          id: 1,
           name: 'Bài 01: Nhập môn',
-        },
-      ],
-    },
-    {
-      name: 'Module 02: Lập Trình',
-      lessons: [
-        {
-          name: 'Bài 04: Route',
-        },
-        {
-          name: 'Bài 05: Controller',
-        },
-        {
-          name: 'Bài 05: Controller',
-        },
-        {
-          name: 'Bài 05: Controller',
-        },
-        {
-          name: 'Bài 05: Controller',
         },
       ],
     },
@@ -67,9 +52,18 @@ const VideoDetail = () => {
             height="auto"
             controls // Optional: Add controls for play, pause, etc.
           />
+          <CKEditor
+            editor={ClassicEditor}
+            config={{
+              toolbar: {
+                items: ['undo', 'redo', '|', 'bold', 'italic'],
+              },
+              initialData: '<p>Hello from CKEditor 5 in React!</p>',
+            }}
+          />
         </Col>
         <Col span={6}>
-          <CCard className={'border-light'}>
+          <CCard className={'border-light left-menu-video'}>
             <CCardBody className="d-grid gap-2">
               <CCardTitle>
                 <strong>Bài Học</strong>

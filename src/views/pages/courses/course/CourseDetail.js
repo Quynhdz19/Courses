@@ -1,6 +1,6 @@
 import React from 'react'
-import CourseDetailDescriptionCard from '../../courses/detail/CardDescription'
-import CourseDetailModulesCard from '../../courses/detail/CardModules'
+import CourseDetailDescriptionCard from '../detail/CardDescription'
+import CourseDetailModulesCard from '../detail/CardModules'
 
 const CourseDetail = () => {
   const description = {

@@ -5,9 +5,9 @@ import { Navigate } from 'react-router-dom'
 import DefaultLayout from 'src/layout/DefaultLayout'
 
 const Dashboard = lazy(() => import('src/views/dashboard/Dashboard'))
-const CoursesList = lazy(() => import('src/views/courses'))
-const CoursesDetail = lazy(() => import('src/views/courses/coursesDetail'))
-const VideoDetail = lazy(() => import('src/views/courses/videoCoureses'))
+const CoursesList = lazy(() => import('src/views/pages/courses'))
+const CoursesDetail = lazy(() => import('src/views/pages/courses/course/CourseDetail'))
+const VideoDetail = lazy(() => import('src/views/pages/courses/detail/videoVideoDetail'))
 const Login = lazy(() => import('src/views/pages/login/Login'))
 const Register = lazy(() => import('src/views/pages/register/Register'))
 const Page404 = lazy(() => import('src/views/pages/page404/Page404'))
@@ -50,11 +50,11 @@ const routes = [
         element: <AuthWrapper isPublic={false} element={<CoursesList />} />,
       },
       {
-        path: '/courses-detail',
+        path: '/courses-detail/:id',
         element: <AuthWrapper isPublic={false} element={<CoursesDetail />} />,
       },
       {
-        path: '/lesson-learn',
+        path: '/courses-detail/:id/lesson-learn/:id',
         element: <AuthWrapper isPublic={false} element={<VideoDetail />} />,
       },
     ],
