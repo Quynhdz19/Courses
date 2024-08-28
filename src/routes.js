@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { lazy } from 'react'
+import React, { lazy, useState  } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import DefaultLayout from 'src/layout/DefaultLayout'
@@ -12,6 +12,9 @@ const Login = lazy(() => import('src/views/pages/login/Login'))
 const Register = lazy(() => import('src/views/pages/register/Register'))
 const Page404 = lazy(() => import('src/views/pages/page404/Page404'))
 const Page500 = lazy(() => import('src/views/pages/page500/Page500'))
+// const AddCourseForm = lazy(() => import('src/views/pages/management/courses/course'))
+const CourseManager = lazy(() => import('src/views/pages/management/courses'))
+const ModuleList = lazy(() => import('src/views/pages/management/courses/module/ModuleList'))
 
 const AuthWrapper = (props) => {
   const auth = useSelector((state) => state.auth)
@@ -44,6 +47,26 @@ const routes = [
       {
         path: '/dashboard',
         element: <AuthWrapper isPublic={false} element={<Dashboard />} />,
+      },
+      {
+        path: '/management/courses',
+        element: <AuthWrapper isPublic={false} element={<CourseManager />} />,
+      },
+      {
+        path: '/management/courses/course/:id',
+        element: <AuthWrapper isPublic={false} element={<ModuleList />} />,
+      },
+      {
+        path: '/management/courses/course/:id/module/:id',
+        element: <AuthWrapper isPublic={false} element={<CourseManager />} />,
+      },
+      {
+        path: '/management/courses/course/:id/module/:id/lesson/:id',
+        element: <AuthWrapper isPublic={false} element={<CourseManager />} />,
+      },
+      {
+        path: '/management/courses/course/:id',
+        element: <AuthWrapper isPublic={false} element={<CourseManager />} />,
       },
       {
         path: '/courses',
