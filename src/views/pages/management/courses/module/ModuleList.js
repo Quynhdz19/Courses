@@ -1,35 +1,3 @@
-// import React, { useState } from 'react'
-// import { CButton, CCard, CCardBody, CCardHeader } from '@coreui/react'
-// import AddLesson from 'src/views/pages/management/courses/lesson/AddLesson'
-// import LessonDetail from 'src/views/pages/management/courses/lesson/LessonDetail'
-
-// const ModuleList = () => {
-//   const [selectedLesson, setSelectedLesson] = useState(null)
-
-
-//   return (
-//     <div>
-//       <h3>Chi tiết Module: {module.title}</h3>
-//       <AddLesson/>
-//       <div>
-//         {module.lessons.map((lesson) => (
-//           <CCard key={lesson.id}>
-//             <CCardHeader>{lesson.title}</CCardHeader>
-//             <CCardBody>
-//               <CButton>Xem chi tiết</CButton>
-//               <CButton color="danger">Xóa</CButton>
-//             </CCardBody>
-//           </CCard>
-//         ))}
-//       </div>
-//       {selectedLesson && <LessonDetail lesson={selectedLesson} />}
-//     </div>
-//   )
-// }
-
-// export default ModuleList
-
-
 import React, { useState } from 'react'
 import {
   CCard,
@@ -46,22 +14,29 @@ import {
   CContainer,
 } from '@coreui/react'
 import { CIcon } from '@coreui/icons-react'
-import { cilSearch, cilX } from '@coreui/icons'
-import CourseDetailModuleCollapse from 'src/views/pages/management/courses/module/CollapseModule'
-import AddModule from 'src/views/pages/management/courses/module/AddModule'
+import { cilSearch } from '@coreui/icons'
+import ManageModule from 'src/views/pages/management/courses/module/ManageModule'
+import BaseInputModule from 'src/views/pages/management/courses/module/BaseInputModule'
+import BaseInputCourse from 'src/views/pages/management/courses/course/BaseInputCourse'
 
 const ModuleList = () => {
   const modules = [
     {
+      id: 1,
       name: 'Module 01: Nhập Môn',
       lessons: [
         {
           id: 1,
           name: 'Bài 01: Nhập môn',
         },
+        {
+          id: 2,
+          name: 'Bài 02: Khái quát',
+        },
       ],
     },
     {
+      id: 2,
       name: 'Module 02: Lập Trình',
       lessons: [
         {
@@ -69,22 +44,36 @@ const ModuleList = () => {
           name: 'Bài 04: Route',
         },
         {
-          id: 1,
+          id: 2,
           name: 'Bài 05: Controller',
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: 'Module 03: Thực hành',
+      lessons: [
+        {
+          id: 1,
+          name: 'Bài 06: Làm ví dụ',
         },
       ],
     },
   ]
 
   const [searchTerm, setSearchTerm] = useState('')
-  const [isModalVisible, setIsModalVisible] = useState(false)
-
+  const [isModalVisibleModule, setIsModalVisibleModule] = useState(false)
+  const [isModalVisibleCourse, setIsModalVisibleCourse] = useState(false)
   const handleAddModule = (newCourse) => {
     setIsModalVisible(false)
   }
 
-  const toggleModal = () => {
-    setIsModalVisible(!isModalVisible)
+  const toggleModalCourse = () => {
+    setIsModalVisibleCourse(!isModalVisibleCourse)
+  }
+
+  const toggleModalModule = () => {
+    setIsModalVisibleModule(!isModalVisibleModule)
   }
 
   const handleCourseClick = (courseId) => {
@@ -105,37 +94,45 @@ const ModuleList = () => {
           <CIcon icon={cilSearch} />
         </CInputGroupText>
       </CInputGroup>
-
-      <CContainer className="d-flex justify-content-end mb-4">
-        <CButton onClick={toggleModal} color="primary">
-          Thêm module +
+      <CContainer className="d-flex justify-content-end mb-4 gap-3">
+        <CButton onClick={toggleModalModule} color="primary" size="sm">
+          Thêm module <strong>+</strong>
+        </CButton>
+        <CButton onClick={toggleModalCourse} color="primary" size="sm">
+          Sửa thông tin
         </CButton>
       </CContainer>
 
-      <CModal visible={isModalVisible} onDismiss={toggleModal} backdrop="static" className="modal-lg d-flex justify-content-center align-items-center">
-        <CModalHeader>
-          <CModalTitle>Thêm Khóa Học</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <AddModule />
-        </CModalBody>
-      </CModal>
-
-
       <CCard className={'border-light'}>
         <CCardBody className="d-grid gap-2">
-          <CCardTitle>
-            <strong>Bài Học</strong>
-          </CCardTitle>
-
           {modules.map((module, index) => (
             <div>
-              <CourseDetailModuleCollapse key={index} module={module} />
+              <ManageModule key={module.id} module={module} />
             </div>))}
         </CCardBody>
       </CCard>
+
+      <CModal visible={isModalVisibleModule} onDismiss={toggleModalModule} backdrop="static" className="modal-lg d-flex justify-content-center align-items-center">
+        <CModalHeader>
+          <CModalTitle>Module</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <BaseInputModule />
+        </CModalBody>
+      </CModal>
+
+      <CModal visible={isModalVisibleCourse} onDismiss={toggleModalCourse} backdrop="static" className="modal-lg d-flex justify-content-center align-items-center">
+        <CModalHeader>
+          <CModalTitle>Course</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <BaseInputCourse />
+        </CModalBody>
+      </CModal>
     </div>
   )
 }
 
 export default ModuleList
+
+

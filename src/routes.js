@@ -12,7 +12,6 @@ const Login = lazy(() => import('src/views/pages/login/Login'))
 const Register = lazy(() => import('src/views/pages/register/Register'))
 const Page404 = lazy(() => import('src/views/pages/page404/Page404'))
 const Page500 = lazy(() => import('src/views/pages/page500/Page500'))
-// const AddCourseForm = lazy(() => import('src/views/pages/management/courses/course'))
 const CourseManager = lazy(() => import('src/views/pages/management/courses'))
 const ModuleList = lazy(() => import('src/views/pages/management/courses/module/ModuleList'))
 
