@@ -13,7 +13,8 @@ const Register = lazy(() => import('src/views/pages/register/Register'))
 const Page404 = lazy(() => import('src/views/pages/page404/Page404'))
 const Page500 = lazy(() => import('src/views/pages/page500/Page500'))
 const CourseManager = lazy(() => import('src/views/pages/management/courses'))
-const ModuleList = lazy(() => import('src/views/pages/management/courses/module/ModuleList'))
+const ModulesManager = lazy(() => import('src/views/pages/management/courses/components/ModulesManager'))
+const LessonsManager = lazy(() => import('src/views/pages/management/courses/components/LessonsManager'))
 
 const AuthWrapper = (props) => {
   const auth = useSelector((state) => state.auth)
@@ -53,11 +54,11 @@ const routes = [
       },
       {
         path: '/management/courses/course/:id',
-        element: <AuthWrapper isPublic={false} element={<ModuleList />} />,
+        element: <AuthWrapper isPublic={false} element={<ModulesManager />} />,
       },
       {
         path: '/management/courses/course/:id/module/:id',
-        element: <AuthWrapper isPublic={false} element={<CourseManager />} />,
+        element: <AuthWrapper isPublic={false} element={<LessonsManager />} />,
       },
       {
         path: '/management/courses/course/:id/module/:id/lesson/:id',
