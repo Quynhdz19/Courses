@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   CButton,
   CCard,
@@ -10,25 +10,52 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react';
-import CIcon from '@coreui/icons-react';
-import { cilMovie, cilPencil, cilDescription } from '@coreui/icons';
+} from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilMovie, cilPencil, cilDescription } from '@coreui/icons'
 
-const BaseInputCourse = () => {
+const BaseInputLesson = ({ lessonToEdit, onSubmit }) => {
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [video, setVideo] = useState(null)
+
+  useEffect(() => {
+    if (lessonToEdit) {
+      setTitle(lessonToEdit.title)
+      setDescription(lessonToEdit.description)
+      setVideo(lessonToEdit.video)
+    } else {
+      setTitle('')
+      setDescription('')
+      setVideo(null)
+    }
+  }, [lessonToEdit])
+
+  const handleSubmit = () => {
+    onSubmit({
+      title,
+      description,
+      video,
+    })
+  }
+
+
   return (
     <CContainer>
       <CRow className="justify-content-center">
         <CCol>
           <CCard>
             <CCardBody>
-              <CForm>
+              <CForm onSubmit={handleSubmit}>
                 <CInputGroup className="mb-3">
                   <CInputGroupText>
                     <CIcon icon={cilPencil} />
                   </CInputGroupText>
                   <CFormInput
                     type="text"
-                    placeholder="Tên bài học"
+                    placeholder="Name"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                     required
                   />
                 </CInputGroup>
@@ -39,7 +66,9 @@ const BaseInputCourse = () => {
                   </CInputGroupText>
                   <CFormInput
                     type="text"
-                    placeholder="Mô tả"
+                    placeholder="Description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     required
                   />
                 </CInputGroup>
@@ -48,12 +77,12 @@ const BaseInputCourse = () => {
                   <CInputGroupText>
                     <CIcon icon={cilMovie} />
                   </CInputGroupText>
-                  <CFormInput type="file" onChange={(e) => setImage(e.target.files[0])} />
+                  <CFormInput type="file" onChange={(e) => setVideo(e.target.files[0])} />
                 </CInputGroup>
 
                 <div className="d-grid">
-                  <CButton type="submit" color="primary">
-                    Submit
+                  <CButton color="primary" onClick={handleSubmit}>
+                    {lessonToEdit ? 'Update lesson' : 'Add lesson'}
                   </CButton>
                 </div>
               </CForm>
@@ -62,7 +91,7 @@ const BaseInputCourse = () => {
         </CCol>
       </CRow>
     </CContainer>
-  );
-};
+  )
+}
 
-export default BaseInputCourse;
+export default BaseInputLesson

@@ -21,8 +21,6 @@ import {
 import { CIcon } from '@coreui/icons-react'
 import { cilSearch, cilPencil, cilExternalLink, cilTrash } from '@coreui/icons'
 import { useNavigate, useParams } from 'react-router-dom'
-import BaseInputModule from 'src/views/pages/management/courses/components/BaseInputModule'
-import BaseInputCourse from 'src/views/pages/management/courses/components/BaseInputCourse'
 
 const ModulesManager = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -37,34 +35,27 @@ const ModulesManager = () => {
       id: 1,
       name: 'Module 01: Nhập Môn',
       lessons: [
-        { id: 1, name: 'Bài 01: Nhập môn' },
-        { id: 2, name: 'Bài 02: Khái quát' },
+        { id: 1, name: 'Bài 01: Nhập môn', description: 'Lesson description' },
+        { id: 2, name: 'Bài 02: Khái quát', description: 'Lesson description' },
       ],
     },
     {
       id: 2,
       name: 'Module 02: Lập Trình',
       lessons: [
-        { id: 1, name: 'Bài 04: Route' },
-        { id: 2, name: 'Bài 05: Controller' },
+        { id: 1, name: 'Bài 04: Route',description: 'Lesson description' },
+        { id: 2, name: 'Bài 05: Controller', description: 'Lesson description' },
       ],
     },
     {
       id: 3,
       name: 'Module 03: Thực hành',
       lessons: [
-        { id: 1, name: 'Bài 06: Làm ví dụ' },
+        { id: 1, name: 'Bài 06: Làm ví dụ', description: 'Lesson description' },
       ],
     },
   ]
 
-  const toggleModalCourse = () => {
-    setIsModalVisibleCourse(!isModalVisibleCourse)
-  }
-
-  const toggleModalModule = () => {
-    setIsModalVisibleModule(!isModalVisibleModule)
-  }
 
   const handleModuleClick = (moduleId) => {
     const selectedModule = modules.find(module => module.id === moduleId)
@@ -93,11 +84,11 @@ const ModulesManager = () => {
 
   return (
     <div>
-      <h1>Khóa học thoát giàu làm nghèo</h1>
+      <h1>{}</h1>
       <CInputGroup className="mb-3">
         <CFormInput
           type="text"
-          placeholder="Tìm kiếm module"
+          placeholder="Search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -107,15 +98,15 @@ const ModulesManager = () => {
       </CInputGroup>
 
       <CContainer className="d-flex justify-content-end mb-4 gap-3">
-        <CButton onClick={toggleModalModule} color="primary" size="sm">
-          Thêm module <strong>+</strong>
+        <CButton color="primary" size="sm">
+          Add module
         </CButton>
         <CButton
           color="danger"
           size="sm"
           disabled={!isDeleteButtonEnabled}
         >
-          Xóa
+          Delete
         </CButton>
       </CContainer>
 
@@ -164,26 +155,10 @@ const ModulesManager = () => {
           </CTableBody>
         </CTable>
       </CListGroup>
-
-      <CModal visible={isModalVisibleModule} onClose={toggleModalModule} className="modal-lg d-flex justify-content-center align-items-center">
-        <CModalHeader>
-          <CModalTitle>Thêm Module</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <BaseInputModule />
-        </CModalBody>
-      </CModal>
-
-      <CModal visible={isModalVisibleCourse} onClose={toggleModalCourse} className="modal-lg d-flex justify-content-center align-items-center">
-        <CModalHeader>
-          <CModalTitle>Thêm Khóa Học</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <BaseInputCourse />
-        </CModalBody>
-      </CModal>
     </div>
   )
 }
 
 export default ModulesManager
+
+

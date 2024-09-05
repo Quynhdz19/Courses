@@ -8,14 +8,15 @@ export const onSignIn = createAsyncThunk(
     async (credentials, thunkAPI) => {
         try {
             const response = await AuthService.signIn(credentials);
-            const decodedToken = jwtDecode(response.data.accessToken);
+            const decodedToken = jwtDecode(response.accessToken);
             const account = {
                 _id: decodedToken._id,
                 username: decodedToken.username,
                 role: decodedToken.role,
-                accessToken: response.data.accessToken,
+                accessToken: response.accessToken,
             };
-
+            console.log("decodedToken: ",decodedToken )
+            console.log("from action account: ",account )
             return account;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.message || "Login failed");

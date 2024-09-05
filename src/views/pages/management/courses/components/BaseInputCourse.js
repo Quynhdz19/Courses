@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   CButton,
   CCard,
@@ -10,26 +10,34 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react';
-import CIcon from '@coreui/icons-react';
-import { cilImage, cilPencil, cilDescription } from '@coreui/icons';
+} from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilImage, cilPencil, cilDescription } from '@coreui/icons'
 
-const BaseInputCourse = ({ onAdd }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [image, setImage] = useState(null);
+const BaseInputCourse = ({ courseToEdit, onSubmit }) => {
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [image, setImage] = useState(null)
 
-  const handleSubmit = async (e) => {
-    const newCourse = {
-      id: Date.now(),
+  useEffect(() => {
+    if (courseToEdit) {
+      setTitle(courseToEdit.title)
+      setDescription(courseToEdit.description)
+      setImage(courseToEdit.image)
+    } else {
+      setTitle('')
+      setDescription('')
+      setImage(null)
+    }
+  }, [courseToEdit])
+
+  const handleSubmit = () => {
+    onSubmit({
       title,
       description,
-      modules: [],
-    }
-    onAdd(newCourse)
-    setTitle('')
-    setDescription('')
-  };
+      image,
+    })
+  }
 
   return (
     <CContainer>
@@ -44,7 +52,7 @@ const BaseInputCourse = ({ onAdd }) => {
                   </CInputGroupText>
                   <CFormInput
                     type="text"
-                    placeholder="Tên khóa học"
+                    placeholder="Name"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
@@ -57,7 +65,7 @@ const BaseInputCourse = ({ onAdd }) => {
                   </CInputGroupText>
                   <CFormInput
                     type="text"
-                    placeholder="Mô tả"
+                    placeholder="Description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
@@ -68,12 +76,15 @@ const BaseInputCourse = ({ onAdd }) => {
                   <CInputGroupText>
                     <CIcon icon={cilImage} />
                   </CInputGroupText>
-                  <CFormInput type="file" onChange={(e) => setImage(e.target.files[0])} />
+                  <CFormInput
+                    type="file"
+                    onChange={(e) => setImage(e.target.files[0])}
+                  />
                 </CInputGroup>
 
                 <div className="d-grid">
-                  <CButton type="submit" color="primary">
-                    Submit
+                  <CButton color="primary" onClick={handleSubmit}>
+                    {courseToEdit ? 'Edit course' : 'Add course'}
                   </CButton>
                 </div>
               </CForm>
@@ -82,7 +93,11 @@ const BaseInputCourse = ({ onAdd }) => {
         </CCol>
       </CRow>
     </CContainer>
-  );
-};
 
-export default BaseInputCourse;
+  )
+}
+
+export default BaseInputCourse
+
+
+

@@ -21,11 +21,14 @@ const AuthWrapper = (props) => {
 
   if (!props.isPublic && !auth.isLoggedIn) return <Navigate to="/login" replace />
 
+  if (props.requireAdmin && auth.account.role !== 'ADMIN') return <Navigate to="/" replace />
+
   return props.element
 }
 AuthWrapper.propTypes = {
   isPublic: PropTypes.bool.isRequired,
   element: PropTypes.node.isRequired,
+  requireAdmin: PropTypes.bool,
 }
 
 const routes = [
@@ -42,7 +45,7 @@ const routes = [
     children: [
       {
         path: '/',
-        element: <AuthWrapper isPublic={true} element={<Dashboard />} />,
+        element: <AuthWrapper isPublic={false} element={<Dashboard />} />,
       },
       {
         path: '/dashboard',
@@ -50,23 +53,15 @@ const routes = [
       },
       {
         path: '/management/courses',
-        element: <AuthWrapper isPublic={false} element={<CourseManager />} />,
+        element: <AuthWrapper isPublic={false} requireAdmin={true} element={<CourseManager />} />,
       },
       {
         path: '/management/courses/course/:id',
-        element: <AuthWrapper isPublic={false} element={<ModulesManager />} />,
+        element: <AuthWrapper isPublic={false} requireAdmin={true} element={<ModulesManager />} />,
       },
       {
         path: '/management/courses/course/:id/module/:id',
-        element: <AuthWrapper isPublic={false} element={<LessonsManager />} />,
-      },
-      {
-        path: '/management/courses/course/:id/module/:id/lesson/:id',
-        element: <AuthWrapper isPublic={false} element={<CourseManager />} />,
-      },
-      {
-        path: '/management/courses/course/:id',
-        element: <AuthWrapper isPublic={false} element={<CourseManager />} />,
+        element: <AuthWrapper isPublic={false} requireAdmin={true} element={<LessonsManager />} />,
       },
       {
         path: '/courses',
