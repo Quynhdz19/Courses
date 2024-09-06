@@ -45,17 +45,8 @@ class CourseService extends BaseService {
         }
     }
 
-    async addLesson(moduleId, formData) {
-        try {
-            const response = await this.post(`/courses/modules/${moduleId}/lessons`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            return response.data
-        } catch (error) {
-            throw new Error(error.response?.data)
-        }
+    // TODO: Quynh todo
+    async addLesson() {
     }
 
     async addUsers(courseId, usersData) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   CButton,
@@ -26,7 +26,9 @@ import CourseService from 'src/services/CourseService'
 import BaseInputCourse from 'src/views/pages/management/courses/components/BaseInputCourse'
 import DeleteModal from 'src/views/pages/management/courses/components/DeleteModal'
 import avatar1 from 'src/assets/images/course.png'
-import "./index.scss"
+import './index.scss'
+
+const baseURL = import.meta.env.VITE_BASE_API_URL
 
 const CoursesManager = () => {
   const navigate = useNavigate()
@@ -142,7 +144,10 @@ const CoursesManager = () => {
                   <CFormCheck checked={selectedCourses.includes(course._id)} onChange={() => handleSelectCourse(course._id)} />
                 </CTableDataCell>
                 <CTableDataCell>
-                  <CCardImage src={course.backgroundImg || avatar1} className="rounded" />
+                  <CCardImage
+                    src={course.backgroundImg ? `${baseURL}/${course.backgroundImg}` : avatar1}
+                    className="rounded course-image"
+                  />
                 </CTableDataCell>
                 <CTableDataCell className='text-course'>{course.title}</CTableDataCell>
                 <CTableDataCell className='text-course'>{course.description}</CTableDataCell>
@@ -195,5 +200,4 @@ const CoursesManager = () => {
 }
 
 export default CoursesManager
-
 

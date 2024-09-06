@@ -37,7 +37,7 @@ const ModulesManager = () => {
       id: 2,
       name: 'Module 02: Lập Trình',
       lessons: [
-        { id: 1, name: 'Bài 04: Route',description: 'Lesson description' },
+        { id: 1, name: 'Bài 04: Route', description: 'Lesson description' },
         { id: 2, name: 'Bài 05: Controller', description: 'Lesson description' },
       ],
     },
@@ -133,11 +133,11 @@ const ModulesManager = () => {
                 <CTableDataCell>{module.name}</CTableDataCell>
                 <CTableDataCell>{module.lessons.length}</CTableDataCell>
                 <CTableDataCell className="text-center">
-                  <CButton size="sm" className="me-2">
-                    <CIcon icon={cilPencil} />
-                  </CButton>
                   <CButton size="sm" className="me-2" onClick={() => handleModuleClick(module.id)}>
                     <CIcon icon={cilExternalLink} />
+                  </CButton>
+                  <CButton size="sm" className="me-2">
+                    <CIcon icon={cilPencil} />
                   </CButton>
                   <CButton size="sm">
                     <CIcon icon={cilTrash} style={{ color: 'red' }} />

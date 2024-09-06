@@ -5,7 +5,7 @@ import store from 'src/redux/store'
 
 export const AxiosAuth = axios.create({
     timeout: 10000,
-    baseURL: 'https://online-course-jimmy.onrender.com/api/v1/',
+    baseURL: import.meta.env.VITE_BASE_API_URL + '/api/v1/',
 })
 
 AxiosAuth.interceptors.request.use(

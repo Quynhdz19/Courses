@@ -50,7 +50,7 @@ const LessonsManager = () => {
   const handleLessonAction = async (action, lessonData = null) => {
     try {
       if (action === 'add') {
-        await CourseService.addLesson('66ca2393134c4677a06f2b9b', lessonData)
+        await CourseService.addLesson()  // TODO: Quynh todo
       }
       fetchCourses()
     } catch (error) {
