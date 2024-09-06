@@ -4,10 +4,6 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CModal,
-  CModalBody,
-  CModalHeader,
-  CModalTitle,
   CContainer,
   CFormCheck,
   CListGroup,
@@ -24,8 +20,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 const ModulesManager = () => {
   const [searchTerm, setSearchTerm] = useState('')
-  const [isModalVisibleModule, setIsModalVisibleModule] = useState(false)
-  const [isModalVisibleCourse, setIsModalVisibleCourse] = useState(false)
   const [selectedModules, setSelectedModules] = useState([])
   const { id } = useParams()
   const navigate = useNavigate()
@@ -84,7 +78,6 @@ const ModulesManager = () => {
 
   return (
     <div>
-      <h1>{}</h1>
       <CInputGroup className="mb-3">
         <CFormInput
           type="text"

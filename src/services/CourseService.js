@@ -47,7 +47,6 @@ class CourseService extends BaseService {
 
     async addLesson(moduleId, formData) {
         try {
-            console.log("request data: ", formData)
             const response = await this.post(`/courses/modules/${moduleId}/lessons`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

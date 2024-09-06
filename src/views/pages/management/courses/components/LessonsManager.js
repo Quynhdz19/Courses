@@ -52,9 +52,7 @@ const LessonsManager = () => {
       if (action === 'add') {
         await CourseService.addLesson('66ca2393134c4677a06f2b9b', lessonData)
       }
-      if (action === 'edit')
-        if (action === 'delete')
-          fetchCourses()
+      fetchCourses()
     } catch (error) {
       console.error(`Error ${action} lesson:`, error)
     }
