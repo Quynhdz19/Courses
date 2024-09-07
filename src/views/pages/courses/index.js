@@ -9,6 +9,7 @@ import {
   CCardText,
   CCardTitle,
   CImage,
+  CLink,
   CRow,
 } from '@coreui/react'
 import avatar1 from 'src/assets/images/avatars/1.jpg'
@@ -17,7 +18,7 @@ import avatar2 from 'src/assets/images/avatars/2.jpg'
 const CoursesList = () => {
   const navigate = useNavigate()
 
-  const imgCaroucel = [
+  const imgCarousel = [
     {
       image: {
         src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
@@ -43,8 +44,9 @@ const CoursesList = () => {
       },
     },
   ]
-  const tableExample = [
+  const tableExamples = [
     {
+      id: 10,
       image: { src: avatar1, status: 'success' },
       title: ' Khóa học thoát giàu làm nghèo',
       price: '100000',
@@ -53,6 +55,7 @@ const CoursesList = () => {
       lecture: '69 bài học',
     },
     {
+      id: 11,
       image: { src: avatar1, status: 'success' },
       title: ' Khóa học thoát giàu làm nghèo',
       price: '100000',
@@ -61,6 +64,7 @@ const CoursesList = () => {
       lecture: '69 bài học',
     },
     {
+      id: 12,
       image: { src: avatar1, status: 'success' },
       title: ' Khóa học thoát giàu làm nghèo',
       price: '100000',
@@ -69,6 +73,7 @@ const CoursesList = () => {
       lecture: '69 bài học',
     },
     {
+      id: 12,
       image: { src: avatar1, status: 'success' },
       title: ' Khóa học thoát giàu làm nghèo',
       price: '100000',
@@ -77,6 +82,7 @@ const CoursesList = () => {
       lecture: '69 bài học',
     },
     {
+      id: 12,
       image: { src: avatar1, status: 'success' },
       title: ' Khóa học thoát giàu làm nghèo',
       price: '100000',
@@ -85,6 +91,7 @@ const CoursesList = () => {
       lecture: '69 bài học',
     },
     {
+      id: 12,
       image: { src: avatar1, status: 'success' },
       title: ' Khóa học thoát giàu làm nghèo',
       price: '100000',
@@ -100,7 +107,7 @@ const CoursesList = () => {
   return (
     <div>
       <Carousel arrows infinite={false}>
-        {imgCaroucel.map((item, index) => (
+        {imgCarousel.map((item, index) => (
           // eslint-disable-next-line react/jsx-key
           <div
             style={{
@@ -111,43 +118,45 @@ const CoursesList = () => {
             }}
           >
             {/* eslint-disable-next-line react/no-unknown-property */}
-            <div v-for="item in tableItems" key={index}>
+            <div key={index}>
               <CImage src={item.image.src} status={item.image.status} />
             </div>
           </div>
         ))}
       </Carousel>
       <CCardTitle style={{ display: 'flex', justifyContent: 'left' }}>
-        <h2 className="p-lg-3">Danh sach khoa hoc</h2>
+        <h2 className="p-lg-3">Danh Sách Khóa Học </h2>
       </CCardTitle>
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        {tableExample.map((item, index) => (
+        {tableExamples.map((item, index) => (
           // eslint-disable-next-line react/jsx-key
-          <CCardBody className="d-grid gap-2">
-            <CCard v-for="item in tableItems" key={index} className="m-lg-3">
-              <CCardImage size="md" src={item.image.src} status={item.image.status} />
-              <CCardTitle>
-                <span className="m-lg-2">{item.title}</span>
-              </CCardTitle>
-              <CCardText>
-                <ins className="m-lg-2 text-primary">{item.price}</ins>
-              </CCardText>
-              <div style={{ display: 'flex', justifyContent: 'flex', flexWrap: 'wrap' }}>
-                <CAvatar
-                  className="m-lg-1"
-                  size="md"
-                  src={item.avtar.src}
-                  status={item.avtar.status}
-                />
+          <CLink href={`courses-detail/${item.id}`}>
+            <CCardBody className="d-grid gap-2">
+              <CCard key={index} className="m-lg-3">
+                <CCardImage size="md" src={item.image.src} status={item.image.status} />
+                <CCardTitle>
+                  <span className="m-lg-2">{item.title}</span>
+                </CCardTitle>
                 <CCardText>
-                  <div className="text-center m-lg-2">{item.name}</div>
+                  <ins className="m-lg-2 text-primary">{item.price}</ins>
                 </CCardText>
-                <CCardText style={{ display: 'flex', justifyContent: 'right' }}>
-                  <div className="text-center m-lg-2">{item.lecture}</div>
-                </CCardText>
-              </div>
-            </CCard>
-          </CCardBody>
+                <div style={{ display: 'flex', justifyContent: 'flex', flexWrap: 'wrap' }}>
+                  <CAvatar
+                    className="m-lg-1"
+                    size="md"
+                    src={item.avtar.src}
+                    status={item.avtar.status}
+                  />
+                  <CCardText>
+                    <div className="text-center m-lg-2">{item.name}</div>
+                  </CCardText>
+                  <CCardText style={{ display: 'flex', justifyContent: 'right' }}>
+                    <div className="text-center m-lg-2">{item.lecture}</div>
+                  </CCardText>
+                </div>
+              </CCard>
+            </CCardBody>
+          </CLink>
         ))}
       </div>
     </div>

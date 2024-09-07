@@ -8,6 +8,7 @@ const CourseDetailModulesCard = () => {
       name: 'Module 01: Nhập Môn',
       lessons: [
         {
+          id: 1,
           name: 'Bài 01: Nhập môn',
         },
       ],
@@ -16,9 +17,11 @@ const CourseDetailModulesCard = () => {
       name: 'Module 02: Lập Trình',
       lessons: [
         {
+          id: 1,
           name: 'Bài 04: Route',
         },
         {
+          id: 1,
           name: 'Bài 05: Controller',
         },
       ],

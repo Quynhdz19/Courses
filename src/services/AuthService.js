@@ -1,18 +1,18 @@
-import BaseService from './BaseService';
+import BaseService from './BaseService'
 
 class AuthService extends BaseService {
     constructor() {
-        super();
+        super()
     }
 
     async signIn(credentials) {
         try {
-            const response = await this.post('auth/login', credentials);
-            return response.data;
+            const response = await this.post('auth/login', credentials)
+            return response.data 
         } catch (error) {
-            throw new Error(error.response?.data);
+            throw new Error(error.response?.data)
         }
     }
 }
 
-export default new AuthService();
+export default new AuthService()
