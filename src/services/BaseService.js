@@ -1,32 +1,93 @@
-import axios from 'axios';
+import axios from 'axios'
+import { jwtDecode } from 'jwt-decode'
+import { onLogOut } from 'src/redux/action'
+import store from 'src/redux/store'
+
+export const AxiosAuth = axios.create({
+    timeout: 10000,
+    baseURL: 'https://online-course-jimmy.onrender.com/api/v1/',
+})
+
+AxiosAuth.interceptors.request.use(
+    (config) => {
+        const { auth } = store.getState()
+        const { accessToken } = auth.account
+
+        if (accessToken) {
+            const currentDate = new Date()
+            const decodedAccessToken = jwtDecode(accessToken)
+
+            if (decodedAccessToken?.exp > currentDate.getTime() / 1000) {
+                config.headers['Authorization'] = `Bearer ${accessToken}`
+            } else {
+                store.dispatch(onLogOut())
+                throw new axios.Cancel('Token expired, logging out...')
+            }
+        }
+
+        return config
+    },
+    (error) => {
+        return Promise.reject(error)
+    }
+)
+
+AxiosAuth.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            store.dispatch(onLogOut())
+        }
+        return Promise.reject(error)
+    }
+)
 
 class BaseService {
     constructor() {
-        this.api = axios.create({
-            baseURL: 'https://online-course-jimmy.onrender.com/api/v1/',
-            timeout: 10000,
-        });
+        this.api = AxiosAuth
     }
 
-    get(endpoint, params) {
-        return this.api.get(endpoint, { params });
+    async get(endpoint, params) {
+        try {
+            const response = await this.api.get(endpoint, { params })
+            return response.data
+        } catch (error) {
+            this.handleError(error)
+        }
     }
 
-    post(endpoint, data) {
-        return this.api.post(endpoint, data);
+    async post(endpoint, data, config = {}) {
+        try {
+            const response = await this.api.post(endpoint, data, config)
+            return response.data
+        } catch (error) {
+            this.handleError(error)
+        }
     }
 
-    put(endpoint, data) {
-        return this.api.put(endpoint, data);
+    async put(endpoint, data) {
+        try {
+            const response = await this.api.put(endpoint, data)
+            return response.data
+        } catch (error) {
+            this.handleError(error)
+        }
     }
 
-    delete(endpoint) {
-        return this.api.delete(endpoint);
+    async delete(endpoint) {
+        try {
+            const response = await this.api.delete(endpoint)
+            return response.data
+        } catch (error) {
+            this.handleError(error)
+        }
     }
 
     handleError(error) {
-        console.error('API Error: ', error);
+        console.error('API Error: ', error)
     }
 }
 
-export default BaseService;
+export default BaseService
+
+
