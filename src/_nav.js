@@ -24,6 +24,12 @@ const _nav = [
     to: 'courses',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: 'Quản lý courses',
+    to: '/management/courses',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
 ]
 
 export default _nav
