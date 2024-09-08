@@ -14,9 +14,11 @@ import {
 } from '@coreui/react'
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
+import CourseService from 'src/services/CourseService'
 
 const CoursesList = () => {
   const navigate = useNavigate()
+  const [courses, setCourses] = useState([])
 
   const imgCarousel = [
     {
@@ -101,9 +103,19 @@ const CoursesList = () => {
     },
   ]
 
-  const handleClick = () => {
-    navigate('/course-detail')
+  const fetchCourses = async () => {
+    try {
+      const response = await CourseService.getCourses({})
+      console.log(response)
+    } catch (error) {
+      console.error('Error fetching courses:', error)
+    }
   }
+
+  // useEffect(() => {
+  //   fetchCourses()
+  // }, [])
+
   return (
     <div>
       <Carousel arrows infinite={false}>

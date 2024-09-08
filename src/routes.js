@@ -76,7 +76,7 @@ const routes = [
         element: <AuthWrapper isPublic={false} element={<CoursesDetail />} />,
       },
       {
-        path: '/courses/:id/lessons/:id',
+        path: '/courses/:courseId/lessons/:lessonId',
         element: <AuthWrapper isPublic={false} element={<VideoDetail />} />,
       },
     ],
