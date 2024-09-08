@@ -43,7 +43,7 @@ const CourseDetailModuleCollapse = (props) => {
               <CListGroupItem
                 key={index}
                 as="a"
-                href={`/courses-detail/${id}/lesson-learn/${lesson.id}`}
+                href={`/courses/${id}/lessons/${lesson.id}`}
               >
                 <div
                   style={{

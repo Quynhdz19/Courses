@@ -130,7 +130,7 @@ const CoursesList = () => {
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
         {tableExamples.map((item, index) => (
           // eslint-disable-next-line react/jsx-key
-          <CLink href={`courses-detail/${item.id}`}>
+          <CLink href={`courses/${item.id}`}>
             <CCardBody className="d-grid gap-2">
               <CCard key={index} className="m-lg-3">
                 <CCardImage size="md" src={item.image.src} status={item.image.status} />

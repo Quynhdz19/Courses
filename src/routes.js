@@ -56,11 +56,11 @@ const routes = [
         element: <AuthWrapper isPublic={false} requireAdmin={true} element={<CourseManager />} />,
       },
       {
-        path: '/management/courses/course/:id',
+        path: '/management/courses/:id',
         element: <AuthWrapper isPublic={false} requireAdmin={true} element={<ModulesManager />} />,
       },
       {
-        path: '/management/courses/course/:id/module/:id',
+        path: '/management/courses/:id/modules/:id',
         element: <AuthWrapper isPublic={false} requireAdmin={true} element={<LessonsManager />} />,
       },
       {
@@ -68,11 +68,11 @@ const routes = [
         element: <AuthWrapper isPublic={false} element={<CoursesList />} />,
       },
       {
-        path: '/courses-detail/:id',
+        path: '/courses/:id',
         element: <AuthWrapper isPublic={false} element={<CoursesDetail />} />,
       },
       {
-        path: '/courses-detail/:id/lesson-learn/:id',
+        path: '/courses/:id/lessons/:id',
         element: <AuthWrapper isPublic={false} element={<VideoDetail />} />,
       },
     ],

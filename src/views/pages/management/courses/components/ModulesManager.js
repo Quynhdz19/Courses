@@ -53,7 +53,7 @@ const ModulesManager = () => {
 
   const handleModuleClick = (moduleId) => {
     const selectedModule = modules.find(module => module.id === moduleId)
-    navigate(`/management/courses/course/${id}/module/${moduleId}`, { state: { module: selectedModule } })
+    navigate(`/management/courses/${id}/modules/${moduleId}`, { state: { module: selectedModule } })
   }
 
   const handleSelectAll = (e) => {
