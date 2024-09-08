@@ -2,9 +2,8 @@ import React from 'react'
 import CIcon from '@coreui/icons-react'
 import { cilDrop, cilSpeedometer } from '@coreui/icons'
 import { CNavItem, CNavTitle } from '@coreui/react'
-import { useSelector } from 'react-redux'
 
-const _nav = [
+const _navAdmin = [
   {
     component: CNavItem,
     name: 'Trang chủ',
@@ -17,14 +16,20 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Bài học',
+    name: 'Khoá học',
   },
   {
     component: CNavItem,
-    name: 'Courses đang học',
+    name: 'Review courses',
     to: 'courses',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Quản lý courses',
+    to: '/management/courses',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
 ]
 
-export default _nav
+export default _navAdmin

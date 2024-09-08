@@ -19,7 +19,13 @@ import { sygnet } from 'src/assets/brand/sygnet'
 // sidebar nav config
 import navigation from '../_nav'
 
+import navigationAdmin from '../_navAdmin'
+
 const AppSidebar = () => {
+  const auth = useSelector((state) => state.auth)
+  const role = auth?.account.role
+  const menu = role === 'STUDENT' ? navigation : navigationAdmin
+
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
@@ -46,7 +52,7 @@ const AppSidebar = () => {
           onClick={() => dispatch({ type: 'set', sidebarShow: false })}
         />
       </CSidebarHeader>
-      <AppSidebarNav items={navigation} />
+      <AppSidebarNav items={menu} />
       <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler
           onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
