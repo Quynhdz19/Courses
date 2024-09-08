@@ -14,20 +14,17 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilImage, cilPencil, cilDescription } from '@coreui/icons'
 
-const BaseInputCourse = ({ courseToEdit, onSubmit }) => {
+const BaseInputModule = ({ courseToEdit, onSubmit }) => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [image, setImage] = useState(null)
 
   useEffect(() => {
     if (courseToEdit) {
       setTitle(courseToEdit.title)
       setDescription(courseToEdit.description)
-      setImage(courseToEdit.image)
     } else {
       setTitle('')
       setDescription('')
-      setImage(null)
     }
   }, [courseToEdit])
 
@@ -35,7 +32,6 @@ const BaseInputCourse = ({ courseToEdit, onSubmit }) => {
     onSubmit({
       title,
       description,
-      image,
     })
   }
 
@@ -71,17 +67,9 @@ const BaseInputCourse = ({ courseToEdit, onSubmit }) => {
                     required
                   />
                 </CInputGroup>
-
-                <CInputGroup className="mb-3">
-                  <CInputGroupText>
-                    <CIcon icon={cilImage} />
-                  </CInputGroupText>
-                  <CFormInput type="file" onChange={(e) => setImage(e.target.files[0])} />
-                </CInputGroup>
-
                 <div className="d-grid">
                   <CButton color="primary" onClick={handleSubmit}>
-                    {courseToEdit ? 'Edit course' : 'Add course'}
+                    {courseToEdit ? 'Edit module' : 'Add module'}
                   </CButton>
                 </div>
               </CForm>
@@ -93,4 +81,4 @@ const BaseInputCourse = ({ courseToEdit, onSubmit }) => {
   )
 }
 
-export default BaseInputCourse
+export default BaseInputModule

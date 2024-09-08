@@ -26,7 +26,7 @@ import CourseService from 'src/services/CourseService'
 import BaseInputCourse from 'src/views/pages/management/courses/components/BaseInputCourse'
 import DeleteModal from 'src/views/pages/management/courses/components/DeleteModal'
 import avatar1 from 'src/assets/images/course.png'
-import "./index.scss"
+import './index.scss'
 
 const CoursesManager = () => {
   const navigate = useNavigate()
@@ -79,7 +79,7 @@ const CoursesManager = () => {
 
   const handleSelectCourse = (courseId) => {
     setSelectedCourses((prev) =>
-      prev.includes(courseId) ? prev.filter((id) => id !== courseId) : [...prev, courseId]
+      prev.includes(courseId) ? prev.filter((id) => id !== courseId) : [...prev, courseId],
     )
   }
 
@@ -116,7 +116,12 @@ const CoursesManager = () => {
         <CButton onClick={() => openModal('add')} color="primary" size="sm">
           Add course
         </CButton>
-        <CButton color="primary" size="sm" disabled={!isDeleteButtonEnabled} onClick={() => openModal('delete')}>
+        <CButton
+          color="primary"
+          size="sm"
+          disabled={!isDeleteButtonEnabled}
+          onClick={() => openModal('delete')}
+        >
           Delete
         </CButton>
       </CContainer>
@@ -124,7 +129,7 @@ const CoursesManager = () => {
       <CListGroup>
         <CTable hover responsive>
           <CTableHead color="primary">
-            <CTableRow className='textprimaryy'>
+            <CTableRow className="textprimaryy">
               <CTableHeaderCell>
                 <CFormCheck checked={isHeaderCheckboxChecked} onChange={handleSelectAll} />
               </CTableHeaderCell>
@@ -139,14 +144,24 @@ const CoursesManager = () => {
             {courses.map((course) => (
               <CTableRow key={course._id}>
                 <CTableDataCell>
-                  <CFormCheck checked={selectedCourses.includes(course._id)} onChange={() => handleSelectCourse(course._id)} />
+                  <CFormCheck
+                    checked={selectedCourses.includes(course._id)}
+                    onChange={() => handleSelectCourse(course._id)}
+                  />
                 </CTableDataCell>
                 <CTableDataCell>
-                  <CCardImage src={course.backgroundImg || avatar1} className="rounded" />
+                  <CCardImage
+                    src={
+                      'https://online-course-jimmy.onrender.com/' + course.backgroundImg || avatar1
+                    }
+                    className="rounded"
+                  />
                 </CTableDataCell>
-                <CTableDataCell className='text-course'>{course.title}</CTableDataCell>
-                <CTableDataCell className='text-course'>{course.description}</CTableDataCell>
-                <CTableDataCell className='text-course'>{course.modules?.length || 0}</CTableDataCell>
+                <CTableDataCell className="text-course">{course.title}</CTableDataCell>
+                <CTableDataCell className="text-course">{course.description}</CTableDataCell>
+                <CTableDataCell className="text-course">
+                  {course.modules?.length || 0}
+                </CTableDataCell>
                 <CTableDataCell className="text-center">
                   <CButton size="sm" className="me-2" onClick={() => navigate(`/management/courses/${course._id}`)}>
                     <CIcon icon={cilExternalLink} />
@@ -164,7 +179,12 @@ const CoursesManager = () => {
         </CTable>
       </CListGroup>
 
-      <CModal visible={modalState.add} onClose={closeModal} backdrop="static" className="modal-lg d-flex justify-content-center align-items-center">
+      <CModal
+        visible={modalState.add}
+        onClose={closeModal}
+        backdrop="static"
+        className="modal-lg d-flex justify-content-center align-items-center"
+      >
         <CModalHeader>
           <CModalTitle>Add course</CModalTitle>
         </CModalHeader>
@@ -173,7 +193,12 @@ const CoursesManager = () => {
         </CModalBody>
       </CModal>
 
-      <CModal visible={modalState.edit} onClose={closeModal} backdrop="static" className="modal-lg d-flex justify-content-center align-items-center">
+      <CModal
+        visible={modalState.edit}
+        onClose={closeModal}
+        backdrop="static"
+        className="modal-lg d-flex justify-content-center align-items-center"
+      >
         <CModalHeader>
           <CModalTitle>Edit course</CModalTitle>
         </CModalHeader>
@@ -195,5 +220,3 @@ const CoursesManager = () => {
 }
 
 export default CoursesManager
-
-

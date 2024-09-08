@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CFormInput,
@@ -23,22 +23,35 @@ import { cilSearch, cilPencil, cilTrash } from '@coreui/icons'
 import CourseService from 'src/services/CourseService'
 import BaseInputLesson from 'src/views/pages/management/courses/components/BaseInputLesson'
 import DeleteModal from 'src/views/pages/management/courses/components/DeleteModal'
-
+import { useParams } from 'react-router-dom'
 
 const LessonsManager = () => {
   const [searchTerm, setSearchTerm] = useState('')
+  const [moduleDetail, setModule] = useState([])
   const [selectedLessons, setSelectedLessons] = useState([])
   const [modalState, setModalState] = useState({ add: false, edit: false, delete: false })
   const [lessonToEdit, setLessonToEdit] = useState(null)
   const [lessonToDelete, setLessonToDelete] = useState(null)
 
-  const module = location.state?.module || []
-  const lessons = module.lessons || []
-
   const openModal = (type, lesson = null) => {
     setModalState({ add: type === 'add', edit: type === 'edit', delete: type === 'delete' })
     setLessonToEdit(lesson)
     setLessonToDelete(lesson)
+  }
+
+  const { courseId, moduleId } = useParams()
+
+  useEffect(() => {
+    fetchModule()
+  }, [])
+
+  const fetchModule = async () => {
+    try {
+      const response = await CourseService.getDetailModule(moduleId)
+      setModule(response.lessons)
+    } catch (error) {
+      console.error('Error fetching courses:', error)
+    }
   }
 
   const closeModal = () => {
@@ -48,22 +61,39 @@ const LessonsManager = () => {
   }
 
   const handleLessonAction = async (action, lessonData = null) => {
-    try {
-      if (action === 'add') {
-        await CourseService.addLesson('66ca2393134c4677a06f2b9b', lessonData)
+    const presigned = await CourseService.getUploadPresignedUrl({
+      filename: lessonData.video.name,
+      filetype: lessonData.video.type,
+    })
+
+    const response = await fetch(presigned.presignedUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': lessonData.video.type,
+      },
+      body: lessonData.video,
+    })
+    if (response.status === 200) {
+      lessonData.s3VideoKey = presigned.s3VideoKey
+      try {
+        if (action === 'add') {
+          await CourseService.addLesson(moduleId, {
+            title: lessonData.title,
+            description: lessonData.description,
+            s3VideoKey: presigned.s3VideoKey,
+          })
+        }
+      } catch (error) {
+        console.error(`Error ${action} lesson:`, error)
       }
-      fetchCourses()
-    } catch (error) {
-      console.error(`Error ${action} lesson:`, error)
+      fetchModule()
+      closeModal()
     }
-    closeModal()
   }
-
-
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      setSelectedLessons(lessons.map(lesson => lesson.id))
+      setSelectedLessons(lessons.map((lesson) => lesson.id))
     } else {
       setSelectedLessons([])
     }
@@ -71,18 +101,17 @@ const LessonsManager = () => {
 
   const handleSelectLesson = (lessonId) => {
     if (selectedLessons.includes(lessonId)) {
-      setSelectedLessons(selectedLessons.filter(id => id !== lessonId))
+      setSelectedLessons(selectedLessons.filter((id) => id !== lessonId))
     } else {
       setSelectedLessons([...selectedLessons, lessonId])
     }
   }
 
   const isDeleteButtonEnabled = selectedLessons.length > 0
-  const isHeaderCheckboxChecked = selectedLessons.length === lessons.length
+  const isHeaderCheckboxChecked = selectedLessons.length === moduleDetail.length
 
   return (
     <div>
-      <h1>{module.name}</h1>
       <CInputGroup className="mb-3">
         <CFormInput
           type="text"
@@ -117,29 +146,24 @@ const LessonsManager = () => {
           <CTableHead color="primary">
             <CTableRow>
               <CTableHeaderCell className="col-1">
-                <CFormCheck
-                  checked={isHeaderCheckboxChecked}
-                  onChange={handleSelectAll}
-                />
+                <CFormCheck checked={isHeaderCheckboxChecked} onChange={handleSelectAll} />
               </CTableHeaderCell>
               <CTableHeaderCell className="col-4">Name</CTableHeaderCell>
               <CTableHeaderCell className="col-4">Description</CTableHeaderCell>
-              <CTableHeaderCell className="text-center col-3">
-                Action
-              </CTableHeaderCell>
+              <CTableHeaderCell className="text-center col-3">Action</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {lessons.map((lesson) => (
-              <CTableRow key={lesson.id}>
+            {moduleDetail.map((lesson) => (
+              <CTableRow key={lesson._id}>
                 <CTableDataCell>
                   <CFormCheck
-                    checked={selectedLessons.includes(lesson.id)}
-                    onChange={() => handleSelectLesson(lesson.id)}
+                    checked={selectedLessons.includes(lesson._id)}
+                    onChange={() => handleSelectLesson(lesson._id)}
                   />
                 </CTableDataCell>
 
-                <CTableDataCell>{lesson.name}</CTableDataCell>
+                <CTableDataCell>{lesson.title}</CTableDataCell>
                 <CTableDataCell>{lesson.description}</CTableDataCell>
                 <CTableDataCell className="text-center">
                   <CButton size="sm" className="me-2">
@@ -155,7 +179,12 @@ const LessonsManager = () => {
         </CTable>
       </CListGroup>
 
-      <CModal visible={modalState.add} onClose={closeModal} backdrop="static" className="modal-lg d-flex justify-content-center align-items-center">
+      <CModal
+        visible={modalState.add}
+        onClose={closeModal}
+        backdrop="static"
+        className="modal-lg d-flex justify-content-center align-items-center"
+      >
         <CModalHeader>
           <CModalTitle>Add lesson</CModalTitle>
         </CModalHeader>
@@ -164,7 +193,12 @@ const LessonsManager = () => {
         </CModalBody>
       </CModal>
 
-      <CModal visible={modalState.edit} onClose={closeModal} backdrop="static" className="modal-lg d-flex justify-content-center align-items-center">
+      <CModal
+        visible={modalState.edit}
+        onClose={closeModal}
+        backdrop="static"
+        className="modal-lg d-flex justify-content-center align-items-center"
+      >
         <CModalHeader>
           <CModalTitle>Edit lesson</CModalTitle>
         </CModalHeader>
