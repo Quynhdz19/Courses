@@ -2,13 +2,31 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { CCard, CCardBody, CCardTitle } from '@coreui/react'
 import { Col, Row } from 'antd'
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import ReactHlsPlayer from 'react-hls-player'
 import CourseDetailModuleCollapse from 'src/views/pages/courses/detail/CollapseModule'
 import './videoVideoDetail.css'
+import CourseService from 'src/services/CourseService'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const VideoDetail = () => {
+  const { courseId } = useParams()
+  const [course, setCourse] = useState(null)
+
   const playerRef = useRef(null)
+
+  const fetchCourse = async () => {
+    try {
+      const response = await CourseService.getCourse(courseId)
+      console.log(response)
+    } catch (error) {
+      console.error('Error fetching courses:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchCourse()
+  }, [])
 
   const modules = [
     {
