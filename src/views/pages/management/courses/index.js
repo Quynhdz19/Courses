@@ -163,7 +163,11 @@ const CoursesManager = () => {
                   {course.modules?.length || 0}
                 </CTableDataCell>
                 <CTableDataCell className="text-center">
-                  <CButton size="sm" className="me-2" onClick={() => navigate(`/management/courses/${course._id}`)}>
+                  <CButton
+                    size="sm"
+                    className="me-2"
+                    onClick={() => navigate(`/management/courses/${course._id}`)}
+                  >
                     <CIcon icon={cilExternalLink} />
                   </CButton>
                   <CButton size="sm" className="me-2" onClick={() => openModal('edit', course)}>

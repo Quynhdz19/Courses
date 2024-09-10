@@ -1,6 +1,3 @@
-import React, { useEffect, useState, createRef } from 'react'
-import { Carousel } from 'antd'
-import { useNavigate } from 'react-router-dom'
 import {
   CAvatar,
   CCard,
@@ -10,11 +7,12 @@ import {
   CCardTitle,
   CImage,
   CLink,
-  CRow,
 } from '@coreui/react'
+import { Carousel } from 'antd'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
-import CourseService from 'src/services/CourseService'
 
 const CoursesList = () => {
   const navigate = useNavigate()
@@ -103,14 +101,14 @@ const CoursesList = () => {
     },
   ]
 
-  const fetchCourses = async () => {
-    try {
-      const response = await CourseService.getCourses({})
-      console.log(response)
-    } catch (error) {
-      console.error('Error fetching courses:', error)
-    }
-  }
+  // const fetchCourses = async () => {
+  //   try {
+  //     const response = await CourseService.getCourses({})
+  //     console.log(response)
+  //   } catch (error) {
+  //     console.error('Error fetching courses:', error)
+  //   }
+  // }
 
   // useEffect(() => {
   //   fetchCourses()
@@ -119,9 +117,9 @@ const CoursesList = () => {
   return (
     <div>
       <Carousel arrows infinite={false}>
-        {imgCarousel.map((item, index) => (
-          // eslint-disable-next-line react/jsx-key
+        {imgCarousel.map((item) => (
           <div
+            key={item.image}
             style={{
               width: '80%',
               display: 'flex',
@@ -129,10 +127,7 @@ const CoursesList = () => {
               height: 'auto',
             }}
           >
-            {/* eslint-disable-next-line react/no-unknown-property */}
-            <div key={index}>
-              <CImage src={item.image.src} status={item.image.status} />
-            </div>
+            <CImage src={item.image.src} status={item.image.status} />
           </div>
         ))}
       </Carousel>
@@ -140,11 +135,10 @@ const CoursesList = () => {
         <h2 className="p-lg-3">Danh Sách Khóa Học </h2>
       </CCardTitle>
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        {tableExamples.map((item, index) => (
-          // eslint-disable-next-line react/jsx-key
-          <CLink href={`courses/${item.id}`}>
+        {tableExamples.map((item) => (
+          <CLink key={item.id} href={`courses/${item.id}`}>
             <CCardBody className="d-grid gap-2">
-              <CCard key={index} className="m-lg-3">
+              <CCard className="m-lg-3">
                 <CCardImage size="md" src={item.image.src} status={item.image.status} />
                 <CCardTitle>
                   <span className="m-lg-2">{item.title}</span>
