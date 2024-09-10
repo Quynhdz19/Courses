@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { cilExternalLink, cilPencil, cilSearch, cilTrash } from '@coreui/icons'
+import { CIcon } from '@coreui/icons-react'
 import {
   CButton,
+  CCardImage,
   CContainer,
+  CFormCheck,
   CFormInput,
   CInputGroup,
   CInputGroupText,
@@ -13,19 +15,18 @@ import {
   CModalTitle,
   CTable,
   CTableBody,
-  CTableHead,
-  CTableRow,
-  CTableHeaderCell,
   CTableDataCell,
-  CFormCheck,
-  CCardImage,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
 } from '@coreui/react'
-import { CIcon } from '@coreui/icons-react'
-import { cilSearch, cilPencil, cilTrash, cilExternalLink } from '@coreui/icons'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import avatar1 from 'src/assets/images/course.png'
+import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 import CourseService from 'src/services/CourseService'
 import BaseInputCourse from 'src/views/pages/management/courses/components/BaseInputCourse'
 import DeleteModal from 'src/views/pages/management/courses/components/DeleteModal'
-import avatar1 from 'src/assets/images/course.png'
 import './index.scss'
 
 const CoursesManager = () => {
@@ -166,7 +167,9 @@ const CoursesManager = () => {
                   <CButton
                     size="sm"
                     className="me-2"
-                    onClick={() => navigate(`/management/courses/${course._id}`)}
+                    onClick={() =>
+                      navigate(bindRouteParams(RouteMap.CourseManagementPage, [course._id]))
+                    }
                   >
                     <CIcon icon={cilExternalLink} />
                   </CButton>

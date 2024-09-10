@@ -1,16 +1,16 @@
+import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-
-import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
+import { RouteMap } from 'src/routes/routeMap'
 import Dashboard from 'src/views/dashboard/Dashboard'
 import CoursesList from 'src/views/pages/courses'
 import CourseDetail from 'src/views/pages/courses/course/CourseDetail'
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/courses', name: 'Courses', element: CoursesList },
-  { path: '/course-detail', name: 'CourseDetail', element: CourseDetail },
+  { path: RouteMap.HomePage, exact: true, name: 'Home' },
+  { path: RouteMap.DashboardPage, name: 'Dashboard', element: Dashboard },
+  { path: RouteMap.CoursesListPage, name: 'Courses', element: CoursesList },
+  { path: RouteMap.CourseDetailPage, name: 'CourseDetail', element: CourseDetail },
   // { path: '/courses-video', name: 'CoursesList', element: VideoCourses },
 ]
 
@@ -42,7 +42,7 @@ const AppBreadcrumb = () => {
 
   return (
     <CBreadcrumb className="my-0">
-      <CBreadcrumbItem href="/">Home</CBreadcrumbItem>
+      <CBreadcrumbItem href={RouteMap.HomePage}>Home</CBreadcrumbItem>
       {breadcrumbs.map((breadcrumb, index) => {
         return (
           <CBreadcrumbItem

@@ -93,7 +93,7 @@ const LessonsManager = () => {
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      setSelectedLessons(lessons.map((lesson) => lesson.id))
+      setSelectedLessons(lessons.map((lesson) => lesson._id))
     } else {
       setSelectedLessons([])
     }

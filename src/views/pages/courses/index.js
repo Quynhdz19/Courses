@@ -13,6 +13,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
+import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 
 const CoursesList = () => {
   const navigate = useNavigate()
@@ -136,7 +137,7 @@ const CoursesList = () => {
       </CCardTitle>
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
         {tableExamples.map((item) => (
-          <CLink key={item.id} href={`courses/${item.id}`}>
+          <CLink key={item.id} href={bindRouteParams(RouteMap.CourseDetailPage, [item.id])}>
             <CCardBody className="d-grid gap-2">
               <CCard className="m-lg-3">
                 <CCardImage size="md" src={item.image.src} status={item.image.status} />

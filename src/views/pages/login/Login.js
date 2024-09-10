@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { cilLockLocked, cilUser } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 import {
   CButton,
   CCard,
@@ -14,8 +13,10 @@ import {
   CInputGroupText,
   CRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { RouteMap } from 'src/routes/routeMap'
 import { onSignIn } from '../../../redux/action'
 
 const Login = () => {
@@ -65,7 +66,7 @@ const Login = () => {
     try {
       const resultAction = await dispatch(onSignIn(account))
       if (onSignIn.fulfilled.match(resultAction)) {
-        navigate('/dashboard')
+        navigate(RouteMap.DashboardPage)
       } else {
         setErrMsg({ general: 'An error occurred. Username or password is incorrect!' })
       }
@@ -121,7 +122,7 @@ const Login = () => {
                       </CCol>
                       <CCol xs={6} className="text-right">
                         <CButton color="link" className="px-0">
-                          <Link to="/forgot-password">Forgot password?</Link>
+                          <Link to={RouteMap.ForgotPasswordPage}>Forgot password?</Link>
                         </CButton>
                       </CCol>
                     </CRow>
@@ -136,7 +137,7 @@ const Login = () => {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                       tempor incididunt ut labore et dolore magna aliqua.
                     </p>
-                    <Link to="/register">
+                    <Link to={RouteMap.RegisterPage}>
                       <CButton color="primary" className="mt-3" active tabIndex={-1}>
                         Register Now!
                       </CButton>

@@ -1,20 +1,13 @@
 import { cilMediaPlay, cilMinus, cilPlus } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import {
-  CCard,
-  CCardBody,
-  CCardTitle,
-  CCollapse,
-  CLink,
-  CListGroup,
-  CListGroupItem,
-} from '@coreui/react'
+import { CCard, CCardBody, CCardTitle, CCollapse, CListGroup, CListGroupItem } from '@coreui/react'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 const CourseDetailModuleCollapse = (props) => {
   const [visible, setVisible] = useState(false)
-  const { id } = useParams()
+  const { courseId } = useParams()
   return (
     <CCard
       className={'border-light'}
@@ -43,7 +36,7 @@ const CourseDetailModuleCollapse = (props) => {
               <CListGroupItem
                 key={index}
                 as="a"
-                href={`/courses/${id}/lessons/${lesson.id}`}
+                href={bindRouteParams(RouteMap.LessonPage, [courseId, lesson.id])}
               >
                 <div
                   style={{

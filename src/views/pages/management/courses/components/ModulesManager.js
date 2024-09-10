@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import { cilExternalLink, cilPencil, cilSearch, cilTrash } from '@coreui/icons'
+import { CIcon } from '@coreui/icons-react'
 import {
   CButton,
+  CContainer,
+  CFormCheck,
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CContainer,
-  CFormCheck,
   CListGroup,
-  CTable,
-  CTableHead,
-  CTableBody,
-  CTableRow,
-  CTableHeaderCell,
-  CTableDataCell,
+  CModal,
+  CModalBody,
   CModalHeader,
   CModalTitle,
-  CModalBody,
-  CModal,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
 } from '@coreui/react'
-import { CIcon } from '@coreui/icons-react'
-import { cilSearch, cilPencil, cilExternalLink, cilTrash } from '@coreui/icons'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 import CourseService from 'src/services/CourseService'
 import BaseInputModule from 'src/views/pages/management/courses/components/BaseInputModule'
 
@@ -30,7 +31,7 @@ const ModulesManager = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [modalState, setModalState] = useState({ add: false, edit: false, delete: false })
   const [selectedModules, setSelectedModules] = useState([])
-  const { id } = useParams()
+  const { courseId } = useParams()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const ModulesManager = () => {
 
   const fetchCourse = async () => {
     try {
-      const response = await CourseService.getCourse(id)
+      const response = await CourseService.getCourse(courseId)
       setModule(response.modules)
       setNameCourse(response.title)
     } catch (error) {
@@ -48,8 +49,8 @@ const ModulesManager = () => {
   }
 
   const handleModuleClick = (moduleId) => {
-    const selectedModule = modules.find((module) => module.id === moduleId)
-    navigate(`/management/courses/${id}/modules/${moduleId}`, {
+    const selectedModule = modules.find((module) => module._id === moduleId)
+    navigate(bindRouteParams(RouteMap.LessonsManagementPage, [courseId, moduleId]), {
       state: { module: selectedModule },
     })
   }
