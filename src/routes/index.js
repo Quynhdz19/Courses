@@ -5,12 +5,14 @@ import { Navigate } from 'react-router-dom'
 import DefaultLayout from 'src/layout/DefaultLayout'
 import { RouteMap } from './routeMap'
 
+const LoginPage = lazy(() => import('src/views/pages/auth/LoginPage'))
+const RegisterPage = lazy(() => import('src/views/pages/auth/RegisterPage'))
+
+const CoursesListPage = lazy(() => import('src/views/pages/courses/CoursesListPage'))
+const CourseDetailPage = lazy(() => import('src/views/pages/courses/CourseDetailPage'))
+const LessonPage = lazy(() => import('src/views/pages/courses/LessonPage'))
+
 const Dashboard = lazy(() => import('src/views/dashboard/Dashboard'))
-const CoursesList = lazy(() => import('src/views/pages/courses'))
-const CoursesDetail = lazy(() => import('src/views/pages/courses/course/CourseDetail'))
-const VideoDetail = lazy(() => import('src/views/pages/courses/detail/videoVideoDetail'))
-const Login = lazy(() => import('src/views/pages/login/Login'))
-const Register = lazy(() => import('src/views/pages/register/Register'))
 const Page404 = lazy(() => import('src/views/pages/page404/Page404'))
 const CourseManager = lazy(() => import('src/views/pages/management/courses'))
 const ModulesManager = lazy(
@@ -42,11 +44,11 @@ AuthGuard.propTypes = {
 const routes = [
   {
     path: RouteMap.LoginPage,
-    element: <Login />,
+    element: <LoginPage />,
   },
   {
     path: RouteMap.RegisterPage,
-    element: <Register />,
+    element: <RegisterPage />,
   },
   {
     element: <DefaultLayout />,
@@ -61,15 +63,15 @@ const routes = [
       },
       {
         path: RouteMap.CoursesListPage,
-        element: <AuthGuard element={<CoursesList />} />,
+        element: <AuthGuard element={<CoursesListPage />} />,
       },
       {
         path: RouteMap.CourseDetailPage,
-        element: <AuthGuard element={<CoursesDetail />} />,
+        element: <AuthGuard element={<CourseDetailPage />} />,
       },
       {
         path: RouteMap.LessonPage,
-        element: <AuthGuard element={<VideoDetail />} />,
+        element: <AuthGuard element={<LessonPage />} />,
       },
       {
         path: RouteMap.CoursesManagementPage,

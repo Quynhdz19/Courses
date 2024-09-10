@@ -19,7 +19,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { RouteMap } from 'src/routes/routeMap'
 import { onSignIn } from '../../../redux/action'
 
-const Login = () => {
+const LoginPage = () => {
   const [account, setAccount] = useState({
     username: '',
     password: '',
@@ -153,4 +153,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default LoginPage

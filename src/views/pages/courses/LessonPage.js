@@ -2,14 +2,14 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { CCard, CCardBody, CCardTitle } from '@coreui/react'
 import { Col, Row } from 'antd'
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactHlsPlayer from 'react-hls-player'
-import CourseDetailModuleCollapse from 'src/views/pages/courses/detail/CollapseModule'
-import './videoVideoDetail.css'
+import { useParams } from 'react-router-dom'
 import CourseService from 'src/services/CourseService'
-import { useNavigate, useParams } from 'react-router-dom'
+import CourseDetailModuleCollapse from '../../components/courses/detail/CollapseModule'
+import './LessonPage.css'
 
-const VideoDetail = () => {
+const LessonPage = () => {
   const { courseId } = useParams()
   const [course, setCourse] = useState(null)
 
@@ -153,4 +153,4 @@ const VideoDetail = () => {
   )
 }
 
-export default VideoDetail
+export default LessonPage

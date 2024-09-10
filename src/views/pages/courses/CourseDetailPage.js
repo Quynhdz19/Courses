@@ -1,8 +1,8 @@
 import React from 'react'
-import CourseDetailDescriptionCard from '../detail/CardDescription'
-import CourseDetailModulesCard from '../detail/CardModules'
+import CourseDetailDescriptionCard from '../../components/courses/detail/CardDescription'
+import CourseDetailModulesCard from '../../components/courses/detail/CardModules'
 
-const CourseDetail = () => {
+const CourseDetailPage = () => {
   const description = {
     header: 'Mô Tả',
     content:
@@ -23,4 +23,4 @@ const CourseDetail = () => {
   )
 }
 
-export default CourseDetail
+export default CourseDetailPage

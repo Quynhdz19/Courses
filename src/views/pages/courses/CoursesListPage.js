@@ -15,7 +15,7 @@ import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 
-const CoursesList = () => {
+const CoursesListPage = () => {
   const navigate = useNavigate()
   const [courses, setCourses] = useState([])
 
@@ -170,4 +170,4 @@ const CoursesList = () => {
   )
 }
 
-export default CoursesList
+export default CoursesListPage
