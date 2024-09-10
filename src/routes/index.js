@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { lazy } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
-import DefaultLayout from 'src/layout/DefaultLayout'
+import DefaultLayout from 'src/views/layout/DefaultLayout'
 import { RouteMap } from './routeMap'
 
 const LoginPage = lazy(() => import('src/views/pages/auth/LoginPage'))

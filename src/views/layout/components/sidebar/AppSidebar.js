@@ -11,8 +11,8 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logo } from 'src/assets/brand/logo'
 import { sygnet } from 'src/assets/brand/sygnet'
-import navigation from '../_nav'
 import { RouteMap } from 'src/routes/routeMap'
+import navigation from './_nav'
 import { AppSidebarNav } from './AppSidebarNav'
 
 const AppSidebar = () => {

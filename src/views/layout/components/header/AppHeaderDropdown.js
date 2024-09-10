@@ -1,4 +1,15 @@
-import React from 'react'
+import {
+  cilBell,
+  cilCommentSquare,
+  cilCreditCard,
+  cilEnvelopeOpen,
+  cilFile,
+  cilLockLocked,
+  cilSettings,
+  cilTask,
+  cilUser,
+} from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 import {
   CAvatar,
   CBadge,
@@ -9,20 +20,8 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
-import {
-  cilBell,
-  cilCreditCard,
-  cilCommentSquare,
-  cilEnvelopeOpen,
-  cilFile,
-  cilLockLocked,
-  cilSettings,
-  cilTask,
-  cilUser,
-} from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import React from 'react'
+import avatar8 from 'src/assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
   return (

@@ -25,8 +25,8 @@ import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { RouteMap } from 'src/routes/routeMap'
-import { AppHeaderDropdown } from './header/index'
-import { AppBreadcrumb } from './index'
+import AppBreadcrumb from './AppBreadcrumb'
+import AppHeaderDropdown from './AppHeaderDropdown'
 
 const AppHeader = () => {
   const headerRef = useRef()

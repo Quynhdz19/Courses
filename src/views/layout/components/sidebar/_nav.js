@@ -2,7 +2,7 @@ import { cilDrop, cilSpeedometer } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CNavItem, CNavTitle } from '@coreui/react'
 import React from 'react'
-import { RouteMap } from './routes/routeMap'
+import { RouteMap } from 'src/routes/routeMap'
 
 const _nav = [
   {
