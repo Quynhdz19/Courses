@@ -33,10 +33,10 @@ const AuthGuard = (props) => {
 
   const auth = useSelector((state) => state.auth)
 
-  // if (!isPublic && !auth.isLoggedIn) return <Navigate to={RouteMap.LoginPage} replace />
+  if (!isPublic && !auth.isLoggedIn) return <Navigate to={RouteMap.LoginPage} replace />
 
-  // if (requireAdmin && auth.account.role !== 'ADMIN')
-  //   return <Navigate to={RouteMap.HomePage} replace />
+  if (requireAdmin && auth.account.role !== 'ADMIN')
+    return <Navigate to={RouteMap.HomePage} replace />
 
   return props.element
 }
