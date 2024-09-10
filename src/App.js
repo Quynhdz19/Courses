@@ -2,9 +2,8 @@ import { CSpinner, useColorModes } from '@coreui/react'
 import React, { Suspense, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './css/common.css'
+import 'src/assets/scss/index.scss'
 import routes from './routes'
-import './scss/style.scss'
 
 const router = createBrowserRouter(routes)
 
