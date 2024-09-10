@@ -22,8 +22,10 @@ const CourseLessonsManagementPage = lazy(
   () => import('src/views/pages/courses-management/CourseLessonsManagementPage'),
 )
 
+const NotFoundPage = lazy(() => import('src/views/pages/errors/NotFoundPage'))
+const ErrorPage = lazy(() => import('src/views/pages/errors/ErrorPage'))
+
 const Dashboard = lazy(() => import('src/views/dashboard/Dashboard'))
-const Page404 = lazy(() => import('src/views/pages/page404/Page404'))
 
 const AuthGuard = (props) => {
   const { isPublic = false } = props
@@ -92,7 +94,11 @@ const routes = [
   },
   {
     path: RouteMap.NotFoundPage,
-    element: <Page404 />,
+    element: <NotFoundPage />,
+  },
+  {
+    path: RouteMap.ErrorPage,
+    element: <ErrorPage />,
   },
   {
     path: '*',

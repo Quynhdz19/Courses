@@ -15,6 +15,7 @@ export const RouteMap = {
   CourseLessonsManagementPage: '/a/courses/:courseId/modules/:moduleId',
 
   NotFoundPage: 'not-found',
+  ErrorPage: 'error',
 }
 
 /**
