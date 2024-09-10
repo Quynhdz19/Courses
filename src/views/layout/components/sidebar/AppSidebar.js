@@ -13,9 +13,14 @@ import { logo } from 'src/assets/brand/logo'
 import { sygnet } from 'src/assets/brand/sygnet'
 import { RouteMap } from 'src/routes/routeMap'
 import navigation from './_nav'
+import navigationAdmin from './_navAdmin'
 import { AppSidebarNav } from './AppSidebarNav'
 
 const AppSidebar = () => {
+  const auth = useSelector((state) => state.auth)
+  const role = auth?.account.role
+  const menu = role === 'STUDENT' ? navigation : navigationAdmin
+
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
@@ -42,7 +47,7 @@ const AppSidebar = () => {
           onClick={() => dispatch({ type: 'set', sidebarShow: false })}
         />
       </CSidebarHeader>
-      <AppSidebarNav items={navigation} />
+      <AppSidebarNav items={menu} />
       <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler
           onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}

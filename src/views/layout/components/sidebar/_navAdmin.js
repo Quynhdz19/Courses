@@ -4,11 +4,11 @@ import { CNavItem, CNavTitle } from '@coreui/react'
 import React from 'react'
 import { RouteMap } from 'src/routes/routeMap'
 
-const _nav = [
+const _navAdmin = [
   {
     component: CNavItem,
     name: 'Trang chủ',
-    to: RouteMap.DashboardPage,
+    to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     badge: {
       color: 'info',
@@ -17,14 +17,20 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Bài học',
+    name: 'Khoá học',
   },
   {
     component: CNavItem,
-    name: 'Courses đang học',
+    name: 'Review courses',
     to: RouteMap.CoursesListPage,
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Quản lý courses',
+    to: RouteMap.CoursesManagementPage,
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
 ]
 
-export default _nav
+export default _navAdmin
