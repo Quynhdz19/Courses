@@ -23,9 +23,9 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 import CourseService from 'src/services/CourseService'
-import BaseInputModule from 'src/views/pages/management/courses/components/BaseInputModule'
+import BaseInputModule from '../../components/courses-management/modules/BaseInputModule'
 
-const ModulesManager = () => {
+const CourseModulesManagementPage = () => {
   const [modules, setModule] = useState([])
   const [nameCourse, setNameCourse] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -50,7 +50,7 @@ const ModulesManager = () => {
 
   const handleModuleClick = (moduleId) => {
     const selectedModule = modules.find((module) => module._id === moduleId)
-    navigate(bindRouteParams(RouteMap.LessonsManagementPage, [courseId, moduleId]), {
+    navigate(bindRouteParams(RouteMap.CourseLessonsManagementPage, [courseId, moduleId]), {
       state: { module: selectedModule },
     })
   }
@@ -179,4 +179,4 @@ const ModulesManager = () => {
   )
 }
 
-export default ModulesManager
+export default CourseModulesManagementPage

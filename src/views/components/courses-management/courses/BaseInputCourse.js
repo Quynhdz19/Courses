@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import { cilDescription, cilImage, cilPencil } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 import {
   CButton,
   CCard,
@@ -11,8 +12,7 @@ import {
   CInputGroupText,
   CRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilImage, cilPencil, cilDescription } from '@coreui/icons'
+import React, { useEffect, useState } from 'react'
 
 const BaseInputCourse = ({ courseToEdit, onSubmit }) => {
   const [title, setTitle] = useState('')

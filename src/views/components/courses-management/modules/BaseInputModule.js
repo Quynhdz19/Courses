@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import { cilDescription, cilPencil } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 import {
   CButton,
   CCard,
@@ -11,34 +12,28 @@ import {
   CInputGroupText,
   CRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilMovie, cilPencil, cilDescription } from '@coreui/icons'
+import React, { useEffect, useState } from 'react'
 
-const BaseInputLesson = ({ lessonToEdit, onSubmit }) => {
+const BaseInputModule = ({ courseToEdit, onSubmit }) => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [video, setVideo] = useState(null)
 
   useEffect(() => {
-    if (lessonToEdit) {
-      setTitle(lessonToEdit.title)
-      setDescription(lessonToEdit.description)
-      setVideo(lessonToEdit.video)
+    if (courseToEdit) {
+      setTitle(courseToEdit.title)
+      setDescription(courseToEdit.description)
     } else {
       setTitle('')
       setDescription('')
-      setVideo(null)
     }
-  }, [lessonToEdit])
+  }, [courseToEdit])
 
   const handleSubmit = () => {
     onSubmit({
       title,
       description,
-      video,
     })
   }
-
 
   return (
     <CContainer>
@@ -72,17 +67,9 @@ const BaseInputLesson = ({ lessonToEdit, onSubmit }) => {
                     required
                   />
                 </CInputGroup>
-
-                <CInputGroup className="mb-3">
-                  <CInputGroupText>
-                    <CIcon icon={cilMovie} />
-                  </CInputGroupText>
-                  <CFormInput type="file" onChange={(e) => setVideo(e.target.files[0])} />
-                </CInputGroup>
-
                 <div className="d-grid">
                   <CButton color="primary" onClick={handleSubmit}>
-                    {lessonToEdit ? 'Update lesson' : 'Add lesson'}
+                    {courseToEdit ? 'Edit module' : 'Add module'}
                   </CButton>
                 </div>
               </CForm>
@@ -94,4 +81,4 @@ const BaseInputLesson = ({ lessonToEdit, onSubmit }) => {
   )
 }
 
-export default BaseInputLesson
+export default BaseInputModule

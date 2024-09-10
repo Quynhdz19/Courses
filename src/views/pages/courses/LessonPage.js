@@ -7,7 +7,7 @@ import ReactHlsPlayer from 'react-hls-player'
 import { useParams } from 'react-router-dom'
 import CourseService from 'src/services/CourseService'
 import CourseDetailModuleCollapse from '../../components/courses/detail/CollapseModule'
-import './LessonPage.css'
+import './LessonPage.scss'
 
 const LessonPage = () => {
   const { courseId } = useParams()

@@ -12,26 +12,30 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilImage, cilPencil, cilDescription } from '@coreui/icons'
+import { cilMovie, cilPencil, cilDescription } from '@coreui/icons'
 
-const BaseInputModule = ({ courseToEdit, onSubmit }) => {
+const BaseInputLesson = ({ lessonToEdit, onSubmit }) => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [video, setVideo] = useState(null)
 
   useEffect(() => {
-    if (courseToEdit) {
-      setTitle(courseToEdit.title)
-      setDescription(courseToEdit.description)
+    if (lessonToEdit) {
+      setTitle(lessonToEdit.title)
+      setDescription(lessonToEdit.description)
+      setVideo(lessonToEdit.video)
     } else {
       setTitle('')
       setDescription('')
+      setVideo(null)
     }
-  }, [courseToEdit])
+  }, [lessonToEdit])
 
   const handleSubmit = () => {
     onSubmit({
       title,
       description,
+      video,
     })
   }
 
@@ -67,9 +71,17 @@ const BaseInputModule = ({ courseToEdit, onSubmit }) => {
                     required
                   />
                 </CInputGroup>
+
+                <CInputGroup className="mb-3">
+                  <CInputGroupText>
+                    <CIcon icon={cilMovie} />
+                  </CInputGroupText>
+                  <CFormInput type="file" onChange={(e) => setVideo(e.target.files[0])} />
+                </CInputGroup>
+
                 <div className="d-grid">
                   <CButton color="primary" onClick={handleSubmit}>
-                    {courseToEdit ? 'Edit module' : 'Add module'}
+                    {lessonToEdit ? 'Update lesson' : 'Add lesson'}
                   </CButton>
                 </div>
               </CForm>
@@ -81,4 +93,4 @@ const BaseInputModule = ({ courseToEdit, onSubmit }) => {
   )
 }
 
-export default BaseInputModule
+export default BaseInputLesson

@@ -12,15 +12,18 @@ const CoursesListPage = lazy(() => import('src/views/pages/courses/CoursesListPa
 const CourseDetailPage = lazy(() => import('src/views/pages/courses/CourseDetailPage'))
 const LessonPage = lazy(() => import('src/views/pages/courses/LessonPage'))
 
+const CoursesManagementPage = lazy(
+  () => import('src/views/pages/courses-management/CoursesManagementPage'),
+)
+const CourseModulesManagementPage = lazy(
+  () => import('src/views/pages/courses-management/CourseModulesManagementPage'),
+)
+const CourseLessonsManagementPage = lazy(
+  () => import('src/views/pages/courses-management/CourseLessonsManagementPage'),
+)
+
 const Dashboard = lazy(() => import('src/views/dashboard/Dashboard'))
 const Page404 = lazy(() => import('src/views/pages/page404/Page404'))
-const CourseManager = lazy(() => import('src/views/pages/management/courses'))
-const ModulesManager = lazy(
-  () => import('src/views/pages/management/courses/components/ModulesManager'),
-)
-const LessonsManager = lazy(
-  () => import('src/views/pages/management/courses/components/LessonsManager'),
-)
 
 const AuthGuard = (props) => {
   const { isPublic = false } = props
@@ -75,15 +78,15 @@ const routes = [
       },
       {
         path: RouteMap.CoursesManagementPage,
-        element: <AuthGuard requireAdmin={true} element={<CourseManager />} />,
+        element: <AuthGuard requireAdmin={true} element={<CoursesManagementPage />} />,
       },
       {
-        path: RouteMap.CourseManagementPage,
-        element: <AuthGuard requireAdmin={true} element={<ModulesManager />} />,
+        path: RouteMap.CourseModulesManagementPage,
+        element: <AuthGuard requireAdmin={true} element={<CourseModulesManagementPage />} />,
       },
       {
-        path: RouteMap.LessonsManagementPage,
-        element: <AuthGuard requireAdmin={true} element={<LessonsManager />} />,
+        path: RouteMap.CourseLessonsManagementPage,
+        element: <AuthGuard requireAdmin={true} element={<CourseLessonsManagementPage />} />,
       },
     ],
   },

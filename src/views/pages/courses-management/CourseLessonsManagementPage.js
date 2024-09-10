@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import { cilPencil, cilSearch, cilTrash } from '@coreui/icons'
+import { CIcon } from '@coreui/icons-react'
 import {
   CButton,
+  CContainer,
+  CFormCheck,
   CFormInput,
   CInputGroup,
   CInputGroupText,
+  CListGroup,
   CModal,
   CModalBody,
   CModalHeader,
   CModalTitle,
-  CContainer,
-  CFormCheck,
-  CListGroup,
   CTable,
-  CTableHead,
   CTableBody,
-  CTableRow,
-  CTableHeaderCell,
   CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
 } from '@coreui/react'
-import { CIcon } from '@coreui/icons-react'
-import { cilSearch, cilPencil, cilTrash } from '@coreui/icons'
-import CourseService from 'src/services/CourseService'
-import BaseInputLesson from 'src/views/pages/management/courses/components/BaseInputLesson'
-import DeleteModal from 'src/views/pages/management/courses/components/DeleteModal'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import CourseService from 'src/services/CourseService'
+import DeleteModal from '../../components/courses-management/courses/DeleteModal'
+import BaseInputLesson from '../../components/courses-management/lessons/BaseInputLesson'
 
-const LessonsManager = () => {
+const CourseLessonsManagementPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [moduleDetail, setModule] = useState([])
   const [selectedLessons, setSelectedLessons] = useState([])
@@ -128,9 +128,6 @@ const LessonsManager = () => {
         <CButton onClick={() => openModal('add')} color="primary" size="sm">
           Add lesson
         </CButton>
-        <CButton color="primary" size="sm">
-          Edit module
-        </CButton>
         <CButton
           color="danger"
           size="sm"
@@ -219,4 +216,4 @@ const LessonsManager = () => {
   )
 }
 
-export default LessonsManager
+export default CourseLessonsManagementPage

@@ -1,6 +1,6 @@
-import React from 'react'
+import { CButton, CModal, CModalBody, CModalFooter } from '@coreui/react'
 import PropTypes from 'prop-types'
-import { CModal, CModalHeader, CModalBody, CModalFooter, CButton } from '@coreui/react'
+import React from 'react'
 
 const DeleteModal = ({ visible, onClose, onConfirm }) => {
   return (

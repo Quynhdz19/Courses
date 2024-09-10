@@ -25,11 +25,11 @@ import { useNavigate } from 'react-router-dom'
 import avatar1 from 'src/assets/images/course.png'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 import CourseService from 'src/services/CourseService'
-import BaseInputCourse from 'src/views/pages/management/courses/components/BaseInputCourse'
-import DeleteModal from 'src/views/pages/management/courses/components/DeleteModal'
-import './index.scss'
+import BaseInputCourse from '../../components/courses-management/courses/BaseInputCourse'
+import DeleteModal from '../../components/courses-management/courses/DeleteModal'
+import './CoursesManagementPage.scss'
 
-const CoursesManager = () => {
+const CoursesManagementPage = () => {
   const navigate = useNavigate()
   const [courses, setCourses] = useState([])
   const [modalState, setModalState] = useState({ add: false, edit: false, delete: false })
@@ -168,7 +168,7 @@ const CoursesManager = () => {
                     size="sm"
                     className="me-2"
                     onClick={() =>
-                      navigate(bindRouteParams(RouteMap.CourseManagementPage, [course._id]))
+                      navigate(bindRouteParams(RouteMap.CourseModulesManagementPage, [course._id]))
                     }
                   >
                     <CIcon icon={cilExternalLink} />
@@ -226,4 +226,4 @@ const CoursesManager = () => {
   )
 }
 
-export default CoursesManager
+export default CoursesManagementPage
