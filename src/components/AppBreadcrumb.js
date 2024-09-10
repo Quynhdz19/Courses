@@ -2,13 +2,13 @@ import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import { RouteMap } from 'src/routes/routeMap'
-import Dashboard from 'src/views/dashboard/Dashboard'
-import CoursesListPage from 'src/views/pages/courses/CoursesListPage'
 import CourseDetailPage from 'src/views/pages/courses/CourseDetailPage'
+import CoursesListPage from 'src/views/pages/courses/CoursesListPage'
+import DashboardPage from 'src/views/pages/dashboard/DashboardPage'
 
 const routes = [
   { path: RouteMap.HomePage, exact: true, name: 'Home' },
-  { path: RouteMap.DashboardPage, name: 'Dashboard', element: Dashboard },
+  { path: RouteMap.DashboardPage, name: 'Dashboard', element: DashboardPage },
   { path: RouteMap.CoursesListPage, name: 'Courses', element: CoursesListPage },
   { path: RouteMap.CourseDetailPage, name: 'CourseDetail', element: CourseDetailPage },
   // { path: '/courses-video', name: 'CoursesList', element: VideoCourses },

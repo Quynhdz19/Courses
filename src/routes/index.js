@@ -8,6 +8,8 @@ import { RouteMap } from './routeMap'
 const LoginPage = lazy(() => import('src/views/pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('src/views/pages/auth/RegisterPage'))
 
+const DashboardPage = lazy(() => import('src/views/pages/dashboard/DashboardPage'))
+
 const CoursesListPage = lazy(() => import('src/views/pages/courses/CoursesListPage'))
 const CourseDetailPage = lazy(() => import('src/views/pages/courses/CourseDetailPage'))
 const LessonPage = lazy(() => import('src/views/pages/courses/LessonPage'))
@@ -24,8 +26,6 @@ const CourseLessonsManagementPage = lazy(
 
 const NotFoundPage = lazy(() => import('src/views/pages/errors/NotFoundPage'))
 const ErrorPage = lazy(() => import('src/views/pages/errors/ErrorPage'))
-
-const Dashboard = lazy(() => import('src/views/dashboard/Dashboard'))
 
 const AuthGuard = (props) => {
   const { isPublic = false } = props
@@ -60,11 +60,11 @@ const routes = [
     children: [
       {
         path: RouteMap.HomePage,
-        element: <AuthGuard element={<Dashboard />} />,
+        element: <AuthGuard element={<DashboardPage />} />,
       },
       {
         path: RouteMap.DashboardPage,
-        element: <AuthGuard element={<Dashboard />} />,
+        element: <AuthGuard element={<DashboardPage />} />,
       },
       {
         path: RouteMap.CoursesListPage,
