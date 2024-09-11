@@ -10,108 +10,35 @@ import CourseDetailModuleCollapse from '../../components/courses/detail/Collapse
 import './LessonPage.scss'
 
 const LessonPage = () => {
-  const { courseId } = useParams()
-  const [course, setCourse] = useState(null)
+  const { courseId, lessonId } = useParams()
+  const [course, setCourse] = useState({})
+  const [lesson, setLesson] = useState({})
 
   const playerRef = useRef(null)
 
   const fetchCourse = async () => {
     try {
       const response = await CourseService.getCourse(courseId)
-      console.log(response)
+      setCourse(response)
+      setLesson(findCurrentLessonInModules(response.modules, lessonId))
     } catch (error) {
       console.error('Error fetching courses:', error)
     }
+  }
+
+  const findCurrentLessonInModules = (modules, lessonId) => {
+    return modules
+      .reduce((flattenedArray, module) => flattenedArray.concat(module.lessons), [])
+      .find((lesson) => lesson._id === lessonId)
   }
 
   useEffect(() => {
     fetchCourse()
   }, [])
 
-  const modules = [
-    {
-      name: 'Module 01: Nhập Môn',
-      lessons: [
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-      ],
-    },
-    {
-      name: 'Module 01: Nhập Môn',
-      lessons: [
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-      ],
-    },
-    {
-      name: 'Module 01: Nhập Môn',
-      lessons: [
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-      ],
-    },
-  ]
-
   return (
     <div className="video-card">
+      <h3>Bài học: {lesson.title}</h3>
       <Row gutter={16}>
         <Col span={16}>
           <ReactHlsPlayer
@@ -142,8 +69,8 @@ const LessonPage = () => {
               <CCardTitle>
                 <strong>Bài Học</strong>
               </CCardTitle>
-              {modules.map((module, index) => (
-                <CourseDetailModuleCollapse key={index} module={module} />
+              {course.modules?.map((module) => (
+                <CourseDetailModuleCollapse key={module._id} module={module} />
               ))}
             </CCardBody>
           </CCard>

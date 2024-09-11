@@ -9,15 +9,12 @@ import {
   CLink,
 } from '@coreui/react'
 import { Carousel } from 'antd'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import avatar1 from 'src/assets/images/avatars/1.jpg'
+import React, { useEffect, useState } from 'react'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 import CourseService from 'src/services/CourseService'
 
 const CoursesListPage = () => {
-  const navigate = useNavigate()
   const [courses, setCourses] = useState([])
 
   const imgCarousel = [
@@ -46,75 +43,19 @@ const CoursesListPage = () => {
       },
     },
   ]
-  const tableExamples = [
-    {
-      id: 10,
-      image: { src: avatar1, status: 'success' },
-      title: ' Khóa học thoát giàu làm nghèo',
-      price: '100000',
-      avtar: { src: avatar2, status: 'success' },
-      name: 'TDZ',
-      lecture: '69 bài học',
-    },
-    {
-      id: 11,
-      image: { src: avatar1, status: 'success' },
-      title: ' Khóa học thoát giàu làm nghèo',
-      price: '100000',
-      avtar: { src: avatar2, status: 'success' },
-      name: 'TDZ',
-      lecture: '69 bài học',
-    },
-    {
-      id: 12,
-      image: { src: avatar1, status: 'success' },
-      title: ' Khóa học thoát giàu làm nghèo',
-      price: '100000',
-      avtar: { src: avatar2, status: 'success' },
-      name: 'TDZ',
-      lecture: '69 bài học',
-    },
-    {
-      id: 12,
-      image: { src: avatar1, status: 'success' },
-      title: ' Khóa học thoát giàu làm nghèo',
-      price: '100000',
-      avtar: { src: avatar2, status: 'success' },
-      name: 'TDZ',
-      lecture: '69 bài học',
-    },
-    {
-      id: 12,
-      image: { src: avatar1, status: 'success' },
-      title: ' Khóa học thoát giàu làm nghèo',
-      price: '100000',
-      avtar: { src: avatar2, status: 'success' },
-      name: 'TDZ',
-      lecture: '69 bài học',
-    },
-    {
-      id: 12,
-      image: { src: avatar1, status: 'success' },
-      title: ' Khóa học thoát giàu làm nghèo',
-      price: '100000',
-      avtar: { src: avatar2, status: 'success' },
-      name: 'TDZ',
-      lecture: '69 bài học',
-    },
-  ]
 
-  // const fetchCourses = async () => {
-  //   try {
-  //     const response = await CourseService.getCourses({})
-  //     console.log(response)
-  //   } catch (error) {
-  //     console.error('Error fetching courses:', error)
-  //   }
-  // }
+  const fetchCourses = async () => {
+    try {
+      const response = await CourseService.getCourses({})
+      setCourses(response)
+    } catch (error) {
+      console.error('Error fetching courses:', error)
+    }
+  }
 
-  // useEffect(() => {
-  //   fetchCourses()
-  // }, [])
+  useEffect(() => {
+    fetchCourses()
+  }, [])
 
   return (
     <div>
@@ -134,33 +75,37 @@ const CoursesListPage = () => {
         ))}
       </Carousel>
       <CCardTitle style={{ display: 'flex', justifyContent: 'left' }}>
-        <h2 className="p-lg-3">Danh Sách Khóa Học </h2>
+        <span className="p-lg-3">Danh Sách Khóa Học </span>
       </CCardTitle>
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        {tableExamples.map((item) => (
-          <CLink key={item.id} href={bindRouteParams(RouteMap.CourseDetailPage, [item.id])}>
+        {courses.map((course) => (
+          <CLink key={course._id} href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}>
             <CCardBody className="d-grid gap-2">
               <CCard className="m-lg-3">
-                <CCardImage size="md" src={item.image.src} status={item.image.status} />
+                <CCardImage
+                  size="md"
+                  src={`https://online-course-jimmy.onrender.com/${course.backgroundImg}`}
+                  // status={item.image.status}
+                />
                 <CCardTitle>
-                  <span className="m-lg-2">{item.title}</span>
+                  <span className="m-lg-2">{course.title}</span>
                 </CCardTitle>
-                <CCardText>
+                {/* <CCardText>
                   <ins className="m-lg-2 text-primary">{item.price}</ins>
-                </CCardText>
+                </CCardText> */}
                 <div style={{ display: 'flex', justifyContent: 'flex', flexWrap: 'wrap' }}>
                   <CAvatar
                     className="m-lg-1"
                     size="md"
-                    src={item.avtar.src}
-                    status={item.avtar.status}
+                    src={avatar2}
+                    // status={item.avtar.status}
                   />
                   <CCardText>
-                    <div className="text-center m-lg-2">{item.name}</div>
+                    <span className="text-center m-lg-2">Author</span>
                   </CCardText>
-                  <CCardText style={{ display: 'flex', justifyContent: 'right' }}>
+                  {/* <CCardText style={{ display: 'flex', justifyContent: 'right' }}>
                     <div className="text-center m-lg-2">{item.lecture}</div>
-                  </CCardText>
+                  </CCardText> */}
                 </div>
               </CCard>
             </CCardBody>
