@@ -13,7 +13,6 @@ export const onSignIn = createAsyncThunk('auth/sign-in', async (credentials, thu
       role: decodedToken.role,
       accessToken: response.accessToken,
     }
-
     return account
   } catch (err) {
     return thunkAPI.rejectWithValue(err.message || 'Login failed')
