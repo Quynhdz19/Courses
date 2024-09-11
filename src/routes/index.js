@@ -31,11 +31,11 @@ const AuthGuard = (props) => {
   const { isPublic = false } = props
   const { requireAdmin = false } = props
 
-  const auth = useSelector((state) => state.auth)
+  const authState = useSelector((state) => state.auth)
 
-  if (!isPublic && !auth.isLoggedIn) return <Navigate to={RouteMap.LoginPage} replace />
+  if (!isPublic && !authState.user?._id) return <Navigate to={RouteMap.LoginPage} replace />
 
-  if (requireAdmin && auth.account.role !== 'ADMIN')
+  if (requireAdmin && authState.user?.role !== 'ADMIN')
     return <Navigate to={RouteMap.HomePage} replace />
 
   return props.element

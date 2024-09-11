@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
+import CourseService from 'src/services/CourseService'
 
 const CoursesListPage = () => {
   const navigate = useNavigate()

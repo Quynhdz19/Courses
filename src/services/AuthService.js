@@ -1,10 +1,7 @@
+import axiosInstance from './axios'
 import BaseService from './BaseService'
 
 class AuthService extends BaseService {
-  constructor() {
-    super()
-  }
-
   async signIn(credentials) {
     try {
       const response = await this.post('auth/login', credentials)
@@ -15,4 +12,5 @@ class AuthService extends BaseService {
   }
 }
 
-export default new AuthService()
+const authService = new AuthService(axiosInstance)
+export default authService
