@@ -1,46 +1,13 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import {
-  FLUSH,
-  PAUSE,
-  PERSIST,
-  persistReducer,
-  persistStore,
-  PURGE,
-  REGISTER,
-  REHYDRATE,
-} from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
-import authReducer from 'src/redux/slice'
-
-const initialState = {
-  sidebarShow: true,
-  theme: 'light',
-}
-
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return { ...state, ...rest }
-    default:
-      return state
-  }
-}
-
-const persistConfig = {
-  key: 'root',
-  version: 1,
-  storage,
-}
-
-const rootReducer = combineReducers({
-  app: changeState,
-  auth: authReducer,
-})
-
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+import { configureStore } from '@reduxjs/toolkit'
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
+import { appReducer } from './modules/appSlice'
+import { authReducer } from './modules/authSlice'
 
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    app: appReducer,
+    auth: authReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -48,7 +15,5 @@ const store = configureStore({
       },
     }),
 })
-
-export const persistor = persistStore(store)
 
 export default store

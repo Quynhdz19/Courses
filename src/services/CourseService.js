@@ -1,10 +1,7 @@
+import axiosInstance from './axios'
 import BaseService from './BaseService'
 
 class CourseService extends BaseService {
-  constructor() {
-    super()
-  }
-
   async addCourse(formData) {
     try {
       const response = await this.post('/courses', formData, {
@@ -102,4 +99,5 @@ class CourseService extends BaseService {
   }
 }
 
-export default new CourseService()
+const courseService = new CourseService(axiosInstance)
+export default courseService

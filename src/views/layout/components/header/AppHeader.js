@@ -19,21 +19,20 @@ import {
   CHeaderToggler,
   CNavItem,
   CNavLink,
-  useColorModes,
 } from '@coreui/react'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { setAppSiderCollapsed } from 'src/redux/modules/appSlice'
 import { RouteMap } from 'src/routes/routeMap'
 import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdown from './AppHeaderDropdown'
 
 const AppHeader = () => {
   const headerRef = useRef()
-  const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
-
   const dispatch = useDispatch()
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const appState = useSelector((state) => state.app)
+  const { colorMode, setColorMode } = useState(appState.theme)
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -46,7 +45,7 @@ const AppHeader = () => {
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
       <CContainer className="border-bottom px-4" fluid>
         <CHeaderToggler
-          onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
+          onClick={() => dispatch(setAppSiderCollapsed(!appState.sider.collapsed))}
           style={{ marginInlineStart: '-14px' }}
         >
           <CIcon icon={cilMenu} size="lg" />

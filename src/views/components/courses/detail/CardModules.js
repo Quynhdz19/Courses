@@ -1,32 +1,9 @@
 import { CCard, CCardBody, CCardTitle } from '@coreui/react'
+import PropTypes from 'prop-types'
 import React from 'react'
 import CourseDetailModuleCollapse from './CollapseModule'
 
-const CourseDetailModulesCard = () => {
-  const modules = [
-    {
-      name: 'Module 01: Nhập Môn',
-      lessons: [
-        {
-          id: 1,
-          name: 'Bài 01: Nhập môn',
-        },
-      ],
-    },
-    {
-      name: 'Module 02: Lập Trình',
-      lessons: [
-        {
-          id: 1,
-          name: 'Bài 04: Route',
-        },
-        {
-          id: 1,
-          name: 'Bài 05: Controller',
-        },
-      ],
-    },
-  ]
+const CourseDetailModulesCard = (props) => {
   return (
     <CCard className={'border-light'}>
       <CCardBody className="d-grid gap-2">
@@ -34,12 +11,15 @@ const CourseDetailModulesCard = () => {
           <strong>Bài Học</strong>
         </CCardTitle>
 
-        {modules.map((module, index) => (
-          <CourseDetailModuleCollapse key={index} module={module} />
+        {props.modules.map((module) => (
+          <CourseDetailModuleCollapse key={module._id} module={module} />
         ))}
       </CCardBody>
     </CCard>
   )
+}
+CourseDetailModulesCard.propTypes = {
+  modules: PropTypes.array.isRequired,
 }
 
 export default CourseDetailModulesCard

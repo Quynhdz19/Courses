@@ -16,8 +16,10 @@ import {
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { decodeJwtToken } from 'src/helpers/decode-token'
+import { setAuthAccessToken, setAuthUser } from 'src/redux/modules/authSlice'
 import { RouteMap } from 'src/routes/routeMap'
-import { onSignIn } from '../../../redux/action'
+import authService from 'src/services/AuthService'
 
 const LoginPage = () => {
   const [account, setAccount] = useState({
@@ -64,8 +66,17 @@ const LoginPage = () => {
     }
 
     try {
-      const resultAction = await dispatch(onSignIn(account))
-      if (onSignIn.fulfilled.match(resultAction)) {
+      const response = await authService.signIn(account)
+      const decodedData = decodeJwtToken(response.accessToken)
+      if (decodedData) {
+        dispatch(
+          setAuthUser({
+            _id: decodedData._id,
+            username: decodedData.username,
+            role: decodedData.role,
+          }),
+        )
+        dispatch(setAuthAccessToken(response.accessToken))
         navigate(RouteMap.DashboardPage)
       } else {
         setErrMsg({ general: 'An error occurred. Username or password is incorrect!' })
