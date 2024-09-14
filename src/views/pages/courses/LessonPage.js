@@ -13,6 +13,7 @@ const LessonPage = () => {
   const { courseId, lessonId } = useParams()
   const [course, setCourse] = useState({})
   const [lesson, setLesson] = useState({})
+  const [linkStream, setLinkStream] = useState('')
 
   const playerRef = useRef(null)
 
@@ -26,6 +27,15 @@ const LessonPage = () => {
     }
   }
 
+  const getLessonDetail = async () => {
+    try {
+      const response = await CourseService.getLessonDetail(lessonId)
+      setLinkStream(response.data.linkStream)
+    } catch (error) {
+      console.error('Error fetching courses:', error)
+    }
+  }
+
   const findCurrentLessonInModules = (modules, lessonId) => {
     return modules
       .reduce((flattenedArray, module) => flattenedArray.concat(module.lessons), [])
@@ -34,6 +44,7 @@ const LessonPage = () => {
 
   useEffect(() => {
     fetchCourse()
+    getLessonDetail()
   }, [])
 
   return (
@@ -42,7 +53,7 @@ const LessonPage = () => {
       <Row gutter={16}>
         <Col span={16}>
           <ReactHlsPlayer
-            src="https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
+            src={linkStream}
             hlsConfig={{
               maxLoadingDelay: 4,
               minAutoBitrate: 0,

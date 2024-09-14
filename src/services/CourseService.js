@@ -97,6 +97,15 @@ class CourseService extends BaseService {
       throw new Error(error.response?.data)
     }
   }
+
+  async getLessonDetail(lessonId) {
+    try {
+      const response = await this.get(`/courses/modules/lessons/${lessonId}`)
+      return response
+    } catch (error) {
+      throw new Error(error.response?.data)
+    }
+  }
 }
 
 const courseService = new CourseService(axiosInstance)

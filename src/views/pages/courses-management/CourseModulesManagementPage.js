@@ -85,7 +85,7 @@ const CourseModulesManagementPage = () => {
   const handleCourseAction = async (action, courseData) => {
     try {
       if (action === 'add') {
-        await CourseService.addModule(id, courseData)
+        await CourseService.addModule(courseId, courseData)
       }
       fetchCourse()
     } catch (error) {
