@@ -30,9 +30,9 @@ class BaseService {
     }
   }
 
-  async delete(endpoint) {
+  async delete(endpoint, config = {}) {
     try {
-      const response = await this.api.delete(endpoint)
+      const response = await this.api.delete(endpoint, config)
       return response.data
     } catch (error) {
       this.handleError(error)
