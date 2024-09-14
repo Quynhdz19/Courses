@@ -5,8 +5,10 @@ import {
   CCardImage,
   CCardText,
   CCardTitle,
+  CContainer,
   CImage,
   CLink,
+  CRow,
 } from '@coreui/react'
 import { Carousel } from 'antd'
 import React, { useEffect, useState } from 'react'
@@ -74,17 +76,17 @@ const CoursesListPage = () => {
           </div>
         ))}
       </Carousel>
-      <CCardTitle style={{ display: 'flex', justifyContent: 'left' }}>
-        <span className="p-lg-3">Danh Sách Khóa Học </span>
-      </CCardTitle>
-      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        {courses.map((course) => (
-          <CLink key={course._id} href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}>
-            <CCardBody className="d-grid gap-2">
-              <CCard className="m-lg-3">
+
+      <h2 className="mt-4 mb-2">Danh Sách Khóa Học</h2>
+
+      <CContainer style={{ margin: 0 }}>
+        <CRow xs={{ cols: 1, gutter: 4 }} sm={{ cols: 2 }} lg={{ cols: 3 }} xl={{ cols: 4 }}>
+          {courses.map((course) => (
+            <CLink key={course._id} href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}>
+              <CCard>
                 <CCardImage
                   size="md"
-                  src={`https://online-course-jimmy.onrender.com/${course.backgroundImg}`}
+                  src={course.backgroundImg}
                   // status={item.image.status}
                 />
                 <CCardTitle>
@@ -108,10 +110,10 @@ const CoursesListPage = () => {
                   </CCardText> */}
                 </div>
               </CCard>
-            </CCardBody>
-          </CLink>
-        ))}
-      </div>
+            </CLink>
+          ))}
+        </CRow>
+      </CContainer>
     </div>
   )
 }
