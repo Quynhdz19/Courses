@@ -1,4 +1,4 @@
-import { cilExternalLink, cilPencil, cilSearch, cilTrash } from '@coreui/icons'
+import { cilExternalLink, cilPencil, cilSearch, cilTrash, cilUser } from '@coreui/icons'
 import { CIcon } from '@coreui/icons-react'
 import {
   CButton,
@@ -169,6 +169,15 @@ const CoursesManagementPage = () => {
                     }
                   >
                     <CIcon icon={cilExternalLink} />
+                  </CButton>
+                  <CButton
+                    size="sm"
+                    className="me-2"
+                    onClick={() =>
+                      navigate(bindRouteParams(RouteMap.CourseUsersManagementPage, [course._id]))
+                    }
+                  >
+                    <CIcon icon={cilUser} />
                   </CButton>
                   <CButton size="sm" className="me-2" onClick={() => openModal('edit', course)}>
                     <CIcon icon={cilPencil} />

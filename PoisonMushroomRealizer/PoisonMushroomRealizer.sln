@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoisonMushroomRealizer", "PoisonMushroomRealizer\PoisonMushroomRealizer.csproj", "{A25A5B65-A8ED-4518-BFE9-5C10ACB122AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A25A5B65-A8ED-4518-BFE9-5C10ACB122AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A25A5B65-A8ED-4518-BFE9-5C10ACB122AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A25A5B65-A8ED-4518-BFE9-5C10ACB122AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A25A5B65-A8ED-4518-BFE9-5C10ACB122AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {252A8616-280F-4EC6-8CC4-A16D5CFCDAF2}
+	EndGlobalSection
+EndGlobal

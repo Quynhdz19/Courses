@@ -82,8 +82,8 @@ class CourseService extends BaseService {
 
   async getUsers(courseId, searchParams = {}) {
     try {
-      const response = await this.get(`/courses/${courseId}`, { params: searchParams })
-      return response.data
+      const response = await this.get(`/courses/${courseId}/users`, searchParams)
+      return response
     } catch (error) {
       throw new Error(error.response?.data)
     }
@@ -91,7 +91,7 @@ class CourseService extends BaseService {
 
   async deleteUsers(courseId, usersData) {
     try {
-      const response = await this.delete(`/courses/${courseId}/remove-users`, usersData)
+      const response = await this.delete(`/courses/${courseId}/remove-users`, { data: usersData })
       return response.data
     } catch (error) {
       throw new Error(error.response?.data)

@@ -20,6 +20,9 @@ const CoursesManagementPage = lazy(
 const CourseModulesManagementPage = lazy(
   () => import('src/views/pages/courses-management/CourseModulesManagementPage'),
 )
+const CourseUsersManagementPage = lazy(
+  () => import('src/views/pages/courses-management/CourseUsersManagementPage'),
+)
 const CourseLessonsManagementPage = lazy(
   () => import('src/views/pages/courses-management/CourseLessonsManagementPage'),
 )
@@ -85,6 +88,10 @@ const routes = [
       {
         path: RouteMap.CourseModulesManagementPage,
         element: <AuthGuard requireAdmin={true} element={<CourseModulesManagementPage />} />,
+      },
+      {
+        path: RouteMap.CourseUsersManagementPage,
+        element: <AuthGuard requireAdmin={true} element={<CourseUsersManagementPage />} />,
       },
       {
         path: RouteMap.CourseLessonsManagementPage,

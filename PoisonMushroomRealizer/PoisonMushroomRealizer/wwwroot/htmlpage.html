@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachable Machine Image Model</title>
+    <link rel="stylesheet" href="css/StyleSheet.css">
+</head>
+<body>
+    <div><h1>Nhận diện nấm độc</h1></div>
+    <button type="button" onclick="init()">Start</button>
+    <div id="webcam-container"></div>
+    <div id="countdown-container"></div> <!-- New div for countdown -->
+    <div id="label-container" ></div> <!-- Div for predictions -->
+    <!-- Include TensorFlow.js and Teachable Machine libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+    <!-- Link to the external JavaScript file -->
+    <script src="js/JavaScript.js"></script>
+</body>
+</html>

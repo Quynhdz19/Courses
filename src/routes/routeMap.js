@@ -12,6 +12,7 @@ export const RouteMap = {
 
   CoursesManagementPage: '/a/courses',
   CourseModulesManagementPage: '/a/courses/:courseId',
+  CourseUsersManagementPage: '/a/courses/:courseId/users',
   CourseLessonsManagementPage: '/a/courses/:courseId/modules/:moduleId',
 
   NotFoundPage: 'not-found',
