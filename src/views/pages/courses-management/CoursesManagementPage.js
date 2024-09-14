@@ -22,7 +22,6 @@ import {
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import avatar1 from 'src/assets/images/course.png'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 import CourseService from 'src/services/CourseService'
 import BaseInputCourse from '../../components/courses-management/courses/BaseInputCourse'
@@ -152,10 +151,8 @@ const CoursesManagementPage = () => {
                 </CTableDataCell>
                 <CTableDataCell>
                   <CCardImage
-                    src={
-                      'https://online-course-jimmy.onrender.com/' + course.backgroundImg || avatar1
-                    }
-                    className="rounded"
+                    src={course.backgroundImg}
+                    style={{ maxWidth: '100px', width: 'auto' }}
                   />
                 </CTableDataCell>
                 <CTableDataCell className="text-course">{course.title}</CTableDataCell>
