@@ -106,6 +106,15 @@ class CourseService extends BaseService {
       throw new Error(error.response?.data)
     }
   }
+
+  async getUserOfCourseOrNo(courseId, searchParams = {}) {
+    try {
+      const response = await this.get(`/courses/${courseId}/users`, searchParams)
+      return response
+    } catch (error) {
+      throw new Error(error.response?.data)
+    }
+  }
 }
 
 const courseService = new CourseService(axiosInstance)

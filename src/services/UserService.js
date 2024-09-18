@@ -1,5 +1,6 @@
 import axiosInstance from './axios'
 import BaseService from './BaseService'
+import CourseService from "src/services/CourseService";
 
 class UserService extends BaseService {
   async addUser(formData) {
@@ -64,7 +65,7 @@ class UserService extends BaseService {
       throw new Error(error.response?.data)
     }
   }
-  
+
   async deleteUser(userId) {
     try {
       const response = await this.delete(`/users/${userId}`)
@@ -75,5 +76,5 @@ class UserService extends BaseService {
   }
 }
 
-const userService = new UserService(axiosInstance)
+const CourseServiceuserService = new UserService(axiosInstance)
 export default userService
