@@ -142,7 +142,12 @@ const CoursesManagementPage = () => {
           </CTableHead>
           <CTableBody>
             {courses.map((course) => (
-              <CTableRow key={course._id}>
+              <CTableRow
+                key={course._id}
+                onClick={() =>
+                  navigate(bindRouteParams(RouteMap.CourseModulesManagementPage, [course._id]))
+                }
+              >
                 <CTableDataCell>
                   <CFormCheck
                     checked={selectedCourses.includes(course._id)}
@@ -173,16 +178,30 @@ const CoursesManagementPage = () => {
                   <CButton
                     size="sm"
                     className="me-2"
-                    onClick={() =>
+                    onClick={(e) => {
+                      e.stopPropagation()
                       navigate(bindRouteParams(RouteMap.CourseUsersManagementPage, [course._id]))
-                    }
+                    }}
                   >
                     <CIcon icon={cilUser} />
                   </CButton>
-                  <CButton size="sm" className="me-2" onClick={() => openModal('edit', course)}>
+                  <CButton
+                    size="sm"
+                    className="me-2"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      openModal('edit', course)
+                    }}
+                  >
                     <CIcon icon={cilPencil} />
                   </CButton>
-                  <CButton size="sm" onClick={() => openModal('delete', course)}>
+                  <CButton
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      openModal('delete', course)
+                    }}
+                  >
                     <CIcon icon={cilTrash} style={{ color: 'red' }} />
                   </CButton>
                 </CTableDataCell>
