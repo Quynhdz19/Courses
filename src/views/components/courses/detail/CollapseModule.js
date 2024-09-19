@@ -32,7 +32,9 @@ const CourseDetailModuleCollapse = (props) => {
               justifyContent: 'space-between',
             }}
           >
-            {props.module.title}
+            <div className="line-clamp" style={{ WebkitLineClamp: 3 }}>
+              {props.module.title}
+            </div>
             <div>{visible ? <CIcon icon={cilMinus} /> : <CIcon icon={cilPlus} />}</div>
           </div>
         </CCardTitle>
@@ -56,7 +58,9 @@ const CourseDetailModuleCollapse = (props) => {
                   <div style={{ marginRight: '12px' }}>
                     <CIcon icon={lesson.isLearned ? cilCheckAlt : cilMediaPlay} />
                   </div>
-                  {lesson.title}
+                  <div className="line-clamp" style={{ WebkitLineClamp: 3 }}>
+                    {lesson.title}
+                  </div>
                 </div>
               </CListGroupItem>
             ))}
