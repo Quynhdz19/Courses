@@ -2,8 +2,6 @@
 
 # dependencies
 /node_modules
-package-lock.json
-yarn.lock
 
 # testing
 /coverage
@@ -15,6 +13,7 @@ yarn.lock
 .eslintcache
 .DS_Store
 .idea
+.env
 .env.local
 .env.development.local
 .env.test.local
