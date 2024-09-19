@@ -18,12 +18,14 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CTooltip,
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from "react-router-dom";
 import CourseService from 'src/services/CourseService'
 import DeleteModal from '../../components/courses-management/courses/DeleteModal'
 import BaseInputLesson from '../../components/courses-management/lessons/BaseInputLesson'
+import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 
 const CourseLessonsManagementPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -40,7 +42,7 @@ const CourseLessonsManagementPage = () => {
   }
 
   const { courseId, moduleId } = useParams()
-
+  const navigate = useNavigate()
   useEffect(() => {
     fetchModule()
   }, [])
@@ -152,7 +154,14 @@ const CourseLessonsManagementPage = () => {
           </CTableHead>
           <CTableBody>
             {moduleDetail.map((lesson) => (
-              <CTableRow key={lesson._id}>
+              <CTableRow
+                key={lesson._id}
+                onClick={() => {
+                  console.log(courseId, lesson._id)
+                  navigate(bindRouteParams(RouteMap.LessonPage, [courseId, lesson._id]))
+                }
+                }
+              >
                 <CTableDataCell>
                   <CFormCheck
                     checked={selectedLessons.includes(lesson._id)}
@@ -163,12 +172,16 @@ const CourseLessonsManagementPage = () => {
                 <CTableDataCell>{lesson.title}</CTableDataCell>
                 <CTableDataCell>{lesson.description}</CTableDataCell>
                 <CTableDataCell className="text-center">
-                  <CButton size="sm" className="me-2">
-                    <CIcon icon={cilPencil} />
-                  </CButton>
-                  <CButton size="sm">
-                    <CIcon icon={cilTrash} style={{ color: 'red' }} />
-                  </CButton>
+                  <CTooltip content="Edit lesson" placement="top">
+                    <CButton size="sm" className="me-2">
+                      <CIcon icon={cilPencil} />
+                    </CButton>
+                  </CTooltip>
+                  <CTooltip content="Delete lesson" placement="top">
+                    <CButton size="sm">
+                      <CIcon icon={cilTrash} style={{ color: 'red' }} />
+                    </CButton>
+                  </CTooltip>
                 </CTableDataCell>
               </CTableRow>
             ))}

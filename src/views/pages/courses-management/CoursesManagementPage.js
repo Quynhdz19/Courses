@@ -18,8 +18,8 @@ import {
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
-  CTableRow,
-} from '@coreui/react'
+  CTableRow, CTooltip
+} from "@coreui/react";
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
@@ -166,44 +166,54 @@ const CoursesManagementPage = () => {
                   {course.modules?.length || 0}
                 </CTableDataCell>
                 <CTableDataCell className="text-center">
-                  <CButton
-                    size="sm"
-                    className="me-2"
-                    onClick={() =>
-                      navigate(bindRouteParams(RouteMap.CourseModulesManagementPage, [course._id]))
-                    }
-                  >
-                    <CIcon icon={cilExternalLink} />
-                  </CButton>
-                  <CButton
-                    size="sm"
-                    className="me-2"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      navigate(bindRouteParams(RouteMap.CourseUsersManagementPage, [course._id]))
-                    }}
-                  >
-                    <CIcon icon={cilUser} />
-                  </CButton>
-                  <CButton
-                    size="sm"
-                    className="me-2"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      openModal('edit', course)
-                    }}
-                  >
-                    <CIcon icon={cilPencil} />
-                  </CButton>
-                  <CButton
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      openModal('delete', course)
-                    }}
-                  >
-                    <CIcon icon={cilTrash} style={{ color: 'red' }} />
-                  </CButton>
+                  <CTooltip content="Chi tiết khoá học " placement="top">
+                    <CButton
+                      size="sm"
+                      className="me-2"
+                      onClick={() =>
+                        navigate(
+                          bindRouteParams(RouteMap.CourseModulesManagementPage, [course._id]),
+                        )
+                      }
+                    >
+                      <CIcon icon={cilExternalLink} />
+                    </CButton>
+                  </CTooltip>
+                  <CTooltip content="Thêm học viên" placement="top">
+                    <CButton
+                      size="sm"
+                      className="me-2"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        navigate(bindRouteParams(RouteMap.CourseUsersManagementPage, [course._id]))
+                      }}
+                    >
+                      <CIcon icon={cilUser} />
+                    </CButton>
+                  </CTooltip>
+                  <CTooltip content="Edit khoá học" placement="top">
+                    <CButton
+                      size="sm"
+                      className="me-2"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        openModal('edit', course)
+                      }}
+                    >
+                      <CIcon icon={cilPencil} />
+                    </CButton>
+                  </CTooltip>
+                  <CTooltip content="Xoá khoá học" placement="top">
+                    <CButton
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        openModal('delete', course)
+                      }}
+                    >
+                      <CIcon icon={cilTrash} style={{ color: 'red' }} />
+                    </CButton>
+                  </CTooltip>
                 </CTableDataCell>
               </CTableRow>
             ))}
