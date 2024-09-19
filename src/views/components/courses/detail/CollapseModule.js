@@ -1,4 +1,4 @@
-import { cilMediaPlay, cilMinus, cilPlus } from '@coreui/icons'
+import { cilCheckAlt, cilMediaPlay, cilMinus, cilPlus } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CCard, CCardBody, CCardTitle, CCollapse, CListGroup, CListGroupItem } from '@coreui/react'
 import PropTypes from 'prop-types'
@@ -54,7 +54,7 @@ const CourseDetailModuleCollapse = (props) => {
                   }}
                 >
                   <div style={{ marginRight: '12px' }}>
-                    <CIcon icon={cilMediaPlay} />
+                    <CIcon icon={lesson.isLearned ? cilCheckAlt : cilMediaPlay} />
                   </div>
                   {lesson.title}
                 </div>
