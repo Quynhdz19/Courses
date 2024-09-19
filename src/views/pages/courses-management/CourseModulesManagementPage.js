@@ -18,6 +18,7 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CTooltip,
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -136,7 +137,15 @@ const CourseModulesManagementPage = () => {
           </CTableHead>
           <CTableBody>
             {modules.map((module, id) => (
-              <CTableRow key={module._id} className="textprimaryy">
+              <CTableRow
+                key={module._id}
+                onClick={() =>
+                  navigate(
+                    bindRouteParams(RouteMap.CourseLessonsManagementPage, [courseId, module._id]),
+                  )
+                }
+                className="textprimaryy"
+              >
                 <CTableDataCell>
                   <CFormCheck
                     checked={selectedModules.includes(module._id)}
@@ -147,15 +156,39 @@ const CourseModulesManagementPage = () => {
                 <CTableDataCell>{`module ${id + 1}: ` + module.title}</CTableDataCell>
                 <CTableDataCell>{module.lessons.length}</CTableDataCell>
                 <CTableDataCell className="text-center">
-                  <CButton size="sm" className="me-2">
-                    <CIcon icon={cilPencil} />
-                  </CButton>
-                  <CButton size="sm" className="me-2" onClick={() => handleModuleClick(module._id)}>
-                    <CIcon icon={cilExternalLink} />
-                  </CButton>
-                  <CButton size="sm">
-                    <CIcon icon={cilTrash} style={{ color: 'red' }} />
-                  </CButton>
+                  <CTooltip content="Chi tiết lesson" placement="top">
+                    <CButton
+                      onClick={(e) => {
+                        e.stopPropagation()
+                      }}
+                      size="sm"
+                      className="me-2"
+                    >
+                      <CIcon icon={cilPencil} />
+                    </CButton>
+                  </CTooltip>
+                  <CTooltip content="Thêm lesson" placement="top">
+                    <CButton
+                      size="sm"
+                      className="me-2"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleModuleClick(module._id)
+                      }}
+                    >
+                      <CIcon icon={cilExternalLink} />
+                    </CButton>
+                  </CTooltip>
+                  <CTooltip content="Xoá module" placement="top">
+                    <CButton
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                      }}
+                    >
+                      <CIcon icon={cilTrash} style={{ color: 'red' }} />
+                    </CButton>
+                  </CTooltip>
                 </CTableDataCell>
               </CTableRow>
             ))}
