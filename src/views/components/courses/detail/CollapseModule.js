@@ -6,8 +6,13 @@ import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 
+const checkModuleHasActiveLesson = (lessons, activeLesson) =>
+  !!lessons.find((lesson) => lesson._id === activeLesson)
+
 const CourseDetailModuleCollapse = (props) => {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(
+    checkModuleHasActiveLesson(props.module.lessons, props.activeLesson),
+  )
   const { courseId } = useParams()
   return (
     <CCard
@@ -38,6 +43,7 @@ const CourseDetailModuleCollapse = (props) => {
                 key={index}
                 as="a"
                 href={bindRouteParams(RouteMap.LessonPage, [courseId, lesson._id])}
+                active={lesson._id === props.activeLesson}
               >
                 <div
                   style={{
@@ -72,6 +78,7 @@ CourseDetailModuleCollapse.propTypes = {
       }),
     ).isRequired,
   }).isRequired,
+  activeLesson: PropTypes.string,
 }
 
 export default CourseDetailModuleCollapse

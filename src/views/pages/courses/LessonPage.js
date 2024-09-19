@@ -81,7 +81,11 @@ const LessonPage = () => {
                 <strong>Bài Học</strong>
               </CCardTitle>
               {course.modules?.map((module) => (
-                <CourseDetailModuleCollapse key={module._id} module={module} />
+                <CourseDetailModuleCollapse
+                  key={module._id}
+                  module={module}
+                  activeLesson={lessonId}
+                />
               ))}
             </CCardBody>
           </CCard>
