@@ -29,6 +29,10 @@ const BaseInputModule = ({ moduleToEdit, onSubmit }) => {
   }, [moduleToEdit])
 
   const handleSubmit = () => {
+    if (!title || !description) {
+      alert('Bắt buộc nhập tất cả field.')
+      return
+    }
     onSubmit({
       title,
       description,

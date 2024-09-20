@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
-    CContainer,
-    CNav,
-    CNavItem,
-    CNavLink,
-    CButton,
-    CInputGroup,
-    CFormInput,
-    CInputGroupText,
-    CCard,
-    CCardBody
+  CContainer,
+  CNav,
+  CNavItem,
+  CNavLink,
+  CButton,
+  CInputGroup,
+  CFormInput,
+  CInputGroupText,
+  CCard,
+  CCardBody
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilSearch } from '@coreui/icons'
@@ -31,58 +31,58 @@ const CourseUsersManagementPage = () => {
   const [activeTab, setActiveTab] = useState('users')
   const { courseId } = useParams()
 
-    const [totalPages, setTotalPages] = useState(0)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [searchTerm, setSearchTerm] = useState('')
-    const [searchQuery, setSearchQuery] = useState({
-        page: 1,
-        size: 10,
-        orderBy: 'createdAt',
-        orderDirection: 'asc',
-        search: null,
-        isInCourse: true,
-    })
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchQuery, setSearchQuery] = useState({
+    page: 1,
+    size: 10,
+    orderBy: 'createdAt',
+    orderDirection: 'asc',
+    search: null,
+    isInCourse: true,
+  })
 
-    useEffect(() => {
-        const debounceTimeout = setTimeout(() => {
-            setSearchQuery(prevQuery => ({ ...prevQuery, search: searchTerm, page: 1 }))
-        }, 100)
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setSearchQuery(prevQuery => ({ ...prevQuery, search: searchTerm, page: 1 }))
+    }, 100)
 
-        return () => clearTimeout(debounceTimeout)
-    }, [searchTerm])
+    return () => clearTimeout(debounceTimeout)
+  }, [searchTerm])
 
-    useEffect(() => {
-        if (activeTab === 'users') {
-            if (searchQuery.isInCourse === false) {
-                setSearchQuery(prevQuery => ({ ...prevQuery, isInCourse: true, page: 1 }))
-            } else {
-                fetchUsersCourse()
-            }
-            setSelectedUsers([])
-        } else if (activeTab === 'add-users') {
-            if (searchQuery.isInCourse === true) {
-                setSearchQuery(prevQuery => ({ ...prevQuery, isInCourse: false, page: 1 }))
-            } else {
-                fetchUsers()
-            }
-            setSelectedUsers([])
-        }
-    }, [activeTab, searchQuery])
-
-    const fetchUsers = async () => {
-        try {
-            const response = await CourseService.getUsers(courseId, searchQuery)
-            setUsers(response.data)
-            setTotalPages(response.metadata.totalPage)
-        } catch (error) {
-            console.error('Error fetching users:', error)
-        }
+  useEffect(() => {
+    if (activeTab === 'users') {
+      if (searchQuery.isInCourse === false) {
+        setSearchQuery(prevQuery => ({ ...prevQuery, isInCourse: true, page: 1 }))
+      } else {
+        fetchUsersCourse()
+      }
+      setSelectedUsers([])
+    } else if (activeTab === 'add-users') {
+      if (searchQuery.isInCourse === true) {
+        setSearchQuery(prevQuery => ({ ...prevQuery, isInCourse: false, page: 1 }))
+      } else {
+        fetchUsers()
+      }
+      setSelectedUsers([])
     }
+  }, [activeTab, searchQuery])
+
+  const fetchUsers = async () => {
+    try {
+      const response = await CourseService.getUsers(courseId, searchQuery)
+      setUsers(response.data)
+      setTotalPages(response.metadata.totalPage)
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    }
+  }
 
   const fetchUsersCourse = async () => {
     try {
       searchQuery.isInCourse = true
-      const response = await CourseService.getUserOfCourseOrNo(courseId, searchQuery)
+      const response = await CourseService.getUsers(courseId, searchQuery)
       setUsersCourse(response.data)
       setTotalPages(response.metadata.totalPage)
     } catch (error) {
@@ -90,10 +90,10 @@ const CourseUsersManagementPage = () => {
     }
   }
 
-    const handlePageChange = (page) => {
-        setSearchQuery(prevQuery => ({ ...prevQuery, page }))
-        setCurrentPage(page)
-    }
+  const handlePageChange = (page) => {
+    setSearchQuery(prevQuery => ({ ...prevQuery, page }))
+    setCurrentPage(page)
+  }
 
   const handleTabChange = (tab) => {
     setActiveTab(tab)
@@ -113,45 +113,46 @@ const CourseUsersManagementPage = () => {
     }
   }
 
-    const handleCourseAction = async (action) => {
-        try {
-            const userId = modalState.userIdToAction
-            const formattedData = { userIds: userId ? [userId.toString()] : selectedUsers.map(id => id.toString()) }
-            if (action === 'add') {
-                await CourseService.addUsers(courseId, formattedData)
-                fetchUsers()
-            } else if (action === 'delete') {
-                await CourseService.deleteUsers(courseId, formattedData)
-                fetchUsersCourse()
-            }
-            closeModal()
-        } catch (error) {
-            console.error(`Error ${action} users:`, error)
-        }
+  const handleCourseAction = async (action) => {
+    try {
+      const userId = modalState.userIdToAction
+      const formattedData = { userIds: userId ? [userId.toString()] : selectedUsers.map(id => id.toString()) }
+      if (action === 'add') {
+        await CourseService.addUsers(courseId, formattedData)
+        fetchUsers()
+      } else if (action === 'delete') {
+        await CourseService.deleteUsers(courseId, formattedData)
+        fetchUsersCourse()
+      }
+      setSelectedUsers([])
+      closeModal()
+    } catch (error) {
+      console.error(`Error ${action} users:`, error)
     }
+  }
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString)
-        const day = String(date.getDate()).padStart(2, '0')
-        const month = String(date.getMonth() + 1).padStart(2, '0')
-        const year = date.getFullYear()
-        return `${day}/${month}/${year}`
-    }
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const year = date.getFullYear()
+    return `${day}/${month}/${year}`
+  }
 
-    const handleExportExcel = () => {
-        const filteredData = usersCourse.map(({ fullName, email, phone, dateOfBirth }) => ({
-            fullName,
-            email,
-            phone,
-            dateOfBirth: formatDate(dateOfBirth),
-        }))
+  const handleExportExcel = () => {
+    const filteredData = usersCourse.map(({ fullName, email, phone, dateOfBirth }) => ({
+      fullName,
+      email,
+      phone,
+      dateOfBirth: formatDate(dateOfBirth),
+    }))
 
-        const worksheet = XLSX.utils.json_to_sheet(filteredData)
-        const workbook = XLSX.utils.book_new()
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Users')
-        const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'users.xlsx')
-    }
+    const worksheet = XLSX.utils.json_to_sheet(filteredData)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Users')
+    const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+    saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'users.xlsx')
+  }
 
   const handleSelectedUser = (userId) => {
     setSelectedUsers((prevSelectedUsers) =>
@@ -199,24 +200,21 @@ const CourseUsersManagementPage = () => {
         </CNavItem>
       </CNav>
 
-            <CInputGroup className="mb-3">
-                <CFormInput
-                    type="text"
-                    placeholder="Search"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)} // Automatically update search query
-                />
-                <CInputGroupText>
-                    <CIcon icon={cilSearch} />
-                </CInputGroupText>
-            </CInputGroup>
+      <CInputGroup className="mb-3">
+        <CFormInput
+          type="text"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <CInputGroupText>
+          <CIcon icon={cilSearch} />
+        </CInputGroupText>
+      </CInputGroup>
 
       {activeTab === 'users' && (
         <div>
           <CContainer className="d-flex justify-content-end mb-4 gap-3">
-            {/*<CButton onClick={() => setActiveTab('add-users')} color="primary" size="sm">*/}
-            {/*  Add User*/}
-            {/*</CButton>*/}
             <CButton onClick={() => setActiveTab('export-exl')} color="primary" size="sm">
               Export
             </CButton>
@@ -230,23 +228,23 @@ const CourseUsersManagementPage = () => {
             </CButton>
           </CContainer>
 
-                    <UsersTable
-                        users={usersCourse}
-                        showDeleteButton={true}
-                        showAddButton={false}
-                        handleUserAction={handleUserAction}
-                        handleSelectedUser={handleSelectedUser}
-                        selectedUsers={selectedUsers}
-                        isHeaderCheckboxChecked={isHeaderCheckboxChecked}
-                        handleSelectAll={handleSelectAll}
-                    />
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={handlePageChange}
-                    />
-                </div>
-            )}
+          <UsersTable
+            users={usersCourse}
+            showDeleteButton={true}
+            showAddButton={false}
+            handleUserAction={handleUserAction}
+            handleSelectedUser={handleSelectedUser}
+            selectedUsers={selectedUsers}
+            isHeaderCheckboxChecked={isHeaderCheckboxChecked}
+            handleSelectAll={handleSelectAll}
+          />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
 
       {activeTab === 'add-users' && (
         <div>
@@ -272,13 +270,13 @@ const CourseUsersManagementPage = () => {
             handleSelectAll={handleSelectAll}
           />
 
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={handlePageChange}
-                    />
-                </div>
-            )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
 
       {activeTab === 'export-exl' && (
         <CCard className="py-5">

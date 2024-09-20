@@ -21,15 +21,10 @@ import {
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import CourseService from 'src/services/CourseService'
-import DeleteModal from '../../components/courses-management/courses/DeleteModal'
-import BaseInputLesson from '../../components/courses-management/lessons/BaseInputLesson'
-import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
-import { useParams } from 'react-router-dom'
 import LessonService from 'src/services/LessonService'
+import BaseInputLesson from 'src/views/components/courses-management/lessons/BaseInputLesson'
 import LessonTable from 'src/views/components/courses-management/lessons/LessonTable'
 import DeleteModal from 'src/views/components/courses-management/courses/DeleteModal'
-import BaseInputLesson from 'src/views/components/courses-management/lessons/BaseInputLesson'
 import Pagination from 'src/views/components/courses-management/courses/Pagination'
 import './CoursesManagementPage.scss'
 
@@ -57,8 +52,6 @@ const CourseLessonsManagementPage = () => {
       setSearchQuery((prevQuery) => ({ ...prevQuery, search: searchTerm, page: 1 }))
     }, 200)
 
-  const { courseId, moduleId } = useParams()
-  const navigate = useNavigate()
     return () => clearTimeout(debounceTimeout)
   }, [searchTerm])
 

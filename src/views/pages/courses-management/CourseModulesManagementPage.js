@@ -29,12 +29,10 @@ import Pagination from 'src/views/components/courses-management/courses/Paginati
 import './CoursesManagementPage.scss'
 
 const CourseModulesManagementPage = () => {
-  const [modules, setModule] = useState([])
-  const [nameCourse, setNameCourse] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
+  const [modules, setModules] = useState([])
+  const [moduleToEdit, setModuleToEdit] = useState(null)
   const [modalState, setModalState] = useState({ add: false, edit: false, delete: false })
   const [selectedModules, setSelectedModules] = useState([])
-
   const { courseId } = useParams()
 
   const [totalPages, setTotalPages] = useState(0)
@@ -103,6 +101,7 @@ const CourseModulesManagementPage = () => {
         await ModuleService.deleteModules(courseId, formattedData)
       }
       fetchModules()
+      setSelectedModules([])
       closeModal()
     } catch (error) {
       console.error(`Error ${action} module:`, error)
@@ -161,81 +160,12 @@ const CourseModulesManagementPage = () => {
           isHeaderCheckboxChecked={isHeaderCheckboxChecked}
           handleSelectAll={handleSelectAll}
         />
-        <CTable hover responsive>
-          <CTableHead color="primary">
-            <CTableRow className="textprimaryy">
-              <CTableHeaderCell className="col-1">
-                <CFormCheck checked={isHeaderCheckboxChecked} onChange={handleSelectAll} />
-              </CTableHeaderCell>
-              <CTableHeaderCell className="col-5">Name</CTableHeaderCell>
-              <CTableHeaderCell className="col-1">Lesson</CTableHeaderCell>
-              <CTableHeaderCell className="text-center col-3">Action</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {modules.map((module, id) => (
-              <CTableRow
-                key={module._id}
-                onClick={() =>
-                  navigate(
-                    bindRouteParams(RouteMap.CourseLessonsManagementPage, [courseId, module._id]),
-                  )
-                }
-                className="textprimaryy"
-              >
-                <CTableDataCell>
-                  <CFormCheck
-                    checked={selectedModules.includes(module._id)}
-                    onChange={() => handleSelectModule(module._id)}
-                  />
-                </CTableDataCell>
 
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
-                <CTableDataCell>{`module ${id + 1}: ` + module.title}</CTableDataCell>
-                <CTableDataCell>{module.lessons.length}</CTableDataCell>
-                <CTableDataCell className="text-center">
-                  <CTooltip content="Chi tiết lesson" placement="top">
-                    <CButton
-                      onClick={(e) => {
-                        e.stopPropagation()
-                      }}
-                      size="sm"
-                      className="me-2"
-                    >
-                      <CIcon icon={cilPencil} />
-                    </CButton>
-                  </CTooltip>
-                  <CTooltip content="Thêm lesson" placement="top">
-                    <CButton
-                      size="sm"
-                      className="me-2"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleModuleClick(module._id)
-                      }}
-                    >
-                      <CIcon icon={cilExternalLink} />
-                    </CButton>
-                  </CTooltip>
-                  <CTooltip content="Xoá module" placement="top">
-                    <CButton
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                      }}
-                    >
-                      <CIcon icon={cilTrash} style={{ color: 'red' }} />
-                    </CButton>
-                  </CTooltip>
-                </CTableDataCell>
-              </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
       </CListGroup>
 
       <CModal
