@@ -1,14 +1,11 @@
-import { cilExternalLink, cilPencil, cilSearch, cilTrash, cilUser } from '@coreui/icons'
+import { cilSearch } from '@coreui/icons'
 import { CIcon } from '@coreui/icons-react'
 import {
   CButton,
-  CCardImage,
   CContainer,
-  CFormCheck,
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CListGroup,
   CModal,
   CModalBody,
   CModalHeader,
@@ -22,29 +19,40 @@ import {
   CTooltip,
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 import CourseService from 'src/services/CourseService'
-import BaseInputCourse from '../../components/courses-management/courses/BaseInputCourse'
-import DeleteModal from '../../components/courses-management/courses/DeleteModal'
+import ModuleService from 'src/services/ModuleService'
+import BaseInputCourse from 'src/views/components/courses-management/courses/BaseInputCourse'
+import DeleteModal from 'src/views/components/courses-management/courses/DeleteModal'
+import Pagination from 'src/views/components/courses-management/courses/Pagination'
+import CourseTable from 'src/views/components/courses-management/courses/CourseTable'
 import './CoursesManagementPage.scss'
 
 const CoursesManagementPage = () => {
-  const navigate = useNavigate()
   const [courses, setCourses] = useState([])
-  const [modalState, setModalState] = useState({ add: false, edit: false, delete: false })
+  const [modalState, setModalState] = useState({ add: false, edit: false, delete: false, courseIdToAction: null })
   const [courseToEdit, setCourseToEdit] = useState(null)
   const [courseToDelete, setCourseToDelete] = useState(null)
   const [error, setErrorAddCourses] = useState({})
   const [selectedCourses, setSelectedCourses] = useState([])
+
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [searchQuery, setSearchQuery] = useState({
     page: 1,
     size: 10,
     orderBy: 'createdAt',
     orderDirection: 'asc',
-    search: searchTerm,
+    search: null,
   })
+
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setSearchQuery(prevQuery => ({ ...prevQuery, search: searchTerm, page: 1 }))
+    }, 200)
+
+    return () => clearTimeout(debounceTimeout)
+  }, [searchTerm])
 
   useEffect(() => {
     fetchCourses()
@@ -53,54 +61,63 @@ const CoursesManagementPage = () => {
   const fetchCourses = async () => {
     try {
       const response = await CourseService.getCourses(searchQuery)
-      setCourses(response)
+      setCourses(response.data)
+      setTotalPages(response.metadata.totalPage)
     } catch (error) {
       console.error('Error fetching courses:', error)
     }
   }
 
-  const handleSearch = () => {
-    setSearchQuery((prevQuery) => ({ ...prevQuery, search: searchTerm }))
-  }
-
-  const openModal = (type, course = null) => {
-    setModalState({ add: type === 'add', edit: type === 'edit', delete: type === 'delete' })
-    setCourseToEdit(course)
-    setCourseToDelete(course)
+  const handlePageChange = (page) => {
+    setSearchQuery(prevQuery => ({ ...prevQuery, page }))
+    setCurrentPage(page)
   }
 
   const closeModal = () => {
     setModalState({ add: false, edit: false, delete: false })
-    setCourseToEdit(null)
-    setCourseToDelete(null)
   }
 
-  const handleSelectAll = (e) => {
-    setSelectedCourses(e.target.checked ? courses.map((course) => course._id) : [])
-  }
-
-  const handleSelectCourse = (courseId) => {
-    setSelectedCourses((prev) =>
-      prev.includes(courseId) ? prev.filter((id) => id !== courseId) : [...prev, courseId],
-    )
+  const handleUserAction = (courseId, action) => {
+    if (action === 'add') {
+      setModalState({ add: true, edit: false, delete: false, courseIdToAction: null })
+    } else if (action === 'edit') {
+      const courseToEditData = courses.find(course => course._id === courseId)
+      setCourseToEdit(courseToEditData)
+      setModalState({ add: false, edit: true, delete: false, courseIdToAction: courseId })
+    } else if (action === 'delete') {
+      setModalState({ add: false, edit: false, delete: true, courseIdToAction: courseId })
+    }
   }
 
   const handleCourseAction = async (action, courseData = null) => {
     try {
-      let res = null
-
-      if (action === 'add' && courseData) {
-        res = await CourseService.addCourse(courseData)
+      const courseId = modalState.courseIdToAction
+      const formattedData = { courseIds: courseId ? [courseId.toString()] : selectedCourses.map(id => id.toString()) }
+      if (action === 'add') {
+        await CourseService.addCourse(courseData)
+      } else if (action === 'edit') {
+        await CourseService.updateCourse(courseId, courseData)
+      } else if (action === 'delete') {
+        await CourseService.deleteCourses(formattedData)
       }
 
       fetchCourses()
       closeModal()
     } catch (error) {
-      const errorMessage = error?.response?.data?.message || 'An error occurred'
-      console.error(`Error ${action} course:`, errorMessage)
-
-      setErrorAddCourses(error)
+      console.error(`Error ${action} course:`, error)
     }
+  }
+
+  const handleSelectAll = (e) => {
+    setSelectedCourses(courses.length === selectedCourses.length ? [] : courses.map(course => course._id))
+  }
+
+  const handleSelectedCourse = (courseId) => {
+    setSelectedCourses(prevSelectedCourses =>
+      prevSelectedCourses.includes(courseId)
+        ? prevSelectedCourses.filter(id => id !== courseId)
+        : [...prevSelectedCourses, courseId]
+    )
   }
   const isDeleteButtonEnabled = selectedCourses.length > 0
   const isHeaderCheckboxChecked = courses.length > 0 && selectedCourses.length === courses.length
@@ -114,119 +131,39 @@ const CoursesManagementPage = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <CInputGroupText style={{ cursor: 'pointer' }} onClick={handleSearch}>
+        <CInputGroupText>
           <CIcon icon={cilSearch} />
         </CInputGroupText>
       </CInputGroup>
 
       <CContainer className="d-flex justify-content-end mb-4 gap-3">
-        <CButton onClick={() => openModal('add')} color="primary" size="sm">
+        <CButton onClick={() => handleUserAction(null, 'add')} color="primary" size="sm">
           Add course
         </CButton>
         <CButton
           color="primary"
           size="sm"
           disabled={!isDeleteButtonEnabled}
-          onClick={() => openModal('delete')}
+          onClick={() => handleUserAction(null, 'delete')}
         >
           Delete
         </CButton>
       </CContainer>
 
-      <CListGroup>
-        <CTable hover responsive>
-          <CTableHead color="primary">
-            <CTableRow className="textprimaryy">
-              <CTableHeaderCell>
-                <CFormCheck checked={isHeaderCheckboxChecked} onChange={handleSelectAll} />
-              </CTableHeaderCell>
-              <CTableHeaderCell className="col-1" />
-              <CTableHeaderCell className="col-4">Name</CTableHeaderCell>
-              <CTableHeaderCell className="col-4">Description</CTableHeaderCell>
-              <CTableHeaderCell className="col-1">Modules</CTableHeaderCell>
-              <CTableHeaderCell className="text-center col-3">Action</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {courses.map((course) => (
-              <CTableRow
-                key={course._id}
-                onClick={() =>
-                  navigate(bindRouteParams(RouteMap.CourseModulesManagementPage, [course._id]))
-                }
-              >
-                <CTableDataCell>
-                  <CFormCheck
-                    checked={selectedCourses.includes(course._id)}
-                    onChange={() => handleSelectCourse(course._id)}
-                  />
-                </CTableDataCell>
-                <CTableDataCell>
-                  <CCardImage
-                    src={course.backgroundImg}
-                    style={{ maxWidth: '100px', width: 'auto' }}
-                  />
-                </CTableDataCell>
-                <CTableDataCell className="text-course">{course.title}</CTableDataCell>
-                <CTableDataCell className="text-course">{course.description}</CTableDataCell>
-                <CTableDataCell className="text-course">
-                  {course.modules?.length || 0}
-                </CTableDataCell>
-                <CTableDataCell className="text-center">
-                  <CTooltip content="Chi tiết khoá học " placement="top">
-                    <CButton
-                      size="sm"
-                      className="me-2"
-                      onClick={() =>
-                        navigate(
-                          bindRouteParams(RouteMap.CourseModulesManagementPage, [course._id]),
-                        )
-                      }
-                    >
-                      <CIcon icon={cilExternalLink} />
-                    </CButton>
-                  </CTooltip>
-                  <CTooltip content="Thêm học viên" placement="top">
-                    <CButton
-                      size="sm"
-                      className="me-2"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        navigate(bindRouteParams(RouteMap.CourseUsersManagementPage, [course._id]))
-                      }}
-                    >
-                      <CIcon icon={cilUser} />
-                    </CButton>
-                  </CTooltip>
-                  <CTooltip content="Edit khoá học" placement="top">
-                    <CButton
-                      size="sm"
-                      className="me-2"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        openModal('edit', course)
-                      }}
-                    >
-                      <CIcon icon={cilPencil} />
-                    </CButton>
-                  </CTooltip>
-                  <CTooltip content="Xoá khoá học" placement="top">
-                    <CButton
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        openModal('delete', course)
-                      }}
-                    >
-                      <CIcon icon={cilTrash} style={{ color: 'red' }} />
-                    </CButton>
-                  </CTooltip>
-                </CTableDataCell>
-              </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
-      </CListGroup>
+      <CourseTable
+        courses={courses}
+        handleUserAction={handleUserAction}
+        handleSelectedCourse={handleSelectedCourse}
+        selectedCourses={selectedCourses}
+        isHeaderCheckboxChecked={isHeaderCheckboxChecked}
+        handleSelectAll={handleSelectAll}
+      />
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
 
       <CModal
         visible={modalState.add}
