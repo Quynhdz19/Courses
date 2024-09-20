@@ -18,8 +18,9 @@ import {
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
-  CTableRow, CTooltip
-} from "@coreui/react";
+  CTableRow,
+  CTooltip,
+} from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
@@ -34,6 +35,7 @@ const CoursesManagementPage = () => {
   const [modalState, setModalState] = useState({ add: false, edit: false, delete: false })
   const [courseToEdit, setCourseToEdit] = useState(null)
   const [courseToDelete, setCourseToDelete] = useState(null)
+  const [error, setErrorAddCourses] = useState({})
   const [selectedCourses, setSelectedCourses] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [searchQuery, setSearchQuery] = useState({
@@ -85,16 +87,21 @@ const CoursesManagementPage = () => {
 
   const handleCourseAction = async (action, courseData = null) => {
     try {
-      if (action === 'add') {
-        await CourseService.addCourse(courseData)
-      }
-      fetchCourses()
-    } catch (error) {
-      console.error(`Error ${action} course:`, error)
-    }
-    closeModal()
-  }
+      let res = null
 
+      if (action === 'add' && courseData) {
+        res = await CourseService.addCourse(courseData)
+      }
+
+      fetchCourses()
+      closeModal()
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || 'An error occurred'
+      console.error(`Error ${action} course:`, errorMessage)
+
+      setErrorAddCourses(error)
+    }
+  }
   const isDeleteButtonEnabled = selectedCourses.length > 0
   const isHeaderCheckboxChecked = courses.length > 0 && selectedCourses.length === courses.length
 

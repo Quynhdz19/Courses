@@ -31,6 +31,16 @@ const _navAdmin = [
     to: RouteMap.CoursesManagementPage,
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
+  {
+    component: CNavTitle,
+    name: 'Học viên',
+  },
+  {
+    component: CNavItem,
+    name: 'Quản lý học viên',
+    to: RouteMap.CoursesListPage,
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
 ]
 
 export default _navAdmin

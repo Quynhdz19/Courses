@@ -21,7 +21,7 @@ import {
   CTooltip,
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom'
 import CourseService from 'src/services/CourseService'
 import DeleteModal from '../../components/courses-management/courses/DeleteModal'
 import BaseInputLesson from '../../components/courses-management/lessons/BaseInputLesson'
@@ -157,10 +157,8 @@ const CourseLessonsManagementPage = () => {
               <CTableRow
                 key={lesson._id}
                 onClick={() => {
-                  console.log(courseId, lesson._id)
                   navigate(bindRouteParams(RouteMap.LessonPage, [courseId, lesson._id]))
-                }
-                }
+                }}
               >
                 <CTableDataCell>
                   <CFormCheck

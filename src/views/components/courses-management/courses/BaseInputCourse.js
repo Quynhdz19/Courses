@@ -32,6 +32,10 @@ const BaseInputCourse = ({ courseToEdit, onSubmit }) => {
   }, [courseToEdit])
 
   const handleSubmit = () => {
+    if (!title || !description || !image) {
+      alert('Bắt buộc nhập tất cả field.')
+      return
+    }
     onSubmit({
       title,
       description,
