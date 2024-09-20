@@ -1,4 +1,4 @@
-import { cilMediaPlay, cilMinus, cilPlus } from '@coreui/icons'
+import { cilCheckAlt, cilMediaPlay, cilMinus, cilPlus } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CCard, CCardBody, CCardTitle, CCollapse, CListGroup, CListGroupItem } from '@coreui/react'
 import PropTypes from 'prop-types'
@@ -32,7 +32,9 @@ const CourseDetailModuleCollapse = (props) => {
               justifyContent: 'space-between',
             }}
           >
-            {props.module.title}
+            <div className="line-clamp" style={{ WebkitLineClamp: 3 }}>
+              {props.module.title}
+            </div>
             <div>{visible ? <CIcon icon={cilMinus} /> : <CIcon icon={cilPlus} />}</div>
           </div>
         </CCardTitle>
@@ -54,9 +56,11 @@ const CourseDetailModuleCollapse = (props) => {
                   }}
                 >
                   <div style={{ marginRight: '12px' }}>
-                    <CIcon icon={cilMediaPlay} />
+                    <CIcon icon={lesson.isLearned ? cilCheckAlt : cilMediaPlay} />
                   </div>
-                  {lesson.title}
+                  <div className="line-clamp" style={{ WebkitLineClamp: 3 }}>
+                    {lesson.title}
+                  </div>
                 </div>
               </CListGroupItem>
             ))}
