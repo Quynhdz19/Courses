@@ -1,6 +1,5 @@
 import React from 'react'
 import AppContent from './components/AppContent'
-import AppFooter from './components/AppFooter'
 import AppHeader from './components/header/AppHeader'
 import AppSidebar from './components/sidebar/AppSidebar'
 
@@ -13,7 +12,6 @@ const DefaultLayout = () => {
         <div className="body flex-grow-1">
           <AppContent />
         </div>
-        <AppFooter />
       </div>
     </>
   )
