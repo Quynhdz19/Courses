@@ -1,6 +1,5 @@
 import axiosInstance from './axios'
 import BaseService from './BaseService'
-import CourseService from "src/services/CourseService";
 
 class UserService extends BaseService {
   async addUser(formData) {
@@ -76,5 +75,5 @@ class UserService extends BaseService {
   }
 }
 
-const CourseServiceuserService = new UserService(axiosInstance)
+const userService = new UserService(axiosInstance)
 export default userService

@@ -61,8 +61,30 @@ const CourseLessonsManagementPage = () => {
     setLessonToEdit(null)
     setLessonToDelete(null)
   }
+  const getVideoDuration = (videoFile) => {
+    return new Promise((resolve, reject) => {
+      const videoElement = document.createElement('video')
+      const videoUrl = URL.createObjectURL(videoFile)
+
+      videoElement.src = videoUrl
+
+      videoElement.onloadedmetadata = () => {
+        resolve(videoElement.duration)
+        URL.revokeObjectURL(videoUrl) // Clean up the object URL
+      }
+
+      videoElement.onerror = () => {
+        reject('Error loading video metadata')
+        URL.revokeObjectURL(videoUrl) // Clean up even in case of error
+      }
+    })
+  }
 
   const handleLessonAction = async (action, lessonData = null) => {
+    console.log('ddddd', lessonData)
+    const videoDuration = await getVideoDuration(lessonData.video)
+    console.log('Video duration:', videoDuration)
+
     const presigned = await CourseService.getUploadPresignedUrl({
       filename: lessonData.video.name,
       filetype: lessonData.video.type,

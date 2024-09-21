@@ -10,10 +10,6 @@ const _navAdmin = [
     name: 'Trang chủ',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    },
   },
   {
     component: CNavTitle,
@@ -38,7 +34,7 @@ const _navAdmin = [
   {
     component: CNavItem,
     name: 'Quản lý học viên',
-    to: RouteMap.CoursesListPage,
+    to: RouteMap.ManagementUser,
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
 ]

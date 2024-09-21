@@ -5,6 +5,7 @@ export const RouteMap = {
 
   HomePage: '/',
   DashboardPage: '/dashboard',
+  ManagementUser: '/a/users',
 
   CoursesListPage: '/courses',
   CourseDetailPage: '/courses/:courseId',
