@@ -142,130 +142,131 @@ const CourseLessonsManagementPage = () => {
       }
       fetchModule()
       closeModal()
-    try {
-      const lessonId = modalState.lessonIdToAction
-      const formattedData = { lessonIds: lessonId ? [lessonId.toString()] : selectedLessons.map(id => id.toString()) }
-      if (action === 'add') {
-        await LessonService.addLesson(moduleId, {
-          title: lessonData.title,
-          description: lessonData.description,
-          s3VideoKey: lessonData.s3VideoKey,
-        })
-      } else if (action === 'edit') {
-        await LessonService.updateLesson(lessonToEdit._id, lessonData)
-      } else if (action === 'delete') {
-        await LessonService.deleteLessons(moduleId, formattedData)
+      try {
+        const lessonId = modalState.lessonIdToAction
+        const formattedData = { lessonIds: lessonId ? [lessonId.toString()] : selectedLessons.map(id => id.toString()) }
+        if (action === 'add') {
+          await LessonService.addLesson(moduleId, {
+            title: lessonData.title,
+            description: lessonData.description,
+            s3VideoKey: lessonData.s3VideoKey,
+          })
+        } else if (action === 'edit') {
+          await LessonService.updateLesson(lessonToEdit._id, lessonData)
+        } else if (action === 'delete') {
+          await LessonService.deleteLessons(moduleId, formattedData)
+        }
+
+        fetchLessons()
+        closeModal()
+      } catch (error) {
+        console.error(`Error ${action} lesson:`, error)
       }
-
-      fetchLessons()
-      closeModal()
-    } catch (error) {
-      console.error(`Error ${action} lesson:`, error)
     }
-  }
 
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      setSelectedLessons(lessons.map((lesson) => lesson._id))
-    } else {
-      setSelectedLessons([])
+    const handleSelectAll = (e) => {
+      if (e.target.checked) {
+        setSelectedLessons(lessons.map((lesson) => lesson._id))
+      } else {
+        setSelectedLessons([])
+      }
     }
-  }
 
-  const handleSelectedLesson = (lessonId) => {
-    if (selectedLessons.includes(lessonId)) {
-      setSelectedLessons(selectedLessons.filter((id) => id !== lessonId))
-    } else {
-      setSelectedLessons([...selectedLessons, lessonId])
+    const handleSelectedLesson = (lessonId) => {
+      if (selectedLessons.includes(lessonId)) {
+        setSelectedLessons(selectedLessons.filter((id) => id !== lessonId))
+      } else {
+        setSelectedLessons([...selectedLessons, lessonId])
+      }
     }
-  }
 
-  const isDeleteButtonEnabled = selectedLessons.length > 0
-  const isHeaderCheckboxChecked = lessons.length > 0 && selectedLessons.length === lessons.length
+    const isDeleteButtonEnabled = selectedLessons.length > 0
+    const isHeaderCheckboxChecked = lessons.length > 0 && selectedLessons.length === lessons.length
 
-  return (
-    <div>
-      <CInputGroup className="mb-3">
-        <CFormInput
-          type="text"
-          placeholder="Search Lessons"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <CInputGroupText style={{ cursor: 'pointer' }}>
-          <CIcon icon={cilSearch} />
-        </CInputGroupText>
-      </CInputGroup>
-
-      <CContainer className="d-flex justify-content-end mb-4 gap-3">
-        <CButton onClick={() => handleUserAction(null, 'add')} color="primary" size="sm">
-          Add lesson
-        </CButton>
-        <CButton
-          color="primary"
-          size="sm"
-          disabled={!isDeleteButtonEnabled}
-          onClick={() => handleUserAction(null, 'delete')}
-        >
-          Delete
-        </CButton>
-      </CContainer>
-
-      <CListGroup>
-        <LessonTable
-          lessons={lessons}
-          handleUserAction={handleUserAction}
-          handleSelectedLesson={handleSelectedLesson}
-          selectedLessons={selectedLessons}
-          isHeaderCheckboxChecked={isHeaderCheckboxChecked}
-          handleSelectAll={handleSelectAll}
-        />
-
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </CListGroup>
-
-      <CModal
-        visible={modalState.add}
-        onClose={closeModal}
-        backdrop="static"
-        className="modal-lg d-flex justify-content-center align-items-center"
-      >
-        <CModalHeader>
-          <CModalTitle>Add lesson</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <BaseInputLesson onSubmit={(lessonData) => handleLessonAction('add', lessonData)} />
-        </CModalBody>
-      </CModal>
-
-      <CModal
-        visible={modalState.edit}
-        onClose={closeModal}
-        backdrop="static"
-        className="modal-lg d-flex justify-content-center align-items-center"
-      >
-        <CModalHeader>
-          <CModalTitle>Edit lesson</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <BaseInputLesson
-            lessonToEdit={lessonToEdit}
-            onSubmit={(lessonData) => handleLessonAction('edit', lessonData)}
+    return (
+      <div>
+        <CInputGroup className="mb-3">
+          <CFormInput
+            type="text"
+            placeholder="Search Lessons"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </CModalBody>
-      </CModal>
+          <CInputGroupText style={{ cursor: 'pointer' }}>
+            <CIcon icon={cilSearch} />
+          </CInputGroupText>
+        </CInputGroup>
 
-      <DeleteModal
-        visible={modalState.delete}
-        onClose={closeModal}
-        onConfirm={() => handleLessonAction('delete')}
-      />
-    </div>
-  )
+        <CContainer className="d-flex justify-content-end mb-4 gap-3">
+          <CButton onClick={() => handleUserAction(null, 'add')} color="primary" size="sm">
+            Add lesson
+          </CButton>
+          <CButton
+            color="primary"
+            size="sm"
+            disabled={!isDeleteButtonEnabled}
+            onClick={() => handleUserAction(null, 'delete')}
+          >
+            Delete
+          </CButton>
+        </CContainer>
+
+        <CListGroup>
+          <LessonTable
+            lessons={lessons}
+            handleUserAction={handleUserAction}
+            handleSelectedLesson={handleSelectedLesson}
+            selectedLessons={selectedLessons}
+            isHeaderCheckboxChecked={isHeaderCheckboxChecked}
+            handleSelectAll={handleSelectAll}
+          />
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </CListGroup>
+
+        <CModal
+          visible={modalState.add}
+          onClose={closeModal}
+          backdrop="static"
+          className="modal-lg d-flex justify-content-center align-items-center"
+        >
+          <CModalHeader>
+            <CModalTitle>Add lesson</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <BaseInputLesson onSubmit={(lessonData) => handleLessonAction('add', lessonData)} />
+          </CModalBody>
+        </CModal>
+
+        <CModal
+          visible={modalState.edit}
+          onClose={closeModal}
+          backdrop="static"
+          className="modal-lg d-flex justify-content-center align-items-center"
+        >
+          <CModalHeader>
+            <CModalTitle>Edit lesson</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <BaseInputLesson
+              lessonToEdit={lessonToEdit}
+              onSubmit={(lessonData) => handleLessonAction('edit', lessonData)}
+            />
+          </CModalBody>
+        </CModal>
+
+        <DeleteModal
+          visible={modalState.delete}
+          onClose={closeModal}
+          onConfirm={() => handleLessonAction('delete')}
+        />
+      </div>
+    )
+  }
 }
 
 export default CourseLessonsManagementPage
