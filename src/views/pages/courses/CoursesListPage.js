@@ -14,8 +14,8 @@ import { Carousel } from 'antd'
 import React, { useEffect, useState } from 'react'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
 import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
-import CourseService from 'src/services/CourseService'
-
+import userService from 'src/services/UserService'
+import './LessonPage.scss'
 const CoursesListPage = () => {
   const [courses, setCourses] = useState([])
 
@@ -48,8 +48,8 @@ const CoursesListPage = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await CourseService.getCourses({})
-      setCourses(response.data)
+      const response = await userService.getCourses({})
+      setCourses(response)
     } catch (error) {
       console.error('Error fetching courses:', error)
     }
@@ -82,7 +82,11 @@ const CoursesListPage = () => {
       <CContainer style={{ margin: 0 }}>
         <CRow xs={{ cols: 1, gutter: 4 }} sm={{ cols: 2 }} lg={{ cols: 3 }} xl={{ cols: 4 }}>
           {courses.map((course) => (
-            <CLink key={course._id} href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}>
+            <CLink
+              className="lesson-content"
+              key={course._id}
+              href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}
+            >
               <CCard>
                 <CCardImage
                   size="md"

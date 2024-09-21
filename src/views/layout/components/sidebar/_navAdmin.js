@@ -17,12 +17,6 @@ const _navAdmin = [
   },
   {
     component: CNavItem,
-    name: 'Review courses',
-    to: RouteMap.CoursesListPage,
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
     name: 'Quản lý courses',
     to: RouteMap.CoursesManagementPage,
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,

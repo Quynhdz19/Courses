@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import CourseService from 'src/services/CourseService'
 import CourseDetailModuleCollapse from '../../components/courses/detail/CollapseModule'
 import './LessonPage.scss'
+import lessonService from 'src/services/LessonService'
 
 const LessonPage = () => {
   const { courseId, lessonId } = useParams()
@@ -29,7 +30,7 @@ const LessonPage = () => {
 
   const getLessonDetail = async () => {
     try {
-      const response = await CourseService.getLessonDetail(lessonId)
+      const response = await lessonService.getLessonDetail(lessonId)
       setLinkStream(response.data.linkStream)
     } catch (error) {
       console.error('Error fetching courses:', error)

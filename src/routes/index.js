@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import DefaultLayout from 'src/views/layout/DefaultLayout'
 import { RouteMap } from './routeMap'
-import UsersManagement from "src/views/pages/users-management/UsersManagement";
+import UsersManagement from 'src/views/pages/users-management/UsersManagement'
 
 const LoginPage = lazy(() => import('src/views/pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('src/views/pages/auth/RegisterPage'))

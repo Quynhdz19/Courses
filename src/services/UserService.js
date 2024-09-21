@@ -40,7 +40,7 @@ class UserService extends BaseService {
 
   async getCourses() {
     try {
-      const response = await this.get(`/users/courses`)
+      const response = await this.get(`/users/courses/get-by-user`)
       return response.data
     } catch (error) {
       throw new Error(error.response?.data)

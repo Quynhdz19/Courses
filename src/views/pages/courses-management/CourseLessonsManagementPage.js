@@ -20,12 +20,19 @@ import LessonTable from 'src/views/components/courses-management/lessons/LessonT
 import DeleteModal from 'src/views/components/courses-management/courses/DeleteModal'
 import Pagination from 'src/views/components/courses-management/courses/Pagination'
 import './CoursesManagementPage.scss'
+import moduleService from 'src/services/ModuleService'
+import lessonService from 'src/services/LessonService'
 
 const CourseLessonsManagementPage = () => {
   const [lessons, setLessons] = useState([])
   const [lessonToEdit, setLessonToEdit] = useState(null)
   const [selectedLessons, setSelectedLessons] = useState([])
-  const [modalState, setModalState] = useState({ add: false, edit: false, delete: false, lessonIdToAction: null })
+  const [modalState, setModalState] = useState({
+    add: false,
+    edit: false,
+    delete: false,
+    lessonIdToAction: null,
+  })
 
   const { moduleId } = useParams()
 
@@ -68,7 +75,6 @@ const CourseLessonsManagementPage = () => {
     setCurrentPage(page)
   }
 
-
   const closeModal = () => {
     setModalState({ add: false, edit: false, delete: false, lessonIdToAction: null })
     setLessonToEdit(null)
@@ -103,13 +109,9 @@ const CourseLessonsManagementPage = () => {
       }
     })
   }
-
   const handleLessonAction = async (action, lessonData = null) => {
-    console.log('ddddd', lessonData)
     const videoDuration = await getVideoDuration(lessonData.video)
-    console.log('Video duration:', videoDuration)
-
-    const presigned = await CourseService.getUploadPresignedUrl({
+    const presigned = await lessonService.getUploadPresignedUrl({
       filename: lessonData.video.name,
       filetype: lessonData.video.type,
     })
@@ -125,40 +127,24 @@ const CourseLessonsManagementPage = () => {
       lessonData.s3VideoKey = presigned.s3VideoKey
       try {
         if (action === 'add') {
-          await CourseService.addLesson(moduleId, {
+          await lessonService.addLesson(moduleId, {
             title: lessonData.title,
             description: lessonData.description,
             s3VideoKey: presigned.s3VideoKey,
-          })
-        }
-      } catch (error) {
-        console.error(`Error ${action} lesson:`, error)
-      }
-      fetchModule()
-      setSelectedLessons([])
-      closeModal()
-      try {
-        const lessonId = modalState.lessonIdToAction
-        const formattedData = { lessonIds: lessonId ? [lessonId.toString()] : selectedLessons.map(id => id.toString()) }
-        if (action === 'add') {
-          await LessonService.addLesson(moduleId, {
-            title: lessonData.title,
-            description: lessonData.description,
-            s3VideoKey: lessonData.s3VideoKey,
+            duration: videoDuration,
           })
         } else if (action === 'edit') {
-          await LessonService.updateLesson(lessonToEdit._id, lessonData)
+          await lessonService.updateLesson(lessonToEdit._id, lessonData)
         } else if (action === 'delete') {
-          await LessonService.deleteLessons(moduleId, formattedData)
+          await lessonService.deleteLessons(moduleId, formattedData)
         }
-
-        fetchLessons()
-        closeModal()
       } catch (error) {
         console.error(`Error ${action} lesson:`, error)
       }
+      fetchLessons()
+      setSelectedLessons([])
+      closeModal()
     }
-
   }
   const handleSelectAll = (e) => {
     if (e.target.checked) {
