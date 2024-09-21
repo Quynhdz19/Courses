@@ -11,13 +11,6 @@ import {
   CModalBody,
   CModalHeader,
   CModalTitle,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTooltip,
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -48,6 +41,7 @@ const CourseModulesManagementPage = () => {
 
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
+      setCurrentPage(1)
       setSearchQuery(prevQuery => ({ ...prevQuery, search: searchTerm, page: 1 }))
     }, 200)
 

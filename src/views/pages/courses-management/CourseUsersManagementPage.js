@@ -45,6 +45,7 @@ const CourseUsersManagementPage = () => {
 
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
+      setCurrentPage(1)
       setSearchQuery(prevQuery => ({ ...prevQuery, search: searchTerm, page: 1 }))
     }, 100)
 
@@ -262,6 +263,7 @@ const CourseUsersManagementPage = () => {
           <UsersTable
             users={users}
             showAddButton={true}
+            showEditButton={false}
             showDeleteButton={false}
             handleUserAction={handleUserAction}
             handleSelectedUser={handleSelectedUser}

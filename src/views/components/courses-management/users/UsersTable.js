@@ -9,7 +9,7 @@ import {
   CFormCheck,
   CButton,
 } from '@coreui/react'
-import { cilTrash, cilUserPlus } from '@coreui/icons'
+import { cilTrash, cilUserPlus, cilPencil } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 const UsersTable = ({
@@ -18,6 +18,7 @@ const UsersTable = ({
   handleSelectedUser,
   handleUserAction,
   showAddButton,
+  showEditButton,
   showDeleteButton,
   isHeaderCheckboxChecked,
   handleSelectAll,
@@ -30,8 +31,8 @@ const UsersTable = ({
         </CTableHeaderCell>
         <CTableHeaderCell className="col-5">Name</CTableHeaderCell>
         <CTableHeaderCell className="col-3">Email</CTableHeaderCell>
-        <CTableHeaderCell className="col-3">Phone</CTableHeaderCell>
-        <CTableHeaderCell className="text-center col-1">Action</CTableHeaderCell>
+        <CTableHeaderCell className="col-2">Phone</CTableHeaderCell>
+        <CTableHeaderCell className="text-center col-2">Action</CTableHeaderCell>
       </CTableRow>
     </CTableHead>
     <CTableBody>
@@ -51,6 +52,11 @@ const UsersTable = ({
               {showAddButton && (
                 <CButton size="sm" onClick={() => handleUserAction(user._id, 'add')}>
                   <CIcon icon={cilUserPlus} style={{ color: 'green' }} />
+                </CButton>
+              )}
+              {showEditButton && (
+                <CButton size="sm" onClick={() => handleUserAction(user._id, 'edit')}>
+                  <CIcon icon={cilPencil} />
                 </CButton>
               )}
               {showDeleteButton && (
