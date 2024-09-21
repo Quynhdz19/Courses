@@ -10,17 +10,9 @@ import {
   CModalBody,
   CModalHeader,
   CModalTitle,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTooltip,
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import CourseService from 'src/services/CourseService'
-import ModuleService from 'src/services/ModuleService'
 import BaseInputCourse from 'src/views/components/courses-management/courses/BaseInputCourse'
 import DeleteModal from 'src/views/components/courses-management/courses/DeleteModal'
 import Pagination from 'src/views/components/courses-management/courses/Pagination'
@@ -31,8 +23,6 @@ const CoursesManagementPage = () => {
   const [courses, setCourses] = useState([])
   const [modalState, setModalState] = useState({ add: false, edit: false, delete: false, courseIdToAction: null })
   const [courseToEdit, setCourseToEdit] = useState(null)
-  const [courseToDelete, setCourseToDelete] = useState(null)
-  const [error, setErrorAddCourses] = useState({})
   const [selectedCourses, setSelectedCourses] = useState([])
 
   const [totalPages, setTotalPages] = useState(0)
@@ -48,6 +38,7 @@ const CoursesManagementPage = () => {
 
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
+      setCurrentPage(1)
       setSearchQuery(prevQuery => ({ ...prevQuery, search: searchTerm, page: 1 }))
     }, 200)
 
@@ -102,6 +93,7 @@ const CoursesManagementPage = () => {
       }
 
       fetchCourses()
+      setSelectedCourses([])
       closeModal()
     } catch (error) {
       console.error(`Error ${action} course:`, error)

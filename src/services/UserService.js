@@ -2,13 +2,9 @@ import axiosInstance from './axios'
 import BaseService from './BaseService'
 
 class UserService extends BaseService {
-  async addUser(formData) {
+  async addUser(userData) {
     try {
-      const response = await this.post('/users', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      const response = await this.post('/users', userData)
       return response.data
     } catch (error) {
       throw new Error(error.response?.data)
@@ -33,13 +29,9 @@ class UserService extends BaseService {
     }
   }
 
-  async updateUser(userId, formData) {
+  async updateUser(userId, userData) {
     try {
-      const response = await this.put(`/users/${userId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      const response = await this.put(`/users/${userId}`, userData)
       return response.data
     } catch (error) {
       throw new Error(error.response?.data)
@@ -64,9 +56,9 @@ class UserService extends BaseService {
     }
   }
 
-  async deleteUser(userId) {
+  async deleteUsers(userData) {
     try {
-      const response = await this.delete(`/users/${userId}`)
+      const response = await this.delete(`/users/remove-users`, { data: userData })
       return response.data
     } catch (error) {
       throw new Error(error.response?.data)
