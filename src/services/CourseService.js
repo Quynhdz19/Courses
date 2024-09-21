@@ -24,53 +24,33 @@ class CourseService extends BaseService {
     }
   }
 
-  async getCourses(searchParams) {
+  async getCourses(searchParams = {}) {
     try {
       const response = await this.get('/courses', searchParams)
+      return response
+    } catch (error) {
+      throw new Error(error.response?.data)
+    }
+  }
+
+  async updateCourse(courseId, courseData) {
+    try {
+      const response = await this.put(`/courses/${courseId}`, courseData)
+      return response
+    } catch (error) {
+      throw new Error(error.response?.data)
+    }
+  }
+
+  async deleteCourses(coursesData) {
+    try {
+      const response = await this.delete('/courses/remove-courses', { data: coursesData })
       return response.data
     } catch (error) {
       throw new Error(error.response?.data)
     }
   }
 
-  async addModule(courseId, moduleData) {
-    try {
-      const response = await this.post(`/courses/${courseId}/modules`, moduleData)
-      return response.data
-    } catch (error) {
-      throw new Error(error.response?.data)
-    }
-  }
-
-  async addLesson(moduleId, formData) {
-    try {
-      const response = await this.post(`/courses/modules/${moduleId}/lessons`, formData)
-      return response.data
-    } catch (error) {
-      throw new Error(error.response?.data)
-    }
-  }
-
-  async getUploadPresignedUrl(formData) {
-    try {
-      const response = await this.post(
-        `/courses/modules/lessons/get-upload-presigned-url`,
-        formData,
-      )
-      return response.data
-    } catch (error) {
-      throw new Error(error.response?.data)
-    }
-  }
-
-  async getDetailModule(moduleId) {
-    try {
-      const response = await this.get(`/courses/modules/${moduleId}`)
-      return response.data
-    } catch (error) {
-      throw new Error(error.response?.data)
-    }
-  }
   async addUsers(courseId, usersData) {
     try {
       const response = await this.post(`/courses/${courseId}/add-users`, usersData)
@@ -93,24 +73,6 @@ class CourseService extends BaseService {
     try {
       const response = await this.delete(`/courses/${courseId}/remove-users`, { data: usersData })
       return response.data
-    } catch (error) {
-      throw new Error(error.response?.data)
-    }
-  }
-
-  async getLessonDetail(lessonId) {
-    try {
-      const response = await this.get(`/courses/modules/lessons/${lessonId}`)
-      return response
-    } catch (error) {
-      throw new Error(error.response?.data)
-    }
-  }
-
-  async getUserOfCourseOrNo(courseId, searchParams = {}) {
-    try {
-      const response = await this.get(`/courses/${courseId}/users`, searchParams)
-      return response
     } catch (error) {
       throw new Error(error.response?.data)
     }

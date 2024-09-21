@@ -49,7 +49,7 @@ const CoursesListPage = () => {
   const fetchCourses = async () => {
     try {
       const response = await CourseService.getCourses({})
-      setCourses(response)
+      setCourses(response.data)
     } catch (error) {
       console.error('Error fetching courses:', error)
     }

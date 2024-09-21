@@ -46,7 +46,6 @@ class UserService extends BaseService {
     }
   }
 
-
   async getCourses() {
     try {
       const response = await this.get(`/users/courses`)

@@ -10,12 +10,10 @@ import {
   CFormInput,
   CInputGroupText,
   CCard,
-  CCardBody,
-  CPagination,
-  CPaginationItem,
+  CCardBody
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilSearch, cilChevronCircleLeftAlt, cilChevronCircleRightAlt } from '@coreui/icons'
+import { cilSearch } from '@coreui/icons'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import CourseService from 'src/services/CourseService'
@@ -23,6 +21,7 @@ import UsersTable from '../../components/courses-management/users/UsersTable'
 import AddModal from '../../components/courses-management/courses/AddModal'
 import DeleteModal from '../../components/courses-management/courses/DeleteModal'
 import './CourseUsersManagementPage.scss'
+import Pagination from '../../components/courses-management/courses/Pagination'
 
 const CourseUsersManagementPage = () => {
   const [users, setUsers] = useState([])
@@ -40,24 +39,39 @@ const CourseUsersManagementPage = () => {
     size: 10,
     orderBy: 'createdAt',
     orderDirection: 'asc',
-    search: '',
-    isInCourse: '',
+    search: null,
+    isInCourse: true,
   })
 
   useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setSearchQuery(prevQuery => ({ ...prevQuery, search: searchTerm, page: 1 }))
+    }, 100)
+
+    return () => clearTimeout(debounceTimeout)
+  }, [searchTerm])
+
+  useEffect(() => {
     if (activeTab === 'users') {
-      fetchUsersCourse()
+      if (searchQuery.isInCourse === false) {
+        setSearchQuery(prevQuery => ({ ...prevQuery, isInCourse: true, page: 1 }))
+      } else {
+        fetchUsersCourse()
+      }
       setSelectedUsers([])
     } else if (activeTab === 'add-users') {
-      fetchUsers()
+      if (searchQuery.isInCourse === true) {
+        setSearchQuery(prevQuery => ({ ...prevQuery, isInCourse: false, page: 1 }))
+      } else {
+        fetchUsers()
+      }
       setSelectedUsers([])
     }
   }, [activeTab, searchQuery])
 
   const fetchUsers = async () => {
     try {
-      searchQuery.isInCourse = false
-      const response = await CourseService.getUserOfCourseOrNo(courseId, searchQuery)
+      const response = await CourseService.getUsers(courseId, searchQuery)
       setUsers(response.data)
       setTotalPages(response.metadata.totalPage)
     } catch (error) {
@@ -68,7 +82,7 @@ const CourseUsersManagementPage = () => {
   const fetchUsersCourse = async () => {
     try {
       searchQuery.isInCourse = true
-      const response = await CourseService.getUserOfCourseOrNo(courseId, searchQuery)
+      const response = await CourseService.getUsers(courseId, searchQuery)
       setUsersCourse(response.data)
       setTotalPages(response.metadata.totalPage)
     } catch (error) {
@@ -76,13 +90,8 @@ const CourseUsersManagementPage = () => {
     }
   }
 
-  const handleSearch = () => {
-    setSearchQuery((prevQuery) => ({ ...prevQuery, search: searchTerm, page: 1 }))
-    setCurrentPage(1)
-  }
-
   const handlePageChange = (page) => {
-    setSearchQuery((prevQuery) => ({ ...prevQuery, page }))
+    setSearchQuery(prevQuery => ({ ...prevQuery, page }))
     setCurrentPage(page)
   }
 
@@ -107,21 +116,15 @@ const CourseUsersManagementPage = () => {
   const handleCourseAction = async (action) => {
     try {
       const userId = modalState.userIdToAction
-      const formattedData = {
-        userIds: userId ? [userId.toString()] : selectedUsers.map((id) => id.toString()),
-      }
+      const formattedData = { userIds: userId ? [userId.toString()] : selectedUsers.map(id => id.toString()) }
       if (action === 'add') {
         await CourseService.addUsers(courseId, formattedData)
+        fetchUsers()
       } else if (action === 'delete') {
         await CourseService.deleteUsers(courseId, formattedData)
-      }
-      if (activeTab === 'users') {
         fetchUsersCourse()
-        setSelectedUsers([])
-      } else if (activeTab === 'add-users') {
-        fetchUsers()
-        setSelectedUsers([])
       }
+      setSelectedUsers([])
       closeModal()
     } catch (error) {
       console.error(`Error ${action} users:`, error)
@@ -204,7 +207,7 @@ const CourseUsersManagementPage = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <CInputGroupText style={{ cursor: 'pointer' }} onClick={handleSearch}>
+        <CInputGroupText>
           <CIcon icon={cilSearch} />
         </CInputGroupText>
       </CInputGroup>
@@ -212,9 +215,6 @@ const CourseUsersManagementPage = () => {
       {activeTab === 'users' && (
         <div>
           <CContainer className="d-flex justify-content-end mb-4 gap-3">
-            {/*<CButton onClick={() => setActiveTab('add-users')} color="primary" size="sm">*/}
-            {/*  Add User*/}
-            {/*</CButton>*/}
             <CButton onClick={() => setActiveTab('export-exl')} color="primary" size="sm">
               Export
             </CButton>
@@ -238,33 +238,11 @@ const CourseUsersManagementPage = () => {
             isHeaderCheckboxChecked={isHeaderCheckboxChecked}
             handleSelectAll={handleSelectAll}
           />
-          <div className="d-flex justify-content-center mt-3">
-            <CPagination aria-label="Page navigation example">
-              <CPaginationItem
-                aria-label="Previous"
-                disabled={currentPage === 1}
-                onClick={() => handlePageChange(currentPage - 1)}
-              >
-                <CIcon icon={cilChevronCircleLeftAlt} />
-              </CPaginationItem>
-              {[...Array(totalPages)].map((_, i) => (
-                <CPaginationItem
-                  key={i + 1}
-                  active={currentPage === i + 1}
-                  onClick={() => handlePageChange(i + 1)}
-                >
-                  {i + 1}
-                </CPaginationItem>
-              ))}
-              <CPaginationItem
-                aria-label="Next"
-                disabled={currentPage === totalPages}
-                onClick={() => handlePageChange(currentPage + 1)}
-              >
-                <CIcon icon={cilChevronCircleRightAlt} />
-              </CPaginationItem>
-            </CPagination>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </div>
       )}
 
@@ -292,33 +270,11 @@ const CourseUsersManagementPage = () => {
             handleSelectAll={handleSelectAll}
           />
 
-          <div className="d-flex justify-content-center mt-3">
-            <CPagination aria-label="Page navigation example">
-              <CPaginationItem
-                aria-label="Previous"
-                disabled={currentPage === 1}
-                onClick={() => handlePageChange(currentPage - 1)}
-              >
-                <CIcon icon={cilChevronCircleLeftAlt} />
-              </CPaginationItem>
-              {[...Array(totalPages)].map((_, i) => (
-                <CPaginationItem
-                  key={i + 1}
-                  active={currentPage === i + 1}
-                  onClick={() => handlePageChange(i + 1)}
-                >
-                  {i + 1}
-                </CPaginationItem>
-              ))}
-              <CPaginationItem
-                aria-label="Next"
-                disabled={currentPage === totalPages}
-                onClick={() => handlePageChange(currentPage + 1)}
-              >
-                <CIcon icon={cilChevronCircleRightAlt} />
-              </CPaginationItem>
-            </CPagination>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </div>
       )}
 

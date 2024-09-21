@@ -1,9 +1,8 @@
-import { cilPencil, cilSearch, cilTrash } from '@coreui/icons'
+import { cilSearch } from '@coreui/icons'
 import { CIcon } from '@coreui/icons-react'
 import {
   CButton,
   CContainer,
-  CFormCheck,
   CFormInput,
   CInputGroup,
   CInputGroupText,
@@ -22,44 +21,75 @@ import {
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import CourseService from 'src/services/CourseService'
-import DeleteModal from '../../components/courses-management/courses/DeleteModal'
-import BaseInputLesson from '../../components/courses-management/lessons/BaseInputLesson'
-import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
+import LessonService from 'src/services/LessonService'
+import BaseInputLesson from 'src/views/components/courses-management/lessons/BaseInputLesson'
+import LessonTable from 'src/views/components/courses-management/lessons/LessonTable'
+import DeleteModal from 'src/views/components/courses-management/courses/DeleteModal'
+import Pagination from 'src/views/components/courses-management/courses/Pagination'
+import './CoursesManagementPage.scss'
 
 const CourseLessonsManagementPage = () => {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [moduleDetail, setModule] = useState([])
-  const [selectedLessons, setSelectedLessons] = useState([])
-  const [modalState, setModalState] = useState({ add: false, edit: false, delete: false })
+  const [lessons, setLessons] = useState([])
   const [lessonToEdit, setLessonToEdit] = useState(null)
-  const [lessonToDelete, setLessonToDelete] = useState(null)
+  const [selectedLessons, setSelectedLessons] = useState([])
+  const [modalState, setModalState] = useState({ add: false, edit: false, delete: false, lessonIdToAction: null })
 
-  const openModal = (type, lesson = null) => {
-    setModalState({ add: type === 'add', edit: type === 'edit', delete: type === 'delete' })
-    setLessonToEdit(lesson)
-    setLessonToDelete(lesson)
-  }
+  const { moduleId } = useParams()
 
-  const { courseId, moduleId } = useParams()
-  const navigate = useNavigate()
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchQuery, setSearchQuery] = useState({
+    page: 1,
+    size: 10,
+    orderBy: 'createdAt',
+    orderDirection: 'asc',
+    search: null,
+  })
+
   useEffect(() => {
-    fetchModule()
-  }, [])
+    const debounceTimeout = setTimeout(() => {
+      setSearchQuery((prevQuery) => ({ ...prevQuery, search: searchTerm, page: 1 }))
+    }, 200)
 
-  const fetchModule = async () => {
+    return () => clearTimeout(debounceTimeout)
+  }, [searchTerm])
+
+  useEffect(() => {
+    fetchLessons()
+  }, [searchQuery])
+
+  const fetchLessons = async () => {
     try {
-      const response = await CourseService.getDetailModule(moduleId)
-      setModule(response.lessons)
+      const response = await LessonService.getLessons(moduleId, searchQuery)
+      setLessons(response.data)
+      setTotalPages(response.metadata.totalPage)
     } catch (error) {
-      console.error('Error fetching courses:', error)
+      console.error('Error fetching lessons:', error)
     }
   }
 
+  const handlePageChange = (page) => {
+    setSearchQuery((prevQuery) => ({ ...prevQuery, page }))
+    setCurrentPage(page)
+  }
+
+
   const closeModal = () => {
-    setModalState({ add: false, edit: false, delete: false })
+    setModalState({ add: false, edit: false, delete: false, lessonIdToAction: null })
     setLessonToEdit(null)
-    setLessonToDelete(null)
+  }
+
+  const handleUserAction = (lessonId, action) => {
+    if (action === 'add') {
+      setModalState({ add: true, edit: false, delete: false, lessonIdToAction: null })
+    } else if (action === 'edit') {
+      const lessonToEditData = lessons.find((lesson) => lesson._id === lessonId)
+      setLessonToEdit(lessonToEditData)
+      setModalState({ add: false, edit: true, delete: false, lessonIdToAction: lessonId })
+    } else if (action === 'delete') {
+      setModalState({ add: false, edit: false, delete: true, lessonIdToAction: lessonId })
+    }
   }
   const getVideoDuration = (videoFile) => {
     return new Promise((resolve, reject) => {
@@ -112,6 +142,25 @@ const CourseLessonsManagementPage = () => {
       }
       fetchModule()
       closeModal()
+    try {
+      const lessonId = modalState.lessonIdToAction
+      const formattedData = { lessonIds: lessonId ? [lessonId.toString()] : selectedLessons.map(id => id.toString()) }
+      if (action === 'add') {
+        await LessonService.addLesson(moduleId, {
+          title: lessonData.title,
+          description: lessonData.description,
+          s3VideoKey: lessonData.s3VideoKey,
+        })
+      } else if (action === 'edit') {
+        await LessonService.updateLesson(lessonToEdit._id, lessonData)
+      } else if (action === 'delete') {
+        await LessonService.deleteLessons(moduleId, formattedData)
+      }
+
+      fetchLessons()
+      closeModal()
+    } catch (error) {
+      console.error(`Error ${action} lesson:`, error)
     }
   }
 
@@ -123,7 +172,7 @@ const CourseLessonsManagementPage = () => {
     }
   }
 
-  const handleSelectLesson = (lessonId) => {
+  const handleSelectedLesson = (lessonId) => {
     if (selectedLessons.includes(lessonId)) {
       setSelectedLessons(selectedLessons.filter((id) => id !== lessonId))
     } else {
@@ -132,7 +181,7 @@ const CourseLessonsManagementPage = () => {
   }
 
   const isDeleteButtonEnabled = selectedLessons.length > 0
-  const isHeaderCheckboxChecked = selectedLessons.length === moduleDetail.length
+  const isHeaderCheckboxChecked = lessons.length > 0 && selectedLessons.length === lessons.length
 
   return (
     <div>
@@ -149,64 +198,34 @@ const CourseLessonsManagementPage = () => {
       </CInputGroup>
 
       <CContainer className="d-flex justify-content-end mb-4 gap-3">
-        <CButton onClick={() => openModal('add')} color="primary" size="sm">
+        <CButton onClick={() => handleUserAction(null, 'add')} color="primary" size="sm">
           Add lesson
         </CButton>
         <CButton
-          color="danger"
+          color="primary"
           size="sm"
           disabled={!isDeleteButtonEnabled}
-          onClick={() => openModal('delete')}
+          onClick={() => handleUserAction(null, 'delete')}
         >
           Delete
         </CButton>
       </CContainer>
 
       <CListGroup>
-        <CTable hover responsive>
-          <CTableHead color="primary">
-            <CTableRow>
-              <CTableHeaderCell className="col-1">
-                <CFormCheck checked={isHeaderCheckboxChecked} onChange={handleSelectAll} />
-              </CTableHeaderCell>
-              <CTableHeaderCell className="col-4">Name</CTableHeaderCell>
-              <CTableHeaderCell className="col-4">Description</CTableHeaderCell>
-              <CTableHeaderCell className="text-center col-3">Action</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {moduleDetail.map((lesson) => (
-              <CTableRow
-                key={lesson._id}
-                onClick={() => {
-                  navigate(bindRouteParams(RouteMap.LessonPage, [courseId, lesson._id]))
-                }}
-              >
-                <CTableDataCell>
-                  <CFormCheck
-                    checked={selectedLessons.includes(lesson._id)}
-                    onChange={() => handleSelectLesson(lesson._id)}
-                  />
-                </CTableDataCell>
+        <LessonTable
+          lessons={lessons}
+          handleUserAction={handleUserAction}
+          handleSelectedLesson={handleSelectedLesson}
+          selectedLessons={selectedLessons}
+          isHeaderCheckboxChecked={isHeaderCheckboxChecked}
+          handleSelectAll={handleSelectAll}
+        />
 
-                <CTableDataCell>{lesson.title}</CTableDataCell>
-                <CTableDataCell>{lesson.description}</CTableDataCell>
-                <CTableDataCell className="text-center">
-                  <CTooltip content="Edit lesson" placement="top">
-                    <CButton size="sm" className="me-2">
-                      <CIcon icon={cilPencil} />
-                    </CButton>
-                  </CTooltip>
-                  <CTooltip content="Delete lesson" placement="top">
-                    <CButton size="sm">
-                      <CIcon icon={cilTrash} style={{ color: 'red' }} />
-                    </CButton>
-                  </CTooltip>
-                </CTableDataCell>
-              </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </CListGroup>
 
       <CModal
