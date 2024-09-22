@@ -60,6 +60,24 @@ class LessonService extends BaseService {
       throw new Error(error.response?.data)
     }
   }
+
+  async addNote(lessonId, noteData) {
+    try {
+      const response = await this.put(`/courses/modules/lessons/${lessonId}/add-user-note`, noteData)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data)
+    }
+  }
+
+  async updateNote(lessonId, noteData) {
+    try {
+      const response = await this.put(`/courses/modules/lessons/${lessonId}/update-user-note`, noteData)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data)
+    }
+  }
 }
 
 const lessonService = new LessonService(axiosInstance)
