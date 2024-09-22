@@ -60,7 +60,7 @@ const CoursesListPage = () => {
   const fetchAlCourses = async () => {
     try {
       const response = await CourseService.getCourses({})
-      setCourses(response)
+      setCourses(response.data)
     } catch (error) {
       console.error('Error fetching courses:', error)
     }
@@ -70,6 +70,10 @@ const CoursesListPage = () => {
     fetchAlCourses()
     fetchCoursesLearning()
   }, [])
+
+  const isLearningCourse = (courseId) => {
+    return coursesLeaning.some((course) => course._id === courseId)
+  }
 
   return (
     <div>
@@ -88,86 +92,69 @@ const CoursesListPage = () => {
           </div>
         ))}
       </Carousel>
-      <h2 className="mt-4 mb-2">Courses Đang Học</h2>
 
+      <h2 className="mt-4 mb-2">Courses Đang Học</h2>
       <CContainer style={{ margin: 0 }}>
         <CRow xs={{ cols: 1, gutter: 4 }} sm={{ cols: 2 }} lg={{ cols: 3 }} xl={{ cols: 4 }}>
           {coursesLeaning.map((course) => (
-            <CLink
-              className="lesson-content"
-              key={course._id}
-              href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}
-            >
-              <CCard>
-                <CCardImage
-                  size="md"
-                  src={course.backgroundImg}
-                  // status={item.image.status}
-                />
-                <CCardTitle>
-                  <span className="m-lg-2">{course.title}</span>
-                </CCardTitle>
-                {/* <CCardText>
-                  <ins className="m-lg-2 text-primary">{item.price}</ins>
-                </CCardText> */}
-                <div style={{ display: 'flex', justifyContent: 'flex', flexWrap: 'wrap' }}>
-                  <CAvatar
-                    className="m-lg-1"
-                    size="md"
-                    src={avatar2}
-                    // status={item.avtar.status}
-                  />
-                  <CCardText>
-                    <span className="text-center m-lg-2">Author</span>
-                  </CCardText>
-                  {/* <CCardText style={{ display: 'flex', justifyContent: 'right' }}>
-                    <div className="text-center m-lg-2">{item.lecture}</div>
-                  </CCardText> */}
-                </div>
-              </CCard>
-            </CLink>
+            <div key={course._id} className="d-flex">
+              <CLink
+                className="lesson-content"
+                href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}
+              >
+                <CCard className="h-100 d-flex flex-column card-hover">
+                  <CCardImage size="md" src={course.backgroundImg} />
+                  <CCardBody className="d-flex flex-column justify-content-between">
+                    <CCardTitle>
+                      <span>{course.title}</span>
+                    </CCardTitle>
+                    <div className="d-flex align-items-center mt-auto">
+                      <CAvatar className="me-2" size="md" src={avatar2} />
+                      <CCardText>Author</CCardText>
+                    </div>
+                  </CCardBody>
+                </CCard>
+              </CLink>
+            </div>
           ))}
         </CRow>
       </CContainer>
 
       <h2 className="mt-4 mb-2">Danh Sách Khóa Học</h2>
-
       <CContainer style={{ margin: 0 }}>
         <CRow xs={{ cols: 1, gutter: 4 }} sm={{ cols: 2 }} lg={{ cols: 3 }} xl={{ cols: 4 }}>
           {courses.map((course) => (
-            <CLink
-              className="lesson-content"
-              key={course._id}
-              href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}
-            >
-              <CCard>
-                <CCardImage
-                  size="md"
-                  src={course.backgroundImg}
-                  // status={item.image.status}
-                />
-                <CCardTitle>
-                  <span className="m-lg-2">{course.title}</span>
-                </CCardTitle>
-                {/* <CCardText>
-                  <ins className="m-lg-2 text-primary">{item.price}</ins>
-                </CCardText> */}
-                <div style={{ display: 'flex', justifyContent: 'flex', flexWrap: 'wrap' }}>
-                  <CAvatar
-                    className="m-lg-1"
-                    size="md"
-                    src={avatar2}
-                    // status={item.avtar.status}
-                  />
-                  <CCardText>
-                    <span className="text-center m-lg-2">Author</span>
-                  </CCardText>
-                  {/* <CCardText style={{ display: 'flex', justifyContent: 'right' }}>
-                    <div className="text-center m-lg-2">{item.lecture}</div>
-                  </CCardText> */}
-                </div>
-              </CCard>
-            </CLink>
+            <div key={course._id} className="d-flex">
+              {isLearningCourse(course._id) ? (
+                <CLink
+                  className="lesson-content"
+                  href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}
+                >
+                  <CCard className="h-100 d-flex flex-column card-hover">
+                    <CCardImage size="md" src={course.backgroundImg} />
+                    <CCardBody className="d-flex flex-column justify-content-between">
+                      <CCardTitle>
+                        <span>{course.title}</span>
+                      </CCardTitle>
+                      <div className="d-flex align-items-center mt-auto">
+                        <CAvatar className="me-2" size="md" src={avatar2} />
+                        <CCardText>Author</CCardText>
+                      </div>
+                    </CCardBody>
+                  </CCard>
+                </CLink>
+              ) : (
+                <CCard className="h-100 d-flex flex-column not-allowed card-hover">
+                  <CCardImage size="md" src={course.backgroundImg} />
+                  <CCardBody className="d-flex flex-column justify-content-between">
+                    <CCardTitle>
+                      <span>{course.title}</span>
+                    </CCardTitle>
+                    <CCardText className="text-center mt-auto">Chưa Đăng Ký</CCardText>
+                  </CCardBody>
+                </CCard>
+              )}
+            </div>
           ))}
         </CRow>
       </CContainer>
