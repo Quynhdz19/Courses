@@ -11,3 +11,15 @@
 .card-title {
   padding-top: 10px;
 }
+
+
+.card-hover {
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-10px);
+  }
+  &:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+}
