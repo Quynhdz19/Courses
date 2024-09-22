@@ -86,7 +86,9 @@ const CourseModulesManagementPage = () => {
   const handleModuleAction = async (action, moduleData = null) => {
     try {
       const moduleId = modalState.moduleIdToAction
-      const formattedData = { moduleIds: moduleId ? [moduleId.toString()] : selectedModules.map(id => id.toString()) }
+      const formattedData = {
+        moduleIds: moduleId ? [moduleId.toString()] : selectedModules.map((id) => id.toString()),
+      }
       if (action === 'add') {
         await ModuleService.addModule(courseId, moduleData)
       } else if (action === 'edit') {

@@ -6,22 +6,12 @@ import { RouteMap } from 'src/routes/routeMap'
 
 const _nav = [
   {
-    component: CNavItem,
-    name: 'Trang chủ',
-    to: RouteMap.DashboardPage,
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    },
-  },
-  {
     component: CNavTitle,
     name: 'Bài học',
   },
   {
     component: CNavItem,
-    name: 'Courses đang học',
+    name: 'Courses',
     to: RouteMap.CoursesListPage,
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },

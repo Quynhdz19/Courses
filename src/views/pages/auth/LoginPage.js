@@ -14,13 +14,13 @@ import {
   CRow,
 } from '@coreui/react'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from 'react-router-dom'
 import { decodeJwtToken } from 'src/helpers/decode-token'
 import { setAuthAccessToken, setAuthUser } from 'src/redux/modules/authSlice'
 import { RouteMap } from 'src/routes/routeMap'
 import authService from 'src/services/AuthService'
-import { logo } from "src/assets/brand/logo";
+import { logo } from 'src/assets/brand/logo'
 
 const LoginPage = () => {
   const [account, setAccount] = useState({
@@ -78,7 +78,11 @@ const LoginPage = () => {
           }),
         )
         dispatch(setAuthAccessToken(response.accessToken))
-        navigate(RouteMap.DashboardPage)
+        if (decodedData.role === 'STUDENT') {
+          navigate(RouteMap.CoursesListPage)
+        } else {
+          navigate(RouteMap.DashboardPage)
+        }
       } else {
         setErrMsg({ general: 'An error occurred. Username or password is incorrect!' })
       }
