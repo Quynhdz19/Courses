@@ -77,6 +77,11 @@ const CoursesListPage = () => {
     return coursesLeaning.some((course) => course._id === courseId)
   }
 
+  const handleButtonClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
   return (
     <div>
       <Carousel arrows infinite={true} transitionDuration={500} autoPlaySpeed={1000}>
@@ -120,7 +125,7 @@ const CoursesListPage = () => {
                         <CAvatar className="me-2" size="md" src={avatar2} />
                         <CCardText>Author</CCardText>
                       </div>
-                      <CButton className="my-2" color="primary">
+                      <CButton className="my-2" color="primary" onClick={handleButtonClick}>
                         Đăng ký ngay
                       </CButton>
                     </CCardBody>
