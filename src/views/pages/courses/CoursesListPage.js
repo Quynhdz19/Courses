@@ -7,13 +7,14 @@ import BasePlaceholder from '../../components/base/BasePlaceholder'
 import CourseCardsList from '../../components/courses/CourseCardsList'
 
 const CoursesListPage = () => {
+  const [currentSlide, setCurrentSlide] = useState(0)
   const [courses, setCourses] = useState([])
   const [coursesLoading, setCoursesLoading] = useState(false)
 
   const imgCarousel = [
     {
       image: {
-        src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
+        src: 'https://online.unicode.vn/storage/images/unicode-online.jpg',
         status: 'succes',
       },
     },
@@ -25,7 +26,7 @@ const CoursesListPage = () => {
     },
     {
       image: {
-        src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
+        src: 'https://online.unicode.vn/storage/images/unicode-online.jpg',
         status: 'succes',
       },
     },
@@ -53,7 +54,7 @@ const CoursesListPage = () => {
 
   return (
     <>
-      <Carousel arrows infinite={false}>
+      <Carousel arrows infinite={true} transitionDuration={500} autoPlaySpeed={1000}>
         {imgCarousel.map((item) => (
           <div
             key={item.image}
