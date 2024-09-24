@@ -1,5 +1,6 @@
 import {
   CAvatar,
+  CButton,
   CCard,
   CCardBody,
   CCardImage,
@@ -19,13 +20,14 @@ import './LessonPage.scss'
 import CourseService from 'src/services/CourseService'
 
 const CoursesListPage = () => {
+  const [currentSlide, setCurrentSlide] = useState(0)
   const [courses, setCourses] = useState([])
   const [coursesLeaning, setCoursesLeaning] = useState([])
 
   const imgCarousel = [
     {
       image: {
-        src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
+        src: 'https://online.unicode.vn/storage/images/unicode-online.jpg',
         status: 'succes',
       },
     },
@@ -37,7 +39,7 @@ const CoursesListPage = () => {
     },
     {
       image: {
-        src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
+        src: 'https://online.unicode.vn/storage/images/unicode-online.jpg',
         status: 'succes',
       },
     },
@@ -48,7 +50,6 @@ const CoursesListPage = () => {
       },
     },
   ]
-
   const fetchCoursesLearning = async () => {
     try {
       const response = await userService.getCourses({})
@@ -78,7 +79,7 @@ const CoursesListPage = () => {
 
   return (
     <div>
-      <Carousel arrows infinite={false}>
+      <Carousel arrows infinite={true} transitionDuration={500} autoPlaySpeed={1000}>
         {imgCarousel.map((item) => (
           <div
             key={item.image}
@@ -98,13 +99,18 @@ const CoursesListPage = () => {
       <CContainer style={{ margin: 0 }}>
         <CRow xs={{ cols: 1, gutter: 4 }} sm={{ cols: 2 }} lg={{ cols: 3 }} xl={{ cols: 4 }}>
           {courses.map((course) => (
-            <div key={course._id} className="d-flex">
+            <div
+              key={course._id}
+              className={`d-flex ${isLearningCourse(course._id) ? 'display-none' : ''}`}
+            >
               {isLearningCourse(course._id) ? (
+                <div></div>
+              ) : (
                 <CLink
                   className="lesson-content"
                   href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}
                 >
-                  <CCard className="h-100 d-flex flex-column card-hover">
+                  <CCard className="h-100 d-flex flex-column not-allowed card-hover">
                     <CCardImage size="md" src={course.backgroundImg} />
                     <CCardBody className="d-flex flex-column justify-content-between">
                       <CCardTitle>
@@ -114,19 +120,12 @@ const CoursesListPage = () => {
                         <CAvatar className="me-2" size="md" src={avatar2} />
                         <CCardText>Author</CCardText>
                       </div>
+                      <CButton className="my-2" color="primary">
+                        Đăng ký ngay
+                      </CButton>
                     </CCardBody>
                   </CCard>
                 </CLink>
-              ) : (
-                <CCard className="h-100 d-flex flex-column not-allowed card-hover">
-                  <CCardImage size="md" src={course.backgroundImg} />
-                  <CCardBody className="d-flex flex-column justify-content-between">
-                    <CCardTitle>
-                      <span>{course.title}</span>
-                    </CCardTitle>
-                    <CCardText className="text-center mt-auto">Chưa Đăng Ký</CCardText>
-                  </CCardBody>
-                </CCard>
               )}
             </div>
           ))}
