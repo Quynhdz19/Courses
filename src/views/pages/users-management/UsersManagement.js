@@ -24,6 +24,7 @@ import DeleteModal from '../../components/courses-management/courses/DeleteModal
 import UserService from 'src/services/UserService'
 import Pagination from 'src/views/components/courses-management/courses/Pagination'
 import BaseInputUser from "src/views/components/courses-management/users/BaseInputUser"
+import { openErrorNotification } from 'src/views/components/base/BaseNotification'
 
 const UsersManagement = () => {
   const [users, setUsers] = useState([])
@@ -62,7 +63,7 @@ const UsersManagement = () => {
       setUsers(response.data)
       setTotalPages(response.metadata.totalPage)
     } catch (error) {
-      console.error('Error fetching users:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
@@ -106,7 +107,7 @@ const UsersManagement = () => {
       setSelectedUsers([])
       fetchUsers()
     } catch (error) {
-      console.error(`Error ${action} users:`, error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 

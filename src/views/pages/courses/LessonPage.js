@@ -65,7 +65,7 @@ const LessonPage = () => {
       setInitialNote(note)
       setIsSaving(false)
     } catch (error) {
-      console.error('Error saving note:', error)
+      openErrorNotification(error.data?.message ?? error.message)
       setIsSaving(false)
     }
   }

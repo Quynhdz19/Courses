@@ -18,10 +18,16 @@ import DeleteModal from 'src/views/components/courses-management/courses/DeleteM
 import Pagination from 'src/views/components/courses-management/courses/Pagination'
 import CourseTable from 'src/views/components/courses-management/courses/CourseTable'
 import './CoursesManagementPage.scss'
+import { openErrorNotification } from 'src/views/components/base/BaseNotification'
 
 const CoursesManagementPage = () => {
   const [courses, setCourses] = useState([])
-  const [modalState, setModalState] = useState({ add: false, edit: false, delete: false, courseIdToAction: null })
+  const [modalState, setModalState] = useState({
+    add: false,
+    edit: false,
+    delete: false,
+    courseIdToAction: null,
+  })
   const [courseToEdit, setCourseToEdit] = useState(null)
   const [selectedCourses, setSelectedCourses] = useState([])
 
@@ -39,7 +45,7 @@ const CoursesManagementPage = () => {
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
       setCurrentPage(1)
-      setSearchQuery(prevQuery => ({ ...prevQuery, search: searchTerm, page: 1 }))
+      setSearchQuery((prevQuery) => ({ ...prevQuery, search: searchTerm, page: 1 }))
     }, 200)
 
     return () => clearTimeout(debounceTimeout)
@@ -55,12 +61,12 @@ const CoursesManagementPage = () => {
       setCourses(response.data)
       setTotalPages(response.metadata.totalPage)
     } catch (error) {
-      console.error('Error fetching courses:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
   const handlePageChange = (page) => {
-    setSearchQuery(prevQuery => ({ ...prevQuery, page }))
+    setSearchQuery((prevQuery) => ({ ...prevQuery, page }))
     setCurrentPage(page)
   }
 
@@ -72,7 +78,7 @@ const CoursesManagementPage = () => {
     if (action === 'add') {
       setModalState({ add: true, edit: false, delete: false, courseIdToAction: null })
     } else if (action === 'edit') {
-      const courseToEditData = courses.find(course => course._id === courseId)
+      const courseToEditData = courses.find((course) => course._id === courseId)
       setCourseToEdit(courseToEditData)
       setModalState({ add: false, edit: true, delete: false, courseIdToAction: courseId })
     } else if (action === 'delete') {
@@ -83,7 +89,9 @@ const CoursesManagementPage = () => {
   const handleCourseAction = async (action, courseData = null) => {
     try {
       const courseId = modalState.courseIdToAction
-      const formattedData = { courseIds: courseId ? [courseId.toString()] : selectedCourses.map(id => id.toString()) }
+      const formattedData = {
+        courseIds: courseId ? [courseId.toString()] : selectedCourses.map((id) => id.toString()),
+      }
       if (action === 'add') {
         await CourseService.addCourse(courseData)
       } else if (action === 'edit') {
@@ -96,19 +104,21 @@ const CoursesManagementPage = () => {
       setSelectedCourses([])
       closeModal()
     } catch (error) {
-      console.error(`Error ${action} course:`, error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
   const handleSelectAll = (e) => {
-    setSelectedCourses(courses.length === selectedCourses.length ? [] : courses.map(course => course._id))
+    setSelectedCourses(
+      courses.length === selectedCourses.length ? [] : courses.map((course) => course._id),
+    )
   }
 
   const handleSelectedCourse = (courseId) => {
-    setSelectedCourses(prevSelectedCourses =>
+    setSelectedCourses((prevSelectedCourses) =>
       prevSelectedCourses.includes(courseId)
-        ? prevSelectedCourses.filter(id => id !== courseId)
-        : [...prevSelectedCourses, courseId]
+        ? prevSelectedCourses.filter((id) => id !== courseId)
+        : [...prevSelectedCourses, courseId],
     )
   }
   const isDeleteButtonEnabled = selectedCourses.length > 0

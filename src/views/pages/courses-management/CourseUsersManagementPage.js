@@ -22,6 +22,7 @@ import AddModal from '../../components/courses-management/courses/AddModal'
 import DeleteModal from '../../components/courses-management/courses/DeleteModal'
 import './CourseUsersManagementPage.scss'
 import Pagination from '../../components/courses-management/courses/Pagination'
+import { openErrorNotification } from 'src/views/components/base/BaseNotification'
 
 const CourseUsersManagementPage = () => {
   const [users, setUsers] = useState([])
@@ -76,7 +77,7 @@ const CourseUsersManagementPage = () => {
       setUsers(response.data)
       setTotalPages(response.metadata.totalPage)
     } catch (error) {
-      console.error('Error fetching users:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
@@ -87,7 +88,7 @@ const CourseUsersManagementPage = () => {
       setUsersCourse(response.data)
       setTotalPages(response.metadata.totalPage)
     } catch (error) {
-      console.error('Error fetching course users:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
@@ -128,7 +129,7 @@ const CourseUsersManagementPage = () => {
       setSelectedUsers([])
       closeModal()
     } catch (error) {
-      console.error(`Error ${action} users:`, error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 

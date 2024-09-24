@@ -22,6 +22,7 @@ import Pagination from 'src/views/components/courses-management/courses/Paginati
 import './CoursesManagementPage.scss'
 import moduleService from 'src/services/ModuleService'
 import lessonService from 'src/services/LessonService'
+import { openErrorNotification } from 'src/views/components/base/BaseNotification'
 
 const CourseLessonsManagementPage = () => {
   const [lessons, setLessons] = useState([])
@@ -66,7 +67,7 @@ const CourseLessonsManagementPage = () => {
       setLessons(response.data)
       setTotalPages(response.metadata.totalPage)
     } catch (error) {
-      console.error('Error fetching lessons:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
@@ -139,7 +140,7 @@ const CourseLessonsManagementPage = () => {
           await lessonService.deleteLessons(moduleId, formattedData)
         }
       } catch (error) {
-        console.error(`Error ${action} lesson:`, error)
+        openErrorNotification(error.data?.message ?? error.message)
       }
       fetchLessons()
       setSelectedLessons([])

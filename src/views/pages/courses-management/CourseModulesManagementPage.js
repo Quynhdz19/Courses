@@ -20,6 +20,7 @@ import ModuleTable from 'src/views/components/courses-management/modules/ModuleT
 import DeleteModal from 'src/views/components/courses-management/courses/DeleteModal'
 import Pagination from 'src/views/components/courses-management/courses/Pagination'
 import './CoursesManagementPage.scss'
+import { openErrorNotification } from 'src/views/components/base/BaseNotification'
 
 const CourseModulesManagementPage = () => {
   const [modules, setModules] = useState([])
@@ -58,7 +59,7 @@ const CourseModulesManagementPage = () => {
       setModules(response.data)
       setTotalPages(response.metadata.totalPage)
     } catch (error) {
-      console.error('Error fetching modules:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
@@ -100,7 +101,7 @@ const CourseModulesManagementPage = () => {
       setSelectedModules([])
       closeModal()
     } catch (error) {
-      console.error(`Error ${action} module:`, error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
