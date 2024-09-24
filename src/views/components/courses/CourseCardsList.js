@@ -25,41 +25,26 @@ const CourseCardsList = (props) => {
     <CRow xs={{ cols: 1, gutter: 4 }} sm={{ cols: 2 }} lg={{ cols: 3 }} xl={{ cols: 4 }}>
       {props.courses.map((course) => (
         <div key={course._id} className="d-flex">
-          {/* TODO: check course is learning */}
           <CLink
             className="lesson-content"
             href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}
           >
-            {true ? (
-              <CCard className="h-100 d-flex flex-column card-hover">
-                <CCardImage size="md" src={course.backgroundImg} />
-                <CCardBody className="d-flex flex-column justify-content-between">
-                  <CCardTitle>
-                    <span>{course.title}</span>
-                  </CCardTitle>
-                  <div className="d-flex align-items-center mt-auto">
-                    <CAvatar className="me-2" size="md" src={avatar2} />
-                    <CCardText>Author</CCardText>
-                  </div>
-                </CCardBody>
-              </CCard>
-            ) : (
-              <CCard className="h-100 d-flex flex-column not-allowed card-hover">
-                <CCardImage size="md" src={course.backgroundImg} />
-                <CCardBody className="d-flex flex-column justify-content-between">
-                  <CCardTitle>
-                    <span>{course.title}</span>
-                  </CCardTitle>
-                  <div className="d-flex align-items-center mt-auto">
-                    <CAvatar className="me-2" size="md" src={avatar2} />
-                    <CCardText>Author</CCardText>
-                  </div>
-                  <CButton className="my-2" color="primary" onClick={handleButtonClick}>
-                    Đăng ký ngay
-                  </CButton>
-                </CCardBody>
-              </CCard>
-            )}
+            <CCard className="h-100 d-flex flex-column card-hover">
+              <CCardImage size="md" src={course.backgroundImg} />
+              <CCardBody className="d-flex flex-column justify-content-between">
+                <CCardTitle>
+                  <span>{course.title}</span>
+                </CCardTitle>
+                <div className="d-flex align-items-center mt-auto">
+                  <CAvatar className="me-2" size="md" src={avatar2} />
+                  <CCardText>Author</CCardText>
+                </div>
+                {/* TODO: check course is learning */}
+                <CButton className="my-2" color="primary" onClick={handleButtonClick}>
+                  Đăng ký ngay
+                </CButton>
+              </CCardBody>
+            </CCard>
           </CLink>
         </div>
       ))}
