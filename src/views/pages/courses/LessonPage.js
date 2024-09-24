@@ -1,19 +1,20 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
-import { CCard, CCardBody, CCardTitle, CButton, CContainer, CSpinner } from '@coreui/react'
+import { CButton, CContainer, CSpinner } from '@coreui/react'
 import { Col, Row } from 'antd'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import ReactHlsPlayer from 'react-hls-player'
+import { useParams } from 'react-router-dom'
 import CourseService from 'src/services/CourseService'
 import LessonService from 'src/services/LessonService'
-import CourseDetailModuleCollapse from '../../components/courses/detail/CollapseModule'
-import './LessonPage.scss'
+import { openErrorNotification } from 'src/views/components/base/BaseNotification'
+import CourseDetailModulesCard from 'src/views/components/courses/detail/CardModules'
 
 const LessonPage = () => {
   const { courseId, lessonId } = useParams()
   const [course, setCourse] = useState({})
   const [lesson, setLesson] = useState({})
+  const [courseLoading, setCourseLoading] = useState(false)
   const [linkStream, setLinkStream] = useState('')
   const [note, setNote] = useState('')
   const [initialNote, setInitialNote] = useState('')
@@ -26,7 +27,7 @@ const LessonPage = () => {
       setCourse(response)
       setLesson(findCurrentLessonInModules(response.modules, lessonId))
     } catch (error) {
-      console.error('Error fetching course:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
@@ -37,7 +38,7 @@ const LessonPage = () => {
       setNote(response.data.note || '')
       setInitialNote(response.data.note || '')
     } catch (error) {
-      console.error('Error fetching lesson detail:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
@@ -48,7 +49,8 @@ const LessonPage = () => {
   }
 
   useEffect(() => {
-    fetchCourse()
+    setCourseLoading(true)
+    fetchCourse().then(() => setCourseLoading(false))
     getLessonDetail()
   }, [])
 
@@ -68,20 +70,23 @@ const LessonPage = () => {
     }
   }
 
-  const videoPlayer = useMemo(() => (
-    <ReactHlsPlayer
-      src={linkStream}
-      hlsConfig={{
-        maxLoadingDelay: 4,
-        minAutoBitrate: 0,
-        lowLatencyMode: true,
-      }}
-      playerRef={playerRef} // Assign the ref to playerRef
-      width="100%"
-      height="auto"
-      controls // Optional: Add controls for play, pause, etc.
-    />
-  ), [linkStream])
+  const videoPlayer = useMemo(
+    () => (
+      <ReactHlsPlayer
+        src={linkStream}
+        hlsConfig={{
+          maxLoadingDelay: 4,
+          minAutoBitrate: 0,
+          lowLatencyMode: true,
+        }}
+        playerRef={playerRef} // Assign the ref to playerRef
+        width="100%"
+        height="auto"
+        controls // Optional: Add controls for play, pause, etc.
+      />
+    ),
+    [linkStream],
+  )
 
   return (
     <div className="video-card">
@@ -108,27 +113,18 @@ const LessonPage = () => {
             <CContainer className="d-flex justify-content-end mt-3">
               {note !== initialNote && (
                 <CButton color="primary" size="sm" onClick={handleSaveNote} disabled={isSaving}>
-                  {isSaving ? <CSpinner size="sm" /> : (initialNote ? 'Save Note' : 'Add Note')}
+                  {isSaving ? <CSpinner size="sm" /> : initialNote ? 'Save Note' : 'Add Note'}
                 </CButton>
               )}
             </CContainer>
           </CContainer>
         </Col>
         <Col span={8}>
-          <CCard className="border-light overflow-auto">
-            <CCardBody className="d-grid gap-2">
-              <CCardTitle>
-                <strong>Bài Học</strong>
-              </CCardTitle>
-              {course.modules?.map((module) => (
-                <CourseDetailModuleCollapse
-                  key={module._id}
-                  module={module}
-                  activeLesson={lessonId}
-                />
-              ))}
-            </CCardBody>
-          </CCard>
+          <CourseDetailModulesCard
+            modules={course.modules ?? []}
+            activeLesson={lessonId}
+            loading={courseLoading}
+          />
         </Col>
       </Row>
     </div>

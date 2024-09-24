@@ -7,7 +7,7 @@ class AuthService extends BaseService {
       const response = await this.post('auth/login', credentials)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 }

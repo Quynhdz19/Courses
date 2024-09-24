@@ -7,7 +7,7 @@ class LessonService extends BaseService {
       const response = await this.post(`/courses/modules/${moduleId}/lessons`, formData)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -16,7 +16,7 @@ class LessonService extends BaseService {
       const response = await this.put(`/courses/modules/lessons/${lessonId}`, lessonData)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -28,7 +28,7 @@ class LessonService extends BaseService {
       )
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -37,7 +37,7 @@ class LessonService extends BaseService {
       const response = await this.get(`/courses/modules/lessons/${lessonId}`)
       return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -46,7 +46,7 @@ class LessonService extends BaseService {
       const response = await this.get(`/courses/modules/${moduleId}/lessons`, searchParams)
       return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -57,25 +57,31 @@ class LessonService extends BaseService {
       })
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
   async addNote(lessonId, noteData) {
     try {
-      const response = await this.put(`/courses/modules/lessons/${lessonId}/add-user-note`, noteData)
+      const response = await this.put(
+        `/courses/modules/lessons/${lessonId}/add-user-note`,
+        noteData,
+      )
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
   async updateNote(lessonId, noteData) {
     try {
-      const response = await this.put(`/courses/modules/lessons/${lessonId}/update-user-note`, noteData)
+      const response = await this.put(
+        `/courses/modules/lessons/${lessonId}/update-user-note`,
+        noteData,
+      )
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 }

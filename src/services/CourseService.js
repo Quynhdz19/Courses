@@ -11,7 +11,7 @@ class CourseService extends BaseService {
       })
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -20,7 +20,7 @@ class CourseService extends BaseService {
       const response = await this.get(`/courses/${courseId}`)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -29,7 +29,7 @@ class CourseService extends BaseService {
       const response = await this.get('/courses', searchParams)
       return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -38,7 +38,7 @@ class CourseService extends BaseService {
       const response = await this.put(`/courses/${courseId}`, courseData)
       return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -47,7 +47,7 @@ class CourseService extends BaseService {
       const response = await this.delete('/courses/remove-courses', { data: coursesData })
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -56,7 +56,7 @@ class CourseService extends BaseService {
       const response = await this.post(`/courses/${courseId}/add-users`, usersData)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -65,7 +65,7 @@ class CourseService extends BaseService {
       const response = await this.get(`/courses/${courseId}/users`, searchParams)
       return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -74,7 +74,7 @@ class CourseService extends BaseService {
       const response = await this.delete(`/courses/${courseId}/remove-users`, { data: usersData })
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 }

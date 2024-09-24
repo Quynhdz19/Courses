@@ -7,7 +7,7 @@ class UserService extends BaseService {
       const response = await this.post('/users', userData)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -16,7 +16,7 @@ class UserService extends BaseService {
       const response = await this.get(`/users/${userId}`)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -25,7 +25,7 @@ class UserService extends BaseService {
       const response = await this.get('/users', searchParams)
       return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -34,16 +34,16 @@ class UserService extends BaseService {
       const response = await this.put(`/users/${userId}`, userData)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
-  async getCourses() {
+  async getCourses(searchParams = {}) {
     try {
-      const response = await this.get(`/users/courses/get-by-user`)
+      const response = await this.get(`/users/courses/get-by-user`, searchParams)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -52,7 +52,7 @@ class UserService extends BaseService {
       const response = await this.get(`/users/courses/${courseId}`)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -61,7 +61,7 @@ class UserService extends BaseService {
       const response = await this.delete(`/users/remove-users`, { data: userData })
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 }

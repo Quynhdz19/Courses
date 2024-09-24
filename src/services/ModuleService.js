@@ -7,7 +7,7 @@ class ModuleService extends BaseService {
       const response = await this.post(`/courses/${courseId}/modules`, moduleData)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -16,7 +16,7 @@ class ModuleService extends BaseService {
       const response = await this.get(`/courses/modules/${moduleId}`)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -25,7 +25,7 @@ class ModuleService extends BaseService {
       const response = await this.get(`/courses/${courseId}/modules`, searchParams)
       return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -34,16 +34,18 @@ class ModuleService extends BaseService {
       const response = await this.put(`/courses/modules/${moduleId}`, moduleData)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
   async deleteModules(courseId, modulesData) {
     try {
-      const response = await this.delete(`/courses/${courseId}/remove-modules`, { data: modulesData })
+      const response = await this.delete(`/courses/${courseId}/remove-modules`, {
+        data: modulesData,
+      })
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 }

@@ -1,26 +1,14 @@
-import {
-  CAvatar,
-  CCard,
-  CCardBody,
-  CCardImage,
-  CCardText,
-  CCardTitle,
-  CContainer,
-  CImage,
-  CLink,
-  CRow,
-} from '@coreui/react'
-import { Carousel } from 'antd'
+import { CContainer, CImage } from '@coreui/react'
+import { Carousel, Empty } from 'antd'
 import React, { useEffect, useState } from 'react'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
-import userService from 'src/services/UserService'
-import './LessonPage.scss'
 import CourseService from 'src/services/CourseService'
+import { openErrorNotification } from 'src/views/components/base/BaseNotification'
+import BasePlaceholder from '../../components/base/BasePlaceholder'
+import CourseCardsList from '../../components/courses/CourseCardsList'
 
 const CoursesListPage = () => {
   const [courses, setCourses] = useState([])
-  const [coursesLeaning, setCoursesLeaning] = useState([])
+  const [coursesLoading, setCoursesLoading] = useState(false)
 
   const imgCarousel = [
     {
@@ -49,35 +37,22 @@ const CoursesListPage = () => {
     },
   ]
 
-  const fetchCoursesLearning = async () => {
-    try {
-      const response = await userService.getCourses({})
-      setCoursesLeaning(response)
-    } catch (error) {
-      console.error('Error fetching courses:', error)
-    }
-  }
-
   const fetchAlCourses = async () => {
     try {
       const response = await CourseService.getCourses({})
       setCourses(response.data)
     } catch (error) {
-      console.error('Error fetching courses:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
   useEffect(() => {
-    fetchAlCourses()
-    fetchCoursesLearning()
+    setCoursesLoading(true)
+    fetchAlCourses().then(() => setCoursesLoading(false))
   }, [])
 
-  const isLearningCourse = (courseId) => {
-    return coursesLeaning.some((course) => course._id === courseId)
-  }
-
   return (
-    <div>
+    <>
       <Carousel arrows infinite={false}>
         {imgCarousel.map((item) => (
           <div
@@ -95,44 +70,17 @@ const CoursesListPage = () => {
       </Carousel>
 
       <h2 className="mt-4 mb-3">Khóa học mới mở</h2>
+
       <CContainer style={{ margin: 0 }}>
-        <CRow xs={{ cols: 1, gutter: 4 }} sm={{ cols: 2 }} lg={{ cols: 3 }} xl={{ cols: 4 }}>
-          {courses.map((course) => (
-            <div key={course._id} className="d-flex">
-              {isLearningCourse(course._id) ? (
-                <CLink
-                  className="lesson-content"
-                  href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}
-                >
-                  <CCard className="h-100 d-flex flex-column card-hover">
-                    <CCardImage size="md" src={course.backgroundImg} />
-                    <CCardBody className="d-flex flex-column justify-content-between">
-                      <CCardTitle>
-                        <span>{course.title}</span>
-                      </CCardTitle>
-                      <div className="d-flex align-items-center mt-auto">
-                        <CAvatar className="me-2" size="md" src={avatar2} />
-                        <CCardText>Author</CCardText>
-                      </div>
-                    </CCardBody>
-                  </CCard>
-                </CLink>
-              ) : (
-                <CCard className="h-100 d-flex flex-column not-allowed card-hover">
-                  <CCardImage size="md" src={course.backgroundImg} />
-                  <CCardBody className="d-flex flex-column justify-content-between">
-                    <CCardTitle>
-                      <span>{course.title}</span>
-                    </CCardTitle>
-                    <CCardText className="text-center mt-auto">Chưa Đăng Ký</CCardText>
-                  </CCardBody>
-                </CCard>
-              )}
-            </div>
-          ))}
-        </CRow>
+        {coursesLoading ? (
+          <BasePlaceholder />
+        ) : courses.length ? (
+          <CourseCardsList courses={courses} />
+        ) : (
+          <Empty />
+        )}
       </CContainer>
-    </div>
+    </>
   )
 }
 
