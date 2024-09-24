@@ -14,6 +14,7 @@ const DashboardPage = lazy(() => import('src/views/pages/dashboard/DashboardPage
 const CoursesListPage = lazy(() => import('src/views/pages/courses/CoursesListPage'))
 const CourseDetailPage = lazy(() => import('src/views/pages/courses/CourseDetailPage'))
 const LessonPage = lazy(() => import('src/views/pages/courses/LessonPage'))
+const MyLearningPage = lazy(() => import('src/views/pages/courses/MyLearningPage'))
 
 const CoursesManagementPage = lazy(
   () => import('src/views/pages/courses-management/CoursesManagementPage'),
@@ -64,7 +65,7 @@ const routes = [
     children: [
       {
         path: RouteMap.HomePage,
-        element: <AuthGuard element={<DashboardPage />} />,
+        element: <AuthGuard element={<CoursesListPage />} />,
       },
       {
         path: RouteMap.DashboardPage,
@@ -81,6 +82,10 @@ const routes = [
       {
         path: RouteMap.LessonPage,
         element: <AuthGuard element={<LessonPage />} />,
+      },
+      {
+        path: RouteMap.MyLearningPage,
+        element: <AuthGuard element={<MyLearningPage />} />,
       },
       {
         path: RouteMap.CoursesManagementPage,
