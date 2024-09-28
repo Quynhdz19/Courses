@@ -13,6 +13,9 @@ const MyLearningPage = () => {
   const fetchCoursesLearning = async () => {
     try {
       const response = await userService.getCourses({})
+      response.forEach((course) => {
+        course.isRegistered = true
+      })
       setCoursesLeaning(response)
     } catch (error) {
       openErrorNotification(error.data?.message ?? error.message)

@@ -37,12 +37,13 @@ const CourseCardsList = (props) => {
                 </CCardTitle>
                 <div className="d-flex align-items-center mt-auto">
                   <CAvatar className="me-2" size="md" src={avatar2} />
-                  <CCardText>Author</CCardText>
+                  <CCardText>Lê Xuân Quỳnh</CCardText>
                 </div>
-                {/* TODO: check course is learning */}
-                <CButton className="my-2" color="primary" onClick={handleButtonClick}>
-                  Đăng ký ngay
-                </CButton>
+                {!course.isRegistered && (
+                  <CButton className="my-2" color="primary" onClick={handleButtonClick}>
+                    Đăng ký ngay
+                  </CButton>
+                )}
               </CCardBody>
             </CCard>
           </CLink>

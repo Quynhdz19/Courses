@@ -41,7 +41,10 @@ const CoursesListPage = () => {
   const fetchAlCourses = async () => {
     try {
       const response = await CourseService.getCourses({})
-      setCourses(response.data)
+      if (response.data) {
+        const newCourse = response.data.filter((item) => item.isRegistered === false)
+        setCourses(newCourse)
+      }
     } catch (error) {
       openErrorNotification(error.data?.message ?? error.message)
     }
