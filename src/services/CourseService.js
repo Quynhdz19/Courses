@@ -69,6 +69,33 @@ class CourseService extends BaseService {
     }
   }
 
+  async getStudentMetrics() {
+    try {
+      const response = await this.get('/courses/metrics/total-students')
+      return response
+    } catch (error) {
+      throw error.response?.data
+    }
+  }
+
+  async getCourseMetrics() {
+    try {
+      const response = await this.get('/courses/metrics/total-courses')
+      return response
+    } catch (error) {
+      throw error.response?.data
+    }
+  }
+
+  async getTopCourseMetrics(searchParams = {}) {
+    try {
+      const response = await this.get('/courses/metrics/top-courses', searchParams)
+      return response
+    } catch (error) {
+      throw error.response?.data
+    }
+  }
+
   async deleteUsers(courseId, usersData) {
     try {
       const response = await this.delete(`/courses/${courseId}/remove-users`, { data: usersData })

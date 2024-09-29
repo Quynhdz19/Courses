@@ -1,36 +1,12 @@
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibFacebook,
-  cibGoogle,
-  cibLinkedin,
-  cibTwitter,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from '@coreui/icons'
+import { cilPeople, cilBook } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import {
+  CCardImage,
   CAvatar,
-  CButton,
-  CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
   CCardHeader,
   CCol,
-  CProgress,
   CRow,
   CTable,
   CTableBody,
@@ -38,227 +14,208 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CButton,
 } from '@coreui/react'
-import classNames from 'classnames'
-import React from 'react'
-import avatar1 from 'src/assets/images/avatars/1.jpg'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import avatar3 from 'src/assets/images/avatars/3.jpg'
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-import avatar5 from 'src/assets/images/avatars/5.jpg'
-import avatar6 from 'src/assets/images/avatars/6.jpg'
-import MainChart from '../../components/dashboard/MainChart'
-import WidgetsBrand from '../../components/dashboard/widgets/WidgetsBrand'
+import React, { useEffect, useState } from 'react'
+import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
+import { useNavigate } from 'react-router-dom'
 import WidgetsDropdown from '../../components/dashboard/widgets/WidgetsDropdown'
+import Pagination from 'src/views/components/courses-management/courses/Pagination'
+import courseService from 'src/services/CourseService'
+import orderService from 'src/services/OrderService'
+import { openErrorNotification } from 'src/views/components/base/BaseNotification'
+import avatar1 from 'src/assets/images/avatars/avatar.png'
 
 const DashboardPage = () => {
-  const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
-  ]
+  const avatar = avatar1
+  const navigate = useNavigate()
 
-  const progressGroupExample1 = [
-    { title: 'Monday', value1: 34, value2: 78 },
-    { title: 'Tuesday', value1: 56, value2: 94 },
-    { title: 'Wednesday', value1: 12, value2: 67 },
-    { title: 'Thursday', value1: 43, value2: 91 },
-    { title: 'Friday', value1: 22, value2: 73 },
-    { title: 'Saturday', value1: 53, value2: 82 },
-    { title: 'Sunday', value1: 9, value2: 69 },
-  ]
+  const [topCourses, setTopCourses] = useState([])
+  const [registrationOrders, setRegistrationOrders] = useState([])
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchQuery, setSearchQuery] = useState({
+    page: 1,
+    size: 10,
+    orderBy: 'createdAt',
+    orderDirection: 'asc',
+    status: 'PENDING',
+  })
 
-  const progressGroupExample2 = [
-    { title: 'Male', icon: cilUser, value: 53 },
-    { title: 'Female', icon: cilUserFemale, value: 43 },
-  ]
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setCurrentPage(1)
+      setSearchQuery((prevQuery) => ({ ...prevQuery, search: searchTerm, page: 1 }))
+    }, 200)
 
-  const progressGroupExample3 = [
-    { title: 'Organic Search', icon: cibGoogle, percent: 56, value: '191,235' },
-    { title: 'Facebook', icon: cibFacebook, percent: 15, value: '51,223' },
-    { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
-    { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
-  ]
+    return () => clearTimeout(debounceTimeout)
+  }, [searchTerm])
 
-  const tableExample = [
-    {
-      avatar: { src: avatar1, status: 'success' },
-      user: {
-        name: 'Yiorgos Avraamu',
-        new: true,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'USA', flag: cifUs },
-      usage: {
-        value: 50,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'success',
-      },
-      payment: { name: 'Mastercard', icon: cibCcMastercard },
-      activity: '10 sec ago',
-    },
-    {
-      avatar: { src: avatar2, status: 'danger' },
-      user: {
-        name: 'Avram Tarasios',
-        new: false,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'Brazil', flag: cifBr },
-      usage: {
-        value: 22,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'info',
-      },
-      payment: { name: 'Visa', icon: cibCcVisa },
-      activity: '5 minutes ago',
-    },
-    {
-      avatar: { src: avatar3, status: 'warning' },
-      user: { name: 'Quintin Ed', new: true, registered: 'Jan 1, 2023' },
-      country: { name: 'India', flag: cifIn },
-      usage: {
-        value: 74,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'warning',
-      },
-      payment: { name: 'Stripe', icon: cibCcStripe },
-      activity: '1 hour ago',
-    },
-    {
-      avatar: { src: avatar4, status: 'secondary' },
-      user: { name: 'Enéas Kwadwo', new: true, registered: 'Jan 1, 2023' },
-      country: { name: 'France', flag: cifFr },
-      usage: {
-        value: 98,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'danger',
-      },
-      payment: { name: 'PayPal', icon: cibCcPaypal },
-      activity: 'Last month',
-    },
-    {
-      avatar: { src: avatar5, status: 'success' },
-      user: {
-        name: 'Agapetus Tadeáš',
-        new: true,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'Spain', flag: cifEs },
-      usage: {
-        value: 22,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'primary',
-      },
-      payment: { name: 'Google Wallet', icon: cibCcApplePay },
-      activity: 'Last week',
-    },
-    {
-      avatar: { src: avatar6, status: 'danger' },
-      user: {
-        name: 'Friderik Dávid',
-        new: true,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'Poland', flag: cifPl },
-      usage: {
-        value: 43,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'success',
-      },
-      payment: { name: 'Amex', icon: cibCcAmex },
-      activity: 'Last week',
-    },
-  ]
+  useEffect(() => {
+    fetchRegistrationOrders()
+  }, [searchQuery])
+
+  const handlePageChange = (page) => {
+    setSearchQuery((prevQuery) => ({ ...prevQuery, page }))
+    setCurrentPage(page)
+  }
+
+  const fetchRegistrationOrders = async () => {
+    try {
+      const response = await orderService.getOrders(searchQuery)
+      setRegistrationOrders(response.data)
+      setTotalPages(response.metadata.totalPage)
+    } catch (error) {
+      openErrorNotification(error.data?.message ?? error.message)
+    }
+  }
+
+  useEffect(() => {
+    const fetchTopCourses = async () => {
+      try {
+        const response = await courseService.getTopCourseMetrics({ limit: 5 })
+        setTopCourses(response.data)
+      } catch (error) {
+        openErrorNotification(error.data?.message ?? error.message)
+      }
+    }
+    fetchTopCourses()
+  }, [])
+
+  const handleUpdateOrder = async (orderId, status) => {
+    try {
+      await orderService.updateOrder(orderId, { status })
+      fetchRegistrationOrders()
+    } catch (error) {
+      openErrorNotification(error.data?.message ?? error.message)
+    }
+  }
 
   return (
     <>
-      <WidgetsDropdown className="mb-4" />
-      <CCard className="mb-4">
-        <CCardFooter>
-          <CRow
-            xs={{ cols: 1, gutter: 4 }}
-            sm={{ cols: 2 }}
-            lg={{ cols: 4 }}
-            xl={{ cols: 5 }}
-            className="mb-2 text-center"
-          >
-            {progressExample.map((item, index, items) => (
-              <CCol
-                className={classNames({
-                  'd-none d-xl-block': index + 1 === items.length,
-                })}
-                key={index}
-              >
-                <div className="text-body-secondary">{item.title}</div>
-                <div className="fw-semibold text-truncate">
-                  {item.value} ({item.percent}%)
-                </div>
-                <CProgress thin className="mt-2" color={item.color} value={item.percent} />
-              </CCol>
-            ))}
-          </CRow>
-        </CCardFooter>
-      </CCard>
-      <WidgetsBrand className="mb-4" withCharts />
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Traffic {' & '} Sales</CCardHeader>
+            <CCardHeader className="fw-bold fs-5">
+              Các yêu cầu đăng ký khóa học
+            </CCardHeader>
+            <CCardBody>
+              <CTable align="middle" className="mb-0 border" hover responsive>
+                <CTableHead className="text-nowrap bg-primary">
+                  <CTableRow>
+                    <CTableHeaderCell className="text-center bg-body-tertiary">
+                      STT
+                    </CTableHeaderCell>
+                    <CTableHeaderCell className="text-center bg-body-tertiary">
+                      <CIcon icon={cilPeople} />
+                    </CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">Học sinh</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">Khóa học</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary text-center">Xử lý</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {registrationOrders.length > 0 ? (
+                    registrationOrders.map((order, index) => (
+                      <CTableRow key={order._id}>
+                        <CTableDataCell className="text-center fw-bold">
+                          {(index + 1) + (currentPage - 1) * searchQuery.size}
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <CAvatar size="md" src={avatar} />
+                        </CTableDataCell>
+                        <CTableDataCell>{order.user.fullName}</CTableDataCell>
+                        <CTableDataCell>{order.course.title}</CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <CButton color="success" className="me-2 fw-bold" style={{ color: 'white' }} onClick={() => handleUpdateOrder(order._id, 'APPROVED')}>
+                            Chấp nhận
+                          </CButton>
+                          <CButton color="danger" className="fw-bold" style={{ color: 'white' }} onClick={() => handleUpdateOrder(order._id, 'REJECTED')}>
+                            Từ chối
+                          </CButton>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))
+                  ) : (
+                    <CTableRow>
+                      <CTableDataCell colSpan="5" className="text-center">
+                        No Orders Found
+                      </CTableDataCell>
+                    </CTableRow>
+                  )}
+                </CTableBody>
+              </CTable>
+            </CCardBody>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </CCard>
+        </CCol>
+      </CRow>
+
+      <WidgetsDropdown className="mb-4" />
+
+      <CRow>
+        <CCol xs>
+          <CCard className="mb-4">
+            <CCardHeader className="fw-bold fs-5">Top 5 khóa học</CCardHeader>
             <CCardBody>
               <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead className="text-nowrap">
                   <CTableRow>
-                    <CTableHeaderCell className="bg-body-tertiary text-center">
-                      <CIcon icon={cilPeople} />
+                    <CTableHeaderCell className="text-center bg-body-tertiary">
+                      STT
                     </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">User</CTableHeaderCell>
                     <CTableHeaderCell className="bg-body-tertiary text-center">
-                      Country
+                      <CIcon icon={cilBook} color="warning" />
                     </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">Usage</CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary text-center">
-                      Payment Method
+                    <CTableHeaderCell className="bg-body-tertiary">Khóa học</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">
+                      Mô tả
                     </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">Activity</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">
+                      Modules
+                    </CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">Học sinh</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {tableExample.map((item, index) => (
-                    <CTableRow v-for="item in tableItems" key={index}>
-                      <CTableDataCell className="text-center">
-                        <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div>{item.user.name}</div>
-                        <div className="small text-body-secondary text-nowrap">
-                          <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                          {item.user.registered}
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="d-flex justify-content-between text-nowrap">
-                          <div className="fw-semibold">{item.usage.value}%</div>
-                          <div className="ms-3">
-                            <small className="text-body-secondary">{item.usage.period}</small>
-                          </div>
-                        </div>
-                        <CProgress thin color={item.usage.color} value={item.usage.value} />
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.payment.icon} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="small text-body-secondary text-nowrap">Last login</div>
-                        <div className="fw-semibold text-nowrap">{item.activity}</div>
-                      </CTableDataCell>
+                  {Array.isArray(topCourses) && topCourses.length > 0 ? (
+                    topCourses.map((course, index) => (
+                      <CTableRow key={course._id} onClick={() =>
+                        navigate(bindRouteParams(RouteMap.CourseModulesManagementPage, [course._id]))
+                      }>
+                        <CTableDataCell className="text-center fw-bold">
+                          {index + 1}
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <CCardImage
+                            src={course.backgroundImg}
+                            style={{ maxWidth: '100px', width: 'auto' }}
+                          />
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {course.title}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {course.description}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {course.modules?.length || 0}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {course.totalStudents}
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))
+                  ) : (
+                    <CTableRow>
+                      <CTableDataCell colSpan="7" className="text-center">Loading...</CTableDataCell>
                     </CTableRow>
-                  ))}
+                  )}
                 </CTableBody>
               </CTable>
             </CCardBody>
