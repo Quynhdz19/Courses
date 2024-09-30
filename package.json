@@ -3,6 +3,9 @@
   "version": "5.1.0",
   "description": "CoreUI Free React Admin Template",
   "homepage": ".",
+  "engines": {
+    "node": "21"
+  },
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
   },
