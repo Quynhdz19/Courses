@@ -97,19 +97,19 @@ const LessonPage = () => {
 
           <CContainer className="mt-4">
             <h5>Note for this Lesson</h5>
-            {/*<CKEditor*/}
-            {/*  editor={ClassicEditor}*/}
-            {/*  data={note}*/}
-            {/*  config={{*/}
-            {/*    toolbar: {*/}
-            {/*      items: ['undo', 'redo', '|', 'bold', 'italic'],*/}
-            {/*    },*/}
-            {/*  }}*/}
-            {/*  onChange={(event, editor) => {*/}
-            {/*    const data = editor.getData()*/}
-            {/*    setNote(data)*/}
-            {/*  }}*/}
-            {/*/>*/}
+            <CKEditor
+              editor={ClassicEditor}
+              data={note}
+              config={{
+                toolbar: {
+                  items: ['undo', 'redo', '|', 'bold', 'italic'],
+                },
+              }}
+              onChange={(event, editor) => {
+                const data = editor.getData()
+                setNote(data)
+              }}
+            />
             <CContainer className="d-flex justify-content-end mt-3">
               {note !== initialNote && (
                 <CButton color="primary" size="sm" onClick={handleSaveNote} disabled={isSaving}>

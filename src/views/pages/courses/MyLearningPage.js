@@ -3,9 +3,8 @@ import { Empty } from 'antd'
 import React, { useEffect, useState } from 'react'
 import userService from 'src/services/UserService'
 import BasePlaceholder from '../../components/base/BasePlaceholder'
-import CourseCardsList from '../../components/courses/CourseCardsList'
 import { openErrorNotification } from 'src/views/components/base/BaseNotification'
-import CoursesLeaning from "src/views/components/courses/CoursesLearningList";
+import CoursesLeaning from 'src/views/components/courses/CoursesLearningList'
 
 const MyLearningPage = () => {
   const [coursesLeaning, setCoursesLeaning] = useState([])

@@ -51,7 +51,8 @@
     "redux": "5.0.1",
     "redux-persist": "^6.0.0",
     "simplebar-react": "^3.2.5",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
