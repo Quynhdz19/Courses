@@ -42,7 +42,7 @@ const CourseCardsList = (props) => {
             href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}
           >
             <CCard className="h-100 d-flex flex-column card-hover">
-              <CCardImage size="md" src={course.backgroundImg} />
+              <CCardImage size="md" src="https://independent-thinkers.co.uk/wp-content/uploads/2022/02/Free-Online-Courses-with-Certificates.jpg" />
               <CCardBody className="d-flex flex-column justify-content-between">
                 <CCardTitle>
                   <span>{course.title}</span>

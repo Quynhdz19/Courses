@@ -16,25 +16,25 @@ const CoursesListPage = () => {
     {
       image: {
         src: 'https://online.unicode.vn/storage/images/unicode-online.jpg',
-        status: 'succes',
+        status: 'success',
       },
     },
     {
       image: {
         src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
-        status: 'succes',
+        status: 'success',
       },
     },
     {
       image: {
         src: 'https://online.unicode.vn/storage/images/unicode-online.jpg',
-        status: 'succes',
+        status: 'success',
       },
     },
     {
       image: {
         src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
-        status: 'succes',
+        status: 'success',
       },
     },
   ]
@@ -67,18 +67,34 @@ const CoursesListPage = () => {
 
   return (
     <>
-      <Carousel arrows infinite={true} transitionDuration={500} autoPlaySpeed={1000}>
-        {imgCarousel.map((item) => (
+      <Carousel
+        autoplay
+        autoplaySpeed={2000}
+        pauseOnHover={false}
+        draggable={false}
+        infinite={true}
+        transitionDuration={500}
+      >
+        {imgCarousel.map((item, index) => (
           <div
-            key={item.image}
+            key={index}
             style={{
-              width: '80%',
               display: 'flex',
-              maxWidth: '100%',
-              height: 'auto',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
             }}
           >
-            <CImage src={item.image.src} status={item.image.status} />
+            <CImage
+              src={item.image.src}
+              status={item.image.status}
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+                objectFit: 'cover',
+                pointerEvents: 'none',
+              }}
+            />
           </div>
         ))}
       </Carousel>
