@@ -104,6 +104,26 @@ class CourseService extends BaseService {
       throw error.response?.data
     }
   }
+
+  async getPendingCourser() {
+    try {
+      const response = await this.get('/orders/pending-by-user')
+      return response.data
+    } catch (error) {
+      throw error.response?.data
+    }
+  }
+
+  async registerCourse(courseId) {
+    try {
+      const response = await this.post('/orders', {
+        courseId: courseId,
+      })
+      return response
+    } catch (error) {
+      throw error.response?.data
+    }
+  }
 }
 
 const courseService = new CourseService(axiosInstance)

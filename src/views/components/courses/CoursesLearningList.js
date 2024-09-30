@@ -16,23 +16,7 @@ import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 import './CourseCardsList.scss'
 import courseService from 'src/services/CourseService'
 
-const CourseCardsList = (props) => {
-  const handleButtonClick = (event, courseId) => {
-    event.preventDefault()
-    event.stopPropagation()
-    try {
-      courseService
-        .registerCourse(courseId)
-        .then(() => {
-          window.location.reload()
-        })
-        .catch()
-    } catch (err) {
-      console.error(err)
-      // Handle error here
-    }
-  }
-
+const CoursesLeaning = (props) => {
   return (
     <CRow xs={{ cols: 1, gutter: 4 }} sm={{ cols: 2 }} lg={{ cols: 3 }} xl={{ cols: 4 }}>
       {props.courses.map((course) => (
@@ -51,19 +35,6 @@ const CourseCardsList = (props) => {
                   <CAvatar className="me-2" size="md" src={avatar2} />
                   <CCardText>Lê Xuân Quỳnh</CCardText>
                 </div>
-                {course.isPending ? (
-                  <CButton className="my-2" color="warning">
-                    Đang xử lý
-                  </CButton>
-                ) : (
-                  <CButton
-                    className="my-2"
-                    color="primary"
-                    onClick={(event) => handleButtonClick(event, course._id)}
-                  >
-                    Đăng ký ngay
-                  </CButton>
-                )}
               </CCardBody>
             </CCard>
           </CLink>
@@ -73,8 +44,8 @@ const CourseCardsList = (props) => {
   )
 }
 
-CourseCardsList.propTypes = {
+CoursesLeaning.propTypes = {
   courses: PropTypes.array.isRequired,
 }
 
-export default CourseCardsList
+export default CoursesLeaning

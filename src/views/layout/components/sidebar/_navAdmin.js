@@ -12,12 +12,6 @@ const _navAdmin = [
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
   {
-    component: CNavItem,
-    name: 'Trang chủ',
-    to: RouteMap.HomePage,
-    icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
-  },
-  {
     component: CNavTitle,
     name: 'Khoá học',
   },

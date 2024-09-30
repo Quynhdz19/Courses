@@ -7,8 +7,9 @@ import BasePlaceholder from '../../components/base/BasePlaceholder'
 import CourseCardsList from '../../components/courses/CourseCardsList'
 
 const CoursesListPage = () => {
-  const [currentSlide, setCurrentSlide] = useState(0)
   const [courses, setCourses] = useState([])
+  const [coursesPending, setCoursesPending] = useState([])
+  const [coursesNew, setCoursesNew] = useState([])
   const [coursesLoading, setCoursesLoading] = useState(false)
 
   const imgCarousel = [
@@ -41,9 +42,18 @@ const CoursesListPage = () => {
   const fetchAlCourses = async () => {
     try {
       const response = await CourseService.getCourses({})
+      const idCoursesPending = await CourseService.getPendingCourser()
       if (response.data) {
-        const newCourse = response.data.filter((item) => item.isRegistered === false)
-        setCourses(newCourse)
+        const newCourses = response.data.filter((item) => item.isRegistered === false)
+        newCourses.forEach((item) => {
+          item.isPending = false
+          idCoursesPending.forEach((item2) => {
+            if (item._id === item2.course) {
+              item.isPending = true
+            }
+          })
+        })
+        setCourses(newCourses)
       }
     } catch (error) {
       openErrorNotification(error.data?.message ?? error.message)

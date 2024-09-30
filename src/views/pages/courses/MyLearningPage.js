@@ -5,6 +5,7 @@ import userService from 'src/services/UserService'
 import BasePlaceholder from '../../components/base/BasePlaceholder'
 import CourseCardsList from '../../components/courses/CourseCardsList'
 import { openErrorNotification } from 'src/views/components/base/BaseNotification'
+import CoursesLeaning from "src/views/components/courses/CoursesLearningList";
 
 const MyLearningPage = () => {
   const [coursesLeaning, setCoursesLeaning] = useState([])
@@ -35,7 +36,7 @@ const MyLearningPage = () => {
         {coursesLoading ? (
           <BasePlaceholder />
         ) : coursesLeaning.length ? (
-          <CourseCardsList courses={coursesLeaning} />
+          <CoursesLeaning courses={coursesLeaning} />
         ) : (
           <Empty />
         )}
