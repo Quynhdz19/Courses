@@ -11,7 +11,7 @@ class CourseService extends BaseService {
       })
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -20,63 +20,43 @@ class CourseService extends BaseService {
       const response = await this.get(`/courses/${courseId}`)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
-  async getCourses(searchParams) {
+  async getCourses(searchParams = {}) {
     try {
       const response = await this.get('/courses', searchParams)
-      return response.data
+      return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
-  async addModule(courseId, moduleData) {
+  async updateCourse(courseId, courseData) {
     try {
-      const response = await this.post(`/courses/${courseId}/modules`, moduleData)
-      return response.data
+      const response = await this.put(`/courses/${courseId}`, courseData)
+      return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
-  async addLesson(moduleId, formData) {
+  async deleteCourses(coursesData) {
     try {
-      const response = await this.post(`/courses/modules/${moduleId}/lessons`, formData)
+      const response = await this.delete('/courses/remove-courses', { data: coursesData })
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
-  async getUploadPresignedUrl(formData) {
-    try {
-      const response = await this.post(
-        `/courses/modules/lessons/get-upload-presigned-url`,
-        formData,
-      )
-      return response.data
-    } catch (error) {
-      throw new Error(error.response?.data)
-    }
-  }
-
-  async getDetailModule(moduleId) {
-    try {
-      const response = await this.get(`/courses/modules/${moduleId}`)
-      return response.data
-    } catch (error) {
-      throw new Error(error.response?.data)
-    }
-  }
   async addUsers(courseId, usersData) {
     try {
       const response = await this.post(`/courses/${courseId}/add-users`, usersData)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
@@ -85,7 +65,34 @@ class CourseService extends BaseService {
       const response = await this.get(`/courses/${courseId}/users`, searchParams)
       return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
+    }
+  }
+
+  async getStudentMetrics() {
+    try {
+      const response = await this.get('/courses/metrics/total-students')
+      return response
+    } catch (error) {
+      throw error.response?.data
+    }
+  }
+
+  async getCourseMetrics() {
+    try {
+      const response = await this.get('/courses/metrics/total-courses')
+      return response
+    } catch (error) {
+      throw error.response?.data
+    }
+  }
+
+  async getTopCourseMetrics(searchParams = {}) {
+    try {
+      const response = await this.get('/courses/metrics/top-courses', searchParams)
+      return response
+    } catch (error) {
+      throw error.response?.data
     }
   }
 
@@ -94,25 +101,27 @@ class CourseService extends BaseService {
       const response = await this.delete(`/courses/${courseId}/remove-users`, { data: usersData })
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
-  async getLessonDetail(lessonId) {
+  async getPendingCourser() {
     try {
-      const response = await this.get(`/courses/modules/lessons/${lessonId}`)
-      return response
+      const response = await this.get('/orders/pending-by-user')
+      return response.data
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 
-  async getUserOfCourseOrNo(courseId, searchParams = {}) {
+  async registerCourse(courseId) {
     try {
-      const response = await this.get(`/courses/${courseId}/users`, searchParams)
+      const response = await this.post('/orders', {
+        courseId: courseId,
+      })
       return response
     } catch (error) {
-      throw new Error(error.response?.data)
+      throw error.response?.data
     }
   }
 }

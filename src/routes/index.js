@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import DefaultLayout from 'src/views/layout/DefaultLayout'
 import { RouteMap } from './routeMap'
+import UsersManagement from 'src/views/pages/users-management/UsersManagement'
 
 const LoginPage = lazy(() => import('src/views/pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('src/views/pages/auth/RegisterPage'))
@@ -13,6 +14,7 @@ const DashboardPage = lazy(() => import('src/views/pages/dashboard/DashboardPage
 const CoursesListPage = lazy(() => import('src/views/pages/courses/CoursesListPage'))
 const CourseDetailPage = lazy(() => import('src/views/pages/courses/CourseDetailPage'))
 const LessonPage = lazy(() => import('src/views/pages/courses/LessonPage'))
+const MyLearningPage = lazy(() => import('src/views/pages/courses/MyLearningPage'))
 
 const CoursesManagementPage = lazy(
   () => import('src/views/pages/courses-management/CoursesManagementPage'),
@@ -63,7 +65,7 @@ const routes = [
     children: [
       {
         path: RouteMap.HomePage,
-        element: <AuthGuard element={<DashboardPage />} />,
+        element: <AuthGuard element={<CoursesListPage />} />,
       },
       {
         path: RouteMap.DashboardPage,
@@ -82,6 +84,10 @@ const routes = [
         element: <AuthGuard element={<LessonPage />} />,
       },
       {
+        path: RouteMap.MyLearningPage,
+        element: <AuthGuard element={<MyLearningPage />} />,
+      },
+      {
         path: RouteMap.CoursesManagementPage,
         element: <AuthGuard requireAdmin={true} element={<CoursesManagementPage />} />,
       },
@@ -96,6 +102,10 @@ const routes = [
       {
         path: RouteMap.CourseLessonsManagementPage,
         element: <AuthGuard requireAdmin={true} element={<CourseLessonsManagementPage />} />,
+      },
+      {
+        path: RouteMap.ManagementUser,
+        element: <AuthGuard requireAdmin={true} element={<UsersManagement />} />,
       },
     ],
   },

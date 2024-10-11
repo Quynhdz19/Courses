@@ -32,6 +32,10 @@ const BaseInputLesson = ({ lessonToEdit, onSubmit }) => {
   }, [lessonToEdit])
 
   const handleSubmit = () => {
+    if (!title || !description || !video) {
+      alert('Bắt buộc nhập tất cả field.')
+      return
+    }
     onSubmit({
       title,
       description,

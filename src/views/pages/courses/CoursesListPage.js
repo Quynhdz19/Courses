@@ -1,120 +1,116 @@
-import {
-  CAvatar,
-  CCard,
-  CCardBody,
-  CCardImage,
-  CCardText,
-  CCardTitle,
-  CContainer,
-  CImage,
-  CLink,
-  CRow,
-} from '@coreui/react'
-import { Carousel } from 'antd'
+import { CContainer, CImage } from '@coreui/react'
+import { Carousel, Empty } from 'antd'
 import React, { useEffect, useState } from 'react'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import { bindRouteParams, RouteMap } from 'src/routes/routeMap'
 import CourseService from 'src/services/CourseService'
+import { openErrorNotification } from 'src/views/components/base/BaseNotification'
+import BasePlaceholder from '../../components/base/BasePlaceholder'
+import CourseCardsList from '../../components/courses/CourseCardsList'
 
 const CoursesListPage = () => {
   const [courses, setCourses] = useState([])
+  const [coursesPending, setCoursesPending] = useState([])
+  const [coursesNew, setCoursesNew] = useState([])
+  const [coursesLoading, setCoursesLoading] = useState(false)
 
   const imgCarousel = [
     {
       image: {
-        src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
-        status: 'succes',
+        src: 'https://online.unicode.vn/storage/images/unicode-online.jpg',
+        status: 'success',
       },
     },
     {
       image: {
         src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
-        status: 'succes',
+        status: 'success',
+      },
+    },
+    {
+      image: {
+        src: 'https://online.unicode.vn/storage/images/unicode-online.jpg',
+        status: 'success',
       },
     },
     {
       image: {
         src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
-        status: 'succes',
-      },
-    },
-    {
-      image: {
-        src: 'https://online.unicode.vn/storage/images/Laravel-banner.png?ver=1',
-        status: 'succes',
+        status: 'success',
       },
     },
   ]
 
-  const fetchCourses = async () => {
+  const fetchAlCourses = async () => {
     try {
       const response = await CourseService.getCourses({})
-      setCourses(response)
+      const idCoursesPending = await CourseService.getPendingCourser()
+      if (response.data) {
+        const newCourses = response.data.filter((item) => item.isRegistered === false)
+        newCourses.forEach((item) => {
+          item.isPending = false
+          idCoursesPending.forEach((item2) => {
+            if (item._id === item2.course) {
+              item.isPending = true
+            }
+          })
+        })
+        setCourses(newCourses)
+      }
     } catch (error) {
-      console.error('Error fetching courses:', error)
+      openErrorNotification(error.data?.message ?? error.message)
     }
   }
 
   useEffect(() => {
-    fetchCourses()
+    setCoursesLoading(true)
+    fetchAlCourses().then(() => setCoursesLoading(false))
   }, [])
 
   return (
-    <div>
-      <Carousel arrows infinite={false}>
-        {imgCarousel.map((item) => (
+    <>
+      <Carousel
+        autoplay
+        autoplaySpeed={2000}
+        pauseOnHover={false}
+        draggable={false}
+        infinite={true}
+        transitionDuration={500}
+      >
+        {imgCarousel.map((item, index) => (
           <div
-            key={item.image}
+            key={index}
             style={{
-              width: '80%',
               display: 'flex',
-              maxWidth: '100%',
-              height: 'auto',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
             }}
           >
-            <CImage src={item.image.src} status={item.image.status} />
+            <CImage
+              src={item.image.src}
+              status={item.image.status}
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+                objectFit: 'cover',
+                pointerEvents: 'none',
+              }}
+            />
           </div>
         ))}
       </Carousel>
 
-      <h2 className="mt-4 mb-2">Danh Sách Khóa Học</h2>
+      <h2 className="mt-4 mb-3">Khóa học mới mở</h2>
 
       <CContainer style={{ margin: 0 }}>
-        <CRow xs={{ cols: 1, gutter: 4 }} sm={{ cols: 2 }} lg={{ cols: 3 }} xl={{ cols: 4 }}>
-          {courses.map((course) => (
-            <CLink key={course._id} href={bindRouteParams(RouteMap.CourseDetailPage, [course._id])}>
-              <CCard>
-                <CCardImage
-                  size="md"
-                  src={course.backgroundImg}
-                  // status={item.image.status}
-                />
-                <CCardTitle>
-                  <span className="m-lg-2">{course.title}</span>
-                </CCardTitle>
-                {/* <CCardText>
-                  <ins className="m-lg-2 text-primary">{item.price}</ins>
-                </CCardText> */}
-                <div style={{ display: 'flex', justifyContent: 'flex', flexWrap: 'wrap' }}>
-                  <CAvatar
-                    className="m-lg-1"
-                    size="md"
-                    src={avatar2}
-                    // status={item.avtar.status}
-                  />
-                  <CCardText>
-                    <span className="text-center m-lg-2">Author</span>
-                  </CCardText>
-                  {/* <CCardText style={{ display: 'flex', justifyContent: 'right' }}>
-                    <div className="text-center m-lg-2">{item.lecture}</div>
-                  </CCardText> */}
-                </div>
-              </CCard>
-            </CLink>
-          ))}
-        </CRow>
+        {coursesLoading ? (
+          <BasePlaceholder />
+        ) : courses.length ? (
+          <CourseCardsList courses={courses} />
+        ) : (
+          <Empty />
+        )}
       </CContainer>
-    </div>
+    </>
   )
 }
 

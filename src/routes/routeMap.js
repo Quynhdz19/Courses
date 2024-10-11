@@ -5,10 +5,12 @@ export const RouteMap = {
 
   HomePage: '/',
   DashboardPage: '/dashboard',
+  ManagementUser: '/a/users',
 
   CoursesListPage: '/courses',
   CourseDetailPage: '/courses/:courseId',
   LessonPage: '/courses/:courseId/lessons/:lessonId',
+  MyLearningPage: '/my-courses/learning',
 
   CoursesManagementPage: '/a/courses',
   CourseModulesManagementPage: '/a/courses/:courseId',

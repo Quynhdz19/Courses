@@ -12,10 +12,12 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CSpinner,
 } from '@coreui/react'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { logo } from 'src/assets/brand/logo'
 import { decodeJwtToken } from 'src/helpers/decode-token'
 import { setAuthAccessToken, setAuthUser } from 'src/redux/modules/authSlice'
 import { RouteMap } from 'src/routes/routeMap'
@@ -27,6 +29,7 @@ const LoginPage = () => {
     password: '',
   })
   const [errMsg, setErrMsg] = useState({})
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -66,7 +69,9 @@ const LoginPage = () => {
     }
 
     try {
+      setLoading(true)
       const response = await authService.signIn(account)
+      setLoading(false)
       const decodedData = decodeJwtToken(response.accessToken)
       if (decodedData) {
         dispatch(
@@ -77,12 +82,17 @@ const LoginPage = () => {
           }),
         )
         dispatch(setAuthAccessToken(response.accessToken))
-        navigate(RouteMap.DashboardPage)
+        if (decodedData.role === 'STUDENT') {
+          navigate(RouteMap.CoursesListPage)
+        } else {
+          navigate(RouteMap.DashboardPage)
+        }
       } else {
         setErrMsg({ general: 'An error occurred. Username or password is incorrect!' })
       }
     } catch (err) {
-      setErrMsg({ general: 'An error occurred. Please try again.' })
+      setLoading(false)
+      setErrMsg({ general: err.data.message ?? err.message })
     }
   }
 
@@ -107,6 +117,7 @@ const LoginPage = () => {
                         autoComplete="username"
                         value={account.username}
                         onChange={handleChange}
+                        disabled={loading}
                       />
                     </CInputGroup>
                     {errMsg.username && <div className="text-danger">{errMsg.username}</div>}
@@ -121,18 +132,22 @@ const LoginPage = () => {
                         autoComplete="current-password"
                         value={account.password}
                         onChange={handleChange}
+                        disabled={loading}
                       />
                     </CInputGroup>
                     {errMsg.password && <div className="text-danger">{errMsg.password}</div>}
                     {errMsg.general && <div className="text-danger">{errMsg.general}</div>}
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4" type="submit">
+                        <CButton color="primary" className="px-4" type="submit" disabled={loading}>
+                          {loading && (
+                            <CSpinner as="span" className="me-2" size="sm" aria-hidden="true" />
+                          )}
                           Login
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
+                        <CButton color="link" className="px-0" disabled={loading}>
                           <Link to={RouteMap.ForgotPasswordPage}>Forgot password?</Link>
                         </CButton>
                       </CCol>
@@ -143,16 +158,7 @@ const LoginPage = () => {
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <h2>Sign up</h2>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
-                    <Link to={RouteMap.RegisterPage}>
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Register Now!
-                      </CButton>
-                    </Link>
+                    <CIcon customClassName="sidebar-brand-full" icon={logo} height={100} />
                   </div>
                 </CCardBody>
               </CCard>

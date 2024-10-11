@@ -30,8 +30,8 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to={RouteMap.HomePage}>
-          <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
-          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} />
+          <CIcon customClassName="sidebar-brand-full" icon={logo} height={100} />
+          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={100} />
         </CSidebarBrand>
         <CCloseButton
           className="d-lg-none"

@@ -1,4 +1,4 @@
-import { cilDrop, cilSpeedometer } from '@coreui/icons'
+import { cilBook, cilHome, cilPeople, cilSpeedometer } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CNavItem, CNavTitle } from '@coreui/react'
 import React from 'react'
@@ -7,13 +7,9 @@ import { RouteMap } from 'src/routes/routeMap'
 const _navAdmin = [
   {
     component: CNavItem,
-    name: 'Trang chủ',
+    name: 'Dashboard',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    },
   },
   {
     component: CNavTitle,
@@ -21,15 +17,19 @@ const _navAdmin = [
   },
   {
     component: CNavItem,
-    name: 'Review courses',
-    to: RouteMap.CoursesListPage,
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+    name: 'Quản lý courses',
+    to: RouteMap.CoursesManagementPage,
+    icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: 'Học viên',
   },
   {
     component: CNavItem,
-    name: 'Quản lý courses',
-    to: RouteMap.CoursesManagementPage,
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+    name: 'Quản lý học viên',
+    to: RouteMap.ManagementUser,
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
 ]
 

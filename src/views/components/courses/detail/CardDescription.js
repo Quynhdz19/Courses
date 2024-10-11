@@ -1,9 +1,10 @@
 import { CCard, CCardBody, CCardText, CCardTitle } from '@coreui/react'
 import PropTypes from 'prop-types'
 import React from 'react'
+import BasePlaceholder from '../../base/BasePlaceholder'
 
 const CourseDetailDescriptionCard = (props) => {
-  const { header, content } = props
+  const { header, content, loading = false } = props
   const paragraphs = content.split('\n')
 
   return (
@@ -12,9 +13,15 @@ const CourseDetailDescriptionCard = (props) => {
         <CCardTitle>
           <strong>{header}</strong>
         </CCardTitle>
-        {paragraphs.map((paragraph, index) => (
-          <CCardText key={index}>{paragraph}</CCardText>
-        ))}
+        {loading ? (
+          <BasePlaceholder />
+        ) : (
+          <>
+            {paragraphs.map((paragraph, index) => (
+              <CCardText key={index}>{paragraph}</CCardText>
+            ))}
+          </>
+        )}
       </CCardBody>
     </CCard>
   )
@@ -23,6 +30,7 @@ const CourseDetailDescriptionCard = (props) => {
 CourseDetailDescriptionCard.propTypes = {
   header: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
+  loading: PropTypes.bool,
 }
 
 export default CourseDetailDescriptionCard

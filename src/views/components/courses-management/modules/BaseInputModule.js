@@ -14,21 +14,25 @@ import {
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 
-const BaseInputModule = ({ courseToEdit, onSubmit }) => {
+const BaseInputModule = ({ moduleToEdit, onSubmit }) => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
 
   useEffect(() => {
-    if (courseToEdit) {
-      setTitle(courseToEdit.title)
-      setDescription(courseToEdit.description)
+    if (moduleToEdit) {
+      setTitle(moduleToEdit.title)
+      setDescription(moduleToEdit.description)
     } else {
       setTitle('')
       setDescription('')
     }
-  }, [courseToEdit])
+  }, [moduleToEdit])
 
   const handleSubmit = () => {
+    if (!title || !description) {
+      alert('Bắt buộc nhập tất cả field.')
+      return
+    }
     onSubmit({
       title,
       description,
@@ -69,7 +73,7 @@ const BaseInputModule = ({ courseToEdit, onSubmit }) => {
                 </CInputGroup>
                 <div className="d-grid">
                   <CButton color="primary" onClick={handleSubmit}>
-                    {courseToEdit ? 'Edit module' : 'Add module'}
+                    {moduleToEdit  ? 'Edit module' : 'Add module'}
                   </CButton>
                 </div>
               </CForm>

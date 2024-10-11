@@ -9,6 +9,7 @@ class BaseService {
       return response.data
     } catch (error) {
       this.handleError(error)
+      throw error
     }
   }
 
@@ -18,6 +19,7 @@ class BaseService {
       return response.data
     } catch (error) {
       this.handleError(error)
+      throw error
     }
   }
 
@@ -27,6 +29,7 @@ class BaseService {
       return response.data
     } catch (error) {
       this.handleError(error)
+      throw error
     }
   }
 
@@ -36,6 +39,7 @@ class BaseService {
       return response.data
     } catch (error) {
       this.handleError(error)
+      throw error
     }
   }
 
