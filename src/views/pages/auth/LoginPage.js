@@ -19,7 +19,7 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { logo } from 'src/assets/brand/logo'
 import { decodeJwtToken } from 'src/helpers/decode-token'
-import { setAuthAccessToken, setAuthUser } from 'src/redux/modules/authSlice'
+import { setAuthAccessToken, setAuthRefreshToken, setAuthUser } from 'src/redux/modules/authSlice'
 import { RouteMap } from 'src/routes/routeMap'
 import authService from 'src/services/AuthService'
 
@@ -82,6 +82,8 @@ const LoginPage = () => {
           }),
         )
         dispatch(setAuthAccessToken(response.accessToken))
+        dispatch(setAuthRefreshToken(response.refreshToken))
+
         if (decodedData.role === 'STUDENT') {
           navigate(RouteMap.CoursesListPage)
         } else {

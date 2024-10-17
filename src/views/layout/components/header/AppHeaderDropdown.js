@@ -1,4 +1,5 @@
-import { cilAccountLogout
+import {
+  cilAccountLogout
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import {
@@ -20,6 +21,7 @@ const AppHeaderDropdown = () => {
   const logoutUser = () => {
     localStorage.removeItem('user')
     localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
     navigate('/login')
   }
   return (
