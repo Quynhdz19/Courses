@@ -193,7 +193,7 @@ const DashboardPage = () => {
                         </CTableDataCell>
                         <CTableDataCell className="text-center">
                           <CCardImage
-                            src={course.backgroundImg}
+                            src="https://independent-thinkers.co.uk/wp-content/uploads/2022/02/Free-Online-Courses-with-Certificates.jpg"
                             style={{ maxWidth: '100px', width: 'auto' }}
                           />
                         </CTableDataCell>

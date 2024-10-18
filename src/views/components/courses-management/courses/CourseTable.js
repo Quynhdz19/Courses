@@ -52,8 +52,8 @@ const CourseTable = ({
 
                             <CTableDataCell>
                                 <CCardImage
-                                    src={course.backgroundImg}
-                                    style={{ maxWidth: '100px', width: 'auto' }}
+                                  src="https://independent-thinkers.co.uk/wp-content/uploads/2022/02/Free-Online-Courses-with-Certificates.jpg"
+                                  style={{ maxWidth: '100px', width: 'auto' }}
                                 />
                             </CTableDataCell>
 
